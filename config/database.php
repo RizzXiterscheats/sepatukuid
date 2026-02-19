@@ -96,6 +96,11 @@ return [
             'prefix_indexes' => true,
             'search_path' => 'public',
             'sslmode' => env('DB_SSLMODE', 'prefer'),
+            'statement_timeout' => 30000,
+            'session_initialization' => "SET session_replication_role = 'replica'",
+            'options' => [
+                \PDO::ATTR_TIMEOUT => 30,
+            ]
         ],
 
         'sqlsrv' => [

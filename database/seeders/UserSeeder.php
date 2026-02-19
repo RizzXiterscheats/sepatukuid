@@ -4,13 +4,20 @@ namespace Database\Seeders;
 
 use App\Models\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UserSeeder extends Seeder
 {
     public function run(): void
     {
+        // Disable foreign key check
+        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        
         // Hapus semua user lama jika ada
         User::truncate();
+        
+        // Enable foreign key check
+        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         
         // Admin - password plain text "admin123"
         User::create([

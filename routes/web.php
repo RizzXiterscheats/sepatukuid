@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -72,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/profile', function () {
         return view('user.profile');  // resources/views/user/profile.blade.php
     })->name('profile');
+    
+    // Profile update
+    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 // ==================== ADMIN ROUTES ====================
@@ -107,9 +111,7 @@ Route::get('/test', function () {
 });
 
 // Admin dashboard
-Route::get('/admin/dashboard', function () {
-    return view('admin.dashboard');
-})->name('admin.dashboard');
+Route::get('/admin/dashboard', [AdminDashboardController::class, 'index'])->name('admin.dashboard');
 
 // Petugas dashboard
 Route::get('/petugas/dashboard', function () {
