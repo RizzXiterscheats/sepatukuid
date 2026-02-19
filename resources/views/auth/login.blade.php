@@ -350,16 +350,7 @@
             <div class="auth-footer">
                 Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
             </div>
-            
-            <!-- Akun Testing -->
-            <div class="test-credentials">
-                <h4><i class="fa-solid fa-flask"></i> Akun Testing</h4>
-                <ul>
-                    <li><strong>Admin:</strong> admin@sepatukuid.com / admin123</li>
-                    <li><strong>Petugas:</strong> petugas@sepatukuid.com / petugas123</li>
-                    <li><strong>User:</strong> user@sepatukuid.com / user123</li>
-                </ul>
-            </div>
+        
         </div>
     </div>
     

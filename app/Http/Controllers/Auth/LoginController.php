@@ -19,7 +19,6 @@ class LoginController extends Controller
         $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
-            'role' => 'required|in:user,petugas,admin',
         ]);
 
         $user = User::where('email', $credentials['email'])->first();
@@ -33,13 +32,6 @@ class LoginController extends Controller
         if ($credentials['password'] !== $user->password) {
             return back()->withErrors([
                 'password' => 'Password salah.',
-            ])->onlyInput('email');
-        }
-
-        // Validasi role user
-        if ($user->role !== $credentials['role']) {
-            return back()->withErrors([
-                'email' => 'Akun ini tidak sesuai dengan role yang dipilih. Silakan pilih role yang benar.',
             ])->onlyInput('email');
         }
 

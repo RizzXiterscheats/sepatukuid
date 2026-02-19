@@ -487,21 +487,25 @@
                     <a href="{{ route('orders') }}" class="btn btn-secondary">
                         <i class="fa-solid fa-box"></i> Pesanan Saya
                     </a>
-                    <form action="{{ route('logout') }}" method="POST" style="flex: 1;">
-                        @csrf
-                        <button type="submit" class="btn btn-logout" style="width: 100%;">
-                            <i class="fa-solid fa-sign-out-alt"></i> Logout
-                        </button>
-                    </form>
+                    <button type="button" class="btn btn-logout" id="logoutBtn" style="flex: 1;">
+                        <i class="fa-solid fa-sign-out-alt"></i> Logout
+                    </button>
                 </div>
             </form>
         </div>
     </div>
     
+    <!-- Logout Form (Outside profile form) -->
+    <form id="logoutForm" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+    </form>
+    
     <script>
-        // Profile functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Profile page loaded');
+        // Handle logout button
+        document.getElementById('logoutBtn').addEventListener('click', function() {
+            if (confirm('Yakin ingin logout?')) {
+                document.getElementById('logoutForm').submit();
+            }
         });
     </script>
 </body>

@@ -85,49 +85,6 @@
             font-size: 0.95rem;
         }
         
-        /* Role Selection Tabs */
-        .role-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f0f0f0;
-        }
-        
-        .role-tab {
-            flex: 1;
-            padding: 12px 16px;
-            background: #f5f5f5;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #666;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.3s ease;
-        }
-        
-        .role-tab i {
-            font-size: 1.2rem;
-        }
-        
-        .role-tab:hover {
-            border-color: #E53935;
-            background: #fff5f5;
-            color: #E53935;
-        }
-        
-        .role-tab.active {
-            background: linear-gradient(135deg, #E53935, #C62828);
-            color: white;
-            border-color: #C62828;
-            box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
-        }
-        
         .alert {
             padding: 15px;
             border-radius: 10px;
@@ -337,23 +294,7 @@
                     <span>SEPATUKUID</span>
                 </div>
                 <h1>MASUK AKUN</h1>
-                <p>Pilih tipe akun kemudian login</p>
-            </div>
-            
-            <!-- Role Selection Tabs -->
-            <div class="role-tabs">
-                <button type="button" class="role-tab active" data-role="user" onclick="switchRole('user')">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Customer</span>
-                </button>
-                <button type="button" class="role-tab" data-role="petugas" onclick="switchRole('petugas')">
-                    <i class="fa-solid fa-users"></i>
-                    <span>Petugas</span>
-                </button>
-                <button type="button" class="role-tab" data-role="admin" onclick="switchRole('admin')">
-                    <i class="fa-solid fa-crown"></i>
-                    <span>Admin</span>
-                </button>
+                <p>Masukkan email dan password Anda</p>
             </div>
             
             @if(session('success'))
@@ -367,11 +308,9 @@
                     <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
                 </div>
             @endif
-   <form method="POST" action="{{ route('login') }}">
-    @csrf
-    
-    <!-- Hidden role input -->
-    <input type="hidden" id="role" name="role" value="user">
+            
+            <form method="POST" action="{{ route('login') }}">
+                @csrf
     
     <div class="form-group">
         <label for="email">Email</label>
@@ -407,16 +346,7 @@
             <div class="auth-footer">
                 Belum punya akun? <a href="{{ route('register') }}">Daftar Sekarang</a>
             </div>
-            
-            <!-- Akun Testing -->
-            <div class="test-credentials">
-                <h4><i class="fa-solid fa-flask"></i> Akun Testing</h4>
-                <ul>
-                    <li><strong>Admin:</strong> admin@sepatuku.id / admin123</li>
-                    <li><strong>Petugas:</strong> petugas@sepatuku.id / petugas123</li>
-                    <li><strong>Customer:</strong> customer@sepatuku.id / customer123</li>
-                </ul>
-            </div>
+        
         </div>
     </div>
     
@@ -434,20 +364,6 @@
             toggleIcon.classList.remove('fa-eye-slash');
             toggleIcon.classList.add('fa-eye');
         }
-    }
-    
-    function switchRole(role) {
-        // Update hidden role input
-        document.getElementById('role').value = role;
-        
-        // Update active tab styling
-        const tabs = document.querySelectorAll('.role-tab');
-        tabs.forEach(tab => {
-            tab.classList.remove('active');
-            if (tab.getAttribute('data-role') === role) {
-                tab.classList.add('active');
-            }
-        });
     }
 
     // Jalankan saat halaman dimuat

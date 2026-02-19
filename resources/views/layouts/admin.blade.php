@@ -616,10 +616,10 @@
                 <div class="header-right">
                     <div class="user-profile">
                         <div class="user-info" style="text-align: right;">
-                            <div class="user-name">{{ Auth::user()->name ?? 'Admin' }}</div>
-                            <div class="user-role">Terakhir login: {{ Auth::user()->updated_at ? Auth::user()->updated_at->format('d M Y') : '-' }}</div>
+                            <div class="user-name">{{ Auth::user()?->name ?? 'Admin' }}</div>
+                            <div class="user-role">Terakhir login: {{ Auth::user()?->updated_at?->format('d M Y') ?? '-' }}</div>
                         </div>
-                        <div class="user-avatar">{{ substr(Auth::user()->name ?? 'AP', 0, 2) }}</div>
+                        <div class="user-avatar">{{ substr(Auth::user()?->name ?? 'AP', 0, 2) }}</div>
                     </div>
                 </div>
             </header>

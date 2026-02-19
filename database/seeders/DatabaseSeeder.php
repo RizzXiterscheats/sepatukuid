@@ -10,14 +10,24 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $isPostgres = DB::connection()->getDriverName() === 'pgsql';
+        
         // Disable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        if ($isPostgres) {
+            DB::statement('ALTER TABLE users DISABLE TRIGGER ALL;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=0;');
+        }
         
         // Hapus data lama
         User::truncate();
         
         // Enable foreign key constraints
-        DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        if ($isPostgres) {
+            DB::statement('ALTER TABLE users ENABLE TRIGGER ALL;');
+        } else {
+            DB::statement('SET FOREIGN_KEY_CHECKS=1;');
+        }
 
         // Admin
         User::create([
