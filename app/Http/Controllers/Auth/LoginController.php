@@ -3,56 +3,57 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
     public function showLoginForm()
     {
-        return view('auth.login');
+        return view('login');
     }
 
     public function login(Request $request)
     {
-        $request->validate([
+        $credentials = $request->validate([
             'email' => 'required|email',
             'password' => 'required',
         ]);
 
-        // Cari user
-        $user = User::where('email', $request->email)->first();
+        $user = User::where('email', $credentials['email'])->first();
 
-        // Cek password (plain text)
-        if ($user && $request->password === $user->password) {
-            
-            Auth::login($user, $request->has('remember'));
-            
-            $request->session()->regenerate();
-            
-            // Redirect berdasarkan role
-            if ($user->role === 'admin') {
-                return redirect()->intended(route('admin.dashboard'));
-            } elseif ($user->role === 'petugas') {
-                return redirect()->intended(route('petugas.dashboard'));
-            } else {
-                return redirect()->intended(route('home'));
-            }
+        if (!$user) {
+            return back()->withErrors([
+                'email' => 'Email tidak ditemukan.',
+            ])->onlyInput('email');
         }
 
-        return back()->withErrors([
-            'email' => 'Email atau password salah.',
-        ])->withInput($request->only('email'));
+        if ($credentials['password'] !== $user->password) {
+            return back()->withErrors([
+                'password' => 'Password salah.',
+            ])->onlyInput('email');
+        }
+
+        Auth::login($user, $request->has('remember'));
+        $request->session()->regenerate();
+
+        // Redirect berdasarkan role
+        if ($user->role === 'admin') {
+            return redirect()->intended(route('admin.dashboard'))->with('success', 'Selamat datang Admin ' . $user->name);
+        } elseif ($user->role === 'petugas') {
+            return redirect()->intended(route('petugas.dashboard'))->with('success', 'Selamat datang Petugas ' . $user->name);
+        } else {
+            // User biasa langsung ke halaman home
+            return redirect()->intended(route('home'))->with('success', 'Selamat datang ' . $user->name);
+        }
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        
-        return redirect()->route('home');
+        return redirect('/')->with('success', 'Logout berhasil');
     }
 }

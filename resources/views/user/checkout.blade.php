@@ -620,7 +620,7 @@
               <i class="fa-regular fa-user"></i>
             </div>
           </a>
-          <a href="{{ route('user.cart') }}" style="color: inherit;">
+         <a href="{{ route('cart') }}" style="color: inherit;">
             <div style="position: relative;">
               <i class="fa-solid fa-cart-shopping"></i>
               <span class="cart-count">3</span>
@@ -809,12 +809,12 @@
           <span class="summary-total-price">Rp 4.251.000</span>
         </div>
         
-        <div class="back-to-cart">
-          <a href="{{ route('user.cart') }}">
-            <i class="fa-solid fa-arrow-left"></i>
-            Kembali ke Keranjang
-          </a>
-        </div>
+<div class="back-to-cart">
+  <a href="{{ route('cart') }}">
+    <i class="fa-solid fa-arrow-left"></i>
+    Kembali ke Keranjang
+  </a>
+</div>
       </div>
       
     </div>

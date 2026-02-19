@@ -117,42 +117,38 @@
         }
         
         .input-group {
-            position: relative;
-        }
-        
-        .input-group i:first-child {
-            position: absolute;
-            left: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            font-size: 1.1rem;
-        }
-        
-        .input-group input {
-            width: 100%;
-            padding: 15px 15px 15px 45px;
-            border: 2px solid #e0e0e0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.3s;
-        }
-        
-        .input-group input:focus {
-            outline: none;
-            border-color: #E53935;
-            box-shadow: 0 0 0 3px rgba(229, 57, 53, 0.1);
-        }
-        
-        .password-toggle {
-            position: absolute;
-            right: 15px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #999;
-            cursor: pointer;
-            font-size: 1.1rem;
-        }
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-group i:first-child {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    z-index: 1;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 15px 45px 15px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    cursor: pointer;
+    z-index: 1;
+}
         
         .form-options {
             display: flex;
@@ -312,14 +308,13 @@
                     <i class="fa-solid fa-circle-exclamation"></i> {{ $errors->first() }}
                 </div>
             @endif
-            
-          <form method="POST" action="{{ route('login.post') }}">
+   <form method="POST" action="{{ route('login') }}">
     @csrf
     
     <div class="form-group">
         <label for="email">Email</label>
         <div class="input-group">
-            <i class="fa-regular fa-envelope input-icon"></i>
+            <i class="fa-regular fa-envelope"></i>
             <input type="email" id="email" name="email" value="{{ old('email') }}" placeholder="Masukkan email" required autofocus>
         </div>
     </div>
@@ -327,17 +322,17 @@
     <div class="form-group">
         <label for="password">Password</label>
         <div class="input-group">
-            <i class="fa-solid fa-lock input-icon"></i>
+            <i class="fa-solid fa-lock"></i>
             <input type="password" id="password" name="password" placeholder="Masukkan password" required>
-            <i class="fa-regular fa-eye toggle-password" onclick="togglePassword()"></i>
+            <i class="fa-regular fa-eye password-toggle" onclick="togglePassword()"></i>
         </div>
     </div>
     
     <div class="form-options">
-        <div class="remember-me">
+        <label class="remember-me">
             <input type="checkbox" id="remember" name="remember">
-            <label for="remember">Ingat saya</label>
-        </div>
+            <span>Ingat saya</span>
+        </label>
         <a href="#" class="forgot-password">Lupa password?</a>
     </div>
     
@@ -363,21 +358,30 @@
         </div>
     </div>
     
-    <script>
-        function togglePassword() {
-            const passwordInput = document.getElementById('password');
-            const toggleIcon = document.querySelector('.password-toggle');
-            
-            if (passwordInput.type === 'password') {
-                passwordInput.type = 'text';
-                toggleIcon.classList.remove('fa-eye');
-                toggleIcon.classList.add('fa-eye-slash');
-            } else {
-                passwordInput.type = 'password';
-                toggleIcon.classList.remove('fa-eye-slash');
-                toggleIcon.classList.add('fa-eye');
-            }
+<script>
+    function togglePassword() {
+        const passwordInput = document.getElementById('password');
+        const toggleIcon = document.querySelector('.password-toggle');
+        
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            toggleIcon.classList.remove('fa-eye');
+            toggleIcon.classList.add('fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            toggleIcon.classList.remove('fa-eye-slash');
+            toggleIcon.classList.add('fa-eye');
         }
-    </script>
+    }
+
+    // Jalankan saat halaman dimuat
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tambahkan event listener untuk toggle password
+        const toggleBtn = document.querySelector('.password-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', togglePassword);
+        }
+    });
+</script>
 </body>
 </html>

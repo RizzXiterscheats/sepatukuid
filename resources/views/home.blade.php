@@ -1216,24 +1216,52 @@
     <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
 </nav>
       
-      <div class="nav-actions">
-        <div class="nav-icons">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <a href="{{ route('login') }}" style="color: inherit; text-decoration: none;">
-            <div style="position: relative;">
-              <i class="fa-regular fa-user"></i>
-            </div>
-          </a>
-          <a href="{{ route('login') }}" style="color: inherit; text-decoration: none;">
-            <div style="position: relative;">
-              <i class="fa-solid fa-cart-shopping"></i>
-              <span class="cart-count">3</span>
-            </div>
-          </a>
+<div class="nav-actions">
+  <div class="nav-icons">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    
+    <!-- User Icon - jika sudah login arahkan ke profile, jika belum ke login -->
+    @auth
+      @if(Auth::user()->role === 'admin')
+        <a href="{{ route('admin.dashboard') }}" style="color: inherit; text-decoration: none;">
+          <div style="position: relative;">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </a>
+      @elseif(Auth::user()->role === 'petugas')
+        <a href="{{ route('petugas.dashboard') }}" style="color: inherit; text-decoration: none;">
+          <div style="position: relative;">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </a>
+      @else
+        <a href="{{ route('profile') }}" style="color: inherit; text-decoration: none;">
+          <div style="position: relative;">
+            <i class="fa-regular fa-user"></i>
+          </div>
+        </a>
+      @endif
+    @else
+      <a href="{{ route('login') }}" style="color: inherit; text-decoration: none;">
+        <div style="position: relative;">
+          <i class="fa-regular fa-user"></i>
         </div>
-      </div>
+      </a>
+    @endauth
+    
+    <!-- Cart Icon - mengarah ke cart -->
+    <div style="position: relative;">
+      <a href="{{ route('cart') }}" style="color: inherit;">
+        <i class="fa-solid fa-cart-shopping"></i>
+        @auth
+          <span class="cart-count">0</span>
+        @else
+          <span class="cart-count">0</span>
+        @endauth
+      </a>
     </div>
   </div>
+</div>
 </header>
 
 <section class="hero">

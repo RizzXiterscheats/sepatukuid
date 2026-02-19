@@ -738,11 +738,12 @@
               <i class="fa-regular fa-user"></i>
             </div>
           </a>
-          <a href="{{ route('user.cart') }}" style="color: inherit;">
-            <div style="position: relative;">
-              <i class="fa-solid fa-cart-shopping"></i>
-              <span class="cart-count">3</span>
-            </div>
+<a href="{{ route('cart') }}" style="color: inherit;">
+  <div style="position: relative;">
+    <i class="fa-solid fa-cart-shopping"></i>
+    <span class="cart-count">3</span>
+  </div>
+</a>
           </a>
         </div>
       </div>
