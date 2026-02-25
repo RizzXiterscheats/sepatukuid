@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sepatukuid - Semua Produk Sepatu</title>
+  <title>Sepatukuid - Semua Produk</title>
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -11,111 +11,11 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+
   <style>
-    :root {
-      --primary: #E53935;
-      --primary-light: #FF5252;
-      --primary-dark: #C62828;
-      --secondary: #2196F3;
-      --dark: #121212;
-      --gray-dark: #333;
-      --gray: #666;
-      --gray-light: #999;
-      --light: #f8f9fa;
-      --bg: #ffffff;
-      --success: #4CAF50;
-      --warning: #FF9800;
-      --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-      --card-shadow-hover: 0 25px 60px rgba(0, 0, 0, 0.15);
-      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      --border-radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: var(--dark);
-      background: var(--bg);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      transition: var(--transition);
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 14px 28px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 15px;
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(229, 57, 53, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-view {
-      background: transparent;
-      border: 2px solid var(--gray-light);
-    /* Products Specific Styles */
+    /* Hero Alignment */
     .products-hero {
       padding: 140px 0 80px;
       background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
@@ -136,251 +36,34 @@
     }
 
     .products-hero h1 {
-      font-size: 3rem;
+      font-size: 4rem;
       font-weight: 900;
-      margin-bottom: 15px;
+      margin-bottom: 20px;
       background: linear-gradient(45deg, var(--dark), var(--gray-dark), var(--primary));
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
       letter-spacing: -1px;
     }
 
     .products-hero p {
-      font-size: 1.1rem;
+      font-size: 1.3rem;
       color: var(--gray);
-      max-width: 600px;
-      margin: 0 auto 30px;
-      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto 40px;
+      line-height: 1.8;
     }
 
-    /* FILTER BAR */
-    .filter-bar {
-      padding: 25px 0;
-      background: white;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .filter-container {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 15px;
-    }
-
-    .filter-left {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    .filter-right {
-      display: flex;
-      gap: 15px;
-      align-items: center;
-    }
-
-    .sort-select {
-      padding: 10px 20px;
-      border: 2px solid var(--light);
-      border-radius: 50px;
-      font-weight: 500;
-      background: white;
-      cursor: pointer;
-      font-size: 14px;
-    }
-
-    .sort-select:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
-    .result-count {
-      font-size: 0.9rem;
-      color: var(--gray);
-      font-weight: 500;
-    }
-
-    /* PRODUCTS GRID */
-    .products-section {
-      padding: 50px 0 80px;
-      background: white;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 25px;
-      margin-bottom: 40px;
-    }
-
-    .product-card {
-      background: white;
-      border-radius: 20px;
-      overflow: hidden;
-      box-shadow: var(--card-shadow);
-      transition: var(--transition);
-      position: relative;
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .product-card:hover {
-      transform: translateY(-10px) scale(1.02);
-      box-shadow: var(--card-shadow-hover);
-    }
-
-    .product-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      padding: 6px 15px;
-      border-radius: 50px;
-      font-size: 0.8rem;
-      font-weight: 800;
-      z-index: 1;
-      box-shadow: 0 5px 15px rgba(229, 57, 53, 0.3);
-    }
-
-    .product-badge.new {
-      background: linear-gradient(135deg, var(--success), #2ECC71);
-    }
-
-    .product-badge.sale {
-      background: linear-gradient(135deg, var(--warning), #FFB74D);
-    }
-
-    .product-image {
-      height: 220px;
-      width: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .product-card:hover .product-image {
-      transform: scale(1.05);
-    }
-
-    .product-info {
-      padding: 20px;
-    }
-
-    .product-category {
-      color: var(--gray-light);
-      font-size: 0.8rem;
-      margin-bottom: 8px;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-
-    .product-title {
-      font-size: 1.2rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-      color: var(--dark);
-      line-height: 1.3;
-      min-height: 50px;
-    }
-
-    .product-rating {
-      color: #FFD700;
-      margin-bottom: 10px;
-      font-size: 0.9rem;
-    }
-
-    .rating-count {
-      color: var(--gray);
-      margin-left: 5px;
-      font-size: 0.8rem;
-      font-weight: 500;
-    }
-
-    .product-price {
-      font-size: 1.4rem;
-      font-weight: 900;
-      color: var(--primary);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .old-price {
-      font-size: 1rem;
-      color: var(--gray-light);
-      text-decoration: line-through;
-      font-weight: 500;
-    }
-
-    .product-actions {
-      display: flex;
-      gap: 10px;
-    }
-
-    .btn-cart {
-      flex: 1;
-      padding: 10px;
-      font-size: 0.9rem;
-    }
-
-    .btn-detail {
-      padding: 10px 15px;
-      font-size: 0.9rem;
-    }
-
-    /* PAGINATION */
-    .pagination {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 8px;
-      margin-top: 40px;
-    }
-
-    .pagination a {
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: var(--light);
-      color: var(--gray-dark);
-      font-weight: 600;
-      transition: var(--transition);
-      font-size: 0.9rem;
-    }
-
-    .pagination a.active {
-      background: var(--primary);
-      color: white;
-    }
-
-    .pagination a:hover:not(.disabled) {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .pagination a.disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    /* FEATURED BANNER */
-    .featured-banner {
-      margin: 40px 0;
-      padding: 40px;
+    /* BANNER STATS (Same as Shop) */
+    .products-banner {
+      padding: 60px 0;
       background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 25px;
       color: white;
       position: relative;
       overflow: hidden;
     }
 
-    .featured-banner::before {
+    .products-banner::before {
       content: '';
       position: absolute;
       top: 0;
@@ -397,71 +80,195 @@
       text-align: center;
     }
 
-    .banner-content h3 {
+    .banner-stats {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 10px;
+    }
+
+    .banner-stat-item {
+      text-align: center;
+    }
+
+    .banner-stat-number {
       font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 15px;
+      font-weight: 900;
+      margin-bottom: 5px;
     }
 
-    .banner-content p {
+    .banner-stat-label {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    /* BRANDS SECTION */
+    .brands-section {
+      padding: 60px 0;
+      background: white;
+    }
+
+    .brands-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 30px;
+      align-items: center;
+    }
+
+    .brand-item {
+      text-align: center;
+      padding: 20px;
+      background: var(--light);
+      border-radius: 15px;
+      transition: var(--transition);
+      cursor: pointer;
+    }
+
+    .brand-item:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--card-shadow);
+    }
+
+    .brand-item i {
+      font-size: 2.5rem;
+      color: var(--primary);
+      margin-bottom: 10px;
+    }
+
+    .brand-item h4 {
       font-size: 1.1rem;
-      max-width: 500px;
-      margin: 0 auto 20px;
-      opacity: 0.95;
+      font-weight: 700;
     }
 
-    /* RESPONSIVE */
-    @media (max-width: 1200px) {
-      .products-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
+    /* FEATURES */
+    .shop-features {
+      padding: 80px 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      position: relative;
     }
 
-    @media (max-width: 992px) {
-      .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .products-hero h1 {
-        font-size: 2.5rem;
-      }
+    .shop-features::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=1200') center/cover;
+      opacity: 0.1;
     }
 
-    @media (max-width: 768px) {
-      .products-hero {
-        padding: 100px 0 40px;
-      }
-      
-      .products-hero h1 {
-        font-size: 2rem;
-      }
-      
-      .filter-container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      
-      .filter-right {
-        width: 100%;
-        justify-content: space-between;
-      }
-      
-      .products-grid {
-        grid-template-columns: 1fr;
-        gap: 20px;
-      }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+      position: relative;
+      z-index: 2;
     }
 
-    @media (max-width: 576px) {
-      .filter-left {
-        width: 100%;
-        overflow-x: auto;
-        padding-bottom: 10px;
-      }
-      
-      .btn-filter {
-        white-space: nowrap;
-      }
+    .feature-item {
+      text-align: center;
+      padding: 40px 30px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      transition: var(--transition);
+    }
+
+    .feature-item:hover {
+      transform: translateY(-10px);
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* NEWSLETTER */
+    .newsletter-section {
+      padding: 100px 0;
+      background: white;
+    }
+
+    .newsletter-box {
+      background: linear-gradient(135deg, var(--dark) 0%, #000000 100%);
+      border-radius: 30px;
+      padding: 80px 40px;
+      text-align: center;
+      color: white;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .newsletter-form {
+      display: flex;
+      max-width: 600px;
+      margin: 40px auto 0;
+      gap: 15px;
+    }
+
+    .newsletter-form input {
+      flex: 1;
+      padding: 20px 30px;
+      border-radius: 50px;
+      border: none;
+      font-size: 1.1rem;
+    }
+
+    .newsletter-form button {
+      padding: 20px 40px;
+      border-radius: 50px;
+      background: var(--primary);
+      color: white;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    /* Product Grid Styling Override */
+    .products-section {
+      padding: 80px 0;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 35px;
+    }
+
+    .product-card {
+      background: white;
+      border-radius: 25px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      position: relative;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .product-card:hover {
+      transform: translateY(-15px) scale(1.03);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .product-image {
+      height: 280px;
+      width: 100%;
+      object-fit: cover;
+    }
+
+    .product-info {
+      padding: 30px;
+    }
+
+    .btn-detail {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 15px;
+      background: var(--dark);
+      color: white;
+      border-radius: 50px;
+      font-weight: 700;
+      margin-top: 15px;
     }
   </style>
 </head>
@@ -472,33 +279,27 @@
 
 <section class="products-hero">
   <div class="container">
-    <h1>Koleksi Produk Sepatu</h1>
-    <p>Temukan berbagai pilihan sepatu berkualitas untuk segala aktivitasmu. Dari running, lifestyle, hingga casual.</p>
+    <h1>All Sneakers</h1>
+    <p>Koleksi lengkap dari brand ternama kelas dunia hanya untuk Anda.</p>
   </div>
 </section>
 
-<section class="filter-bar">
+<section class="products-banner">
   <div class="container">
-    <div class="filter-container">
-      <div class="filter-left">
-        <button class="btn-filter active">Semua Produk</button>
-        <button class="btn-filter">Running</button>
-        <button class="btn-filter">Lifestyle</button>
-        <button class="btn-filter">Casual</button>
-        <button class="btn-filter">Basket</button>
-        <button class="btn-filter">Training</button>
-        <button class="btn-filter">Hiking</button>
-      </div>
-      
-      <div class="filter-right">
-        <span class="result-count">Menampilkan 24 dari 124 produk</span>
-        <select class="sort-select">
-          <option>Terpopuler</option>
-          <option>Harga: Rendah ke Tinggi</option>
-          <option>Harga: Tinggi ke Rendah</option>
-          <option>Terbaru</option>
-          <option>Rating Tertinggi</option>
-        </select>
+    <div class="banner-content">
+      <div class="banner-stats">
+        <div class="banner-stat-item">
+          <div class="banner-stat-number">{{ count($products) }}+</div>
+          <div class="banner-stat-label">Produk Pilihan</div>
+        </div>
+        <div class="banner-stat-item">
+          <div class="banner-stat-number">{{ count($categories) }}</div>
+          <div class="banner-stat-label">Kategori Brand</div>
+        </div>
+        <div class="banner-stat-item">
+          <div class="banner-stat-number">100%</div>
+          <div class="banner-stat-label">Original Guaranteed</div>
+        </div>
       </div>
     </div>
   </div>
@@ -506,492 +307,126 @@
 
 <section class="products-section">
   <div class="container">
-    <div class="products-grid">
-      
-      <!-- Produk 1: Nike Air Max 270 -->
-      <div class="product-card">
-        <span class="product-badge new">NEW</span>
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" class="product-image" alt="Nike Air Max 270">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">Nike Air Max 270 React</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(428)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.299.000
-            <span class="old-price">Rp 1.599.000</span>
-          </div>
-          <div class="product-actions">
-           <!-- Untuk user yang sudah login (role user) -->
-@auth
-    @if(Auth::user()->role === 'user')
-        <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-    @else
-        <a href="#" onclick="alert('Silakan login sebagai pembeli untuk menambah ke keranjang')" class="btn btn-cart">Tambah</a>
-    @endif
-@else
-    <a href="{{ route('login') }}" class="btn btn-cart">Tambah</a>
-@endauth
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 2: Adidas Ultraboost -->
-      <div class="product-card">
-        <span class="product-badge">BEST SELLER</span>
-        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" class="product-image" alt="Adidas Ultraboost">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Adidas Ultraboost 22</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(312)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.499.000
-            <span class="old-price">Rp 1.799.000</span>
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 3: Converse Chuck Taylor -->
-      <div class="product-card">
-        <span class="product-badge sale">SALE</span>
-        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=800" class="product-image" alt="Converse Chuck Taylor">
-        <div class="product-info">
-          <div class="product-category">Casual</div>
-          <h3 class="product-title">Converse Chuck Taylor All Star</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span class="rating-count">(567)</span>
-          </div>
-          <div class="product-price">
-            Rp 699.000
-            <span class="old-price">Rp 999.000</span>
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 4: Nike Air Force 1 -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800" class="product-image" alt="Nike Air Force 1">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Nike Air Force 1 '07 Premium</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(389)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.499.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 5: New Balance 574 -->
-      <div class="product-card">
-        <span class="product-badge new">NEW</span>
-        <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=800" class="product-image" alt="New Balance 574">
-        <div class="product-info">
-          <div class="product-category">Casual</div>
-          <h3 class="product-title">New Balance 574 Core</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(245)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.099.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 6: Puma RS-X -->
-      <div class="product-card">
-        <span class="product-badge sale">SALE</span>
-        <img src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=800" class="product-image" alt="Puma RS-X">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Puma RS-X Reinvention</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(178)</span>
-          </div>
-          <div class="product-price">
-            Rp 849.000
-            <span class="old-price">Rp 1.099.000</span>
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 7: Asics Gel-Kayano -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1539185441755-769473a23570?q=80&w=800" class="product-image" alt="Asics Gel-Kayano">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">Asics Gel-Kayano 29</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(156)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.899.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 8: Vans Old Skool -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=800" class="product-image" alt="Vans Old Skool">
-        <div class="product-info">
-          <div class="product-category">Casual</div>
-          <h3 class="product-title">Vans Old Skool Black</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span class="rating-count">(423)</span>
-          </div>
-          <div class="product-price">
-            Rp 899.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 9: Reebok Classic -->
-      <div class="product-card">
-        <span class="product-badge">BEST SELLER</span>
-        <img src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=800" class="product-image" alt="Reebok Classic">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Reebok Classic Leather</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(289)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.099.000
-            <span class="old-price">Rp 1.299.000</span>
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 10: Hoka One One -->
-      <div class="product-card">
-        <span class="product-badge new">NEW</span>
-        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800" class="product-image" alt="Hoka One One">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">Hoka One One Clifton 8</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(98)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.799.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 11: Saucony Triumph -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=800" class="product-image" alt="Saucony Triumph">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">Saucony Triumph 19</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(134)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.599.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 12: Diadora N9000 -->
-      <div class="product-card">
-        <span class="product-badge">LIMITED</span>
-        <img src="https://images.unsplash.com/photo-1587563871167-f11eaf1b3fa4?q=80&w=800" class="product-image" alt="Diadora N9000">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Diadora N9000 Made in Italy</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span class="rating-count">(67)</span>
-          </div>
-          <div class="product-price">
-            Rp 2.499.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 13: Brooks Ghost -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?q=80&w=800" class="product-image" alt="Brooks Ghost">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">Brooks Ghost 14</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(203)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.399.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 14: Fila Disruptor -->
-      <div class="product-card">
-        <span class="product-badge sale">SALE</span>
-        <img src="https://images.unsplash.com/photo-1575537302964-96cd47c06b1b?q=80&w=800" class="product-image" alt="Fila Disruptor">
-        <div class="product-info">
-          <div class="product-category">Lifestyle</div>
-          <h3 class="product-title">Fila Disruptor II Premium</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star-half"></i>
-            <span class="rating-count">(312)</span>
-          </div>
-          <div class="product-price">
-            Rp 799.000
-            <span class="old-price">Rp 1.099.000</span>
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 15: On Running Cloud -->
-      <div class="product-card">
-        <span class="product-badge new">NEW</span>
-        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800" class="product-image" alt="On Running Cloud">
-        <div class="product-info">
-          <div class="product-category">Running</div>
-          <h3 class="product-title">On Running Cloudswift</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span class="rating-count">(87)</span>
-          </div>
-          <div class="product-price">
-            Rp 2.199.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
-      <!-- Produk 16: Salomon XT-6 -->
-      <div class="product-card">
-        <img src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=800" class="product-image" alt="Salomon XT-6">
-        <div class="product-info">
-          <div class="product-category">Hiking</div>
-          <h3 class="product-title">Salomon XT-6 Advanced</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span class="rating-count">(156)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.899.000
-          </div>
-          <div class="product-actions">
-            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
-            <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
-          </div>
-        </div>
-      </div>
-      
+    <div class="section-title">
+      <h2>Featured Collection</h2>
+      <p>Pilih dari ratusan model sneakers yang sesuai dengan gaya Anda.</p>
     </div>
-    
-    <!-- Featured Banner -->
-    <div class="featured-banner">
-      <div class="banner-content">
-        <h3>Special Collection</h3>
-        <p>Dapatkan diskon spesial untuk koleksi sepatu running terbaru</p>
-        <a href="{{ route('products.index') }}" class="btn" style="background: white; color: var(--primary);">Shop Now</a>
+
+    <div class="product-grid">
+      @forelse($products as $product)
+      <div class="product-card">
+        @if($product->discount_price)
+          <span class="product-badge" style="position: absolute; top: 20px; left: 20px; background: var(--primary); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 2;">SALE</span>
+        @elseif($product->is_featured)
+          <span class="product-badge" style="position: absolute; top: 20px; left: 20px; background: var(--secondary); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 800; z-index: 2;">FEATURED</span>
+        @endif
+        
+        <a href="{{ route('products.show', $product->slug) }}">
+          <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image" alt="{{ $product->name }}">
+        </a>
+        
+        <div class="product-info">
+          <div class="product-category" style="color: var(--gray-light); text-transform: uppercase; font-size: 0.9rem; font-weight: 600; margin-bottom: 10px;">
+            {{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}
+          </div>
+          <h3 class="product-title" style="font-size: 1.5rem; font-weight: 800; margin-bottom: 15px; min-height: 65px;">{{ $product->name }}</h3>
+          
+          <div class="product-price" style="font-size: 1.6rem; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 15px;">
+            @if($product->discount_price)
+              Rp {{ number_format($product->discount_price, 0, ',', '.') }}
+              <span style="font-size: 1rem; color: var(--gray-light); text-decoration: line-through; font-weight: 600;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+            @else
+              Rp {{ number_format($product->price, 0, ',', '.') }}
+            @endif
+          </div>
+
+          <a href="{{ route('products.show', $product->slug) }}" class="btn-detail">
+            Lihat Detail
+          </a>
+        </div>
+      </div>
+      @empty
+        <div style="grid-column: span 4; text-align: center; padding: 50px;">
+          <p>Belum ada produk untuk ditampilkan.</p>
+        </div>
+      @endforelse
+    </div>
+
+    <div class="pagination" style="margin-top: 50px; display: flex; justify-content: center;">
+      {{ $products->links() }}
+    </div>
+  </div>
+</section>
+
+<section class="brands-section">
+  <div class="container">
+    <div class="section-title">
+      <h2>Our Premium Brands</h2>
+      <p>Bekerjasama dengan brand terbaik untuk kualitas maksimal.</p>
+    </div>
+    <div class="brands-grid">
+      <div class="brand-item"><i class="fa-brands fa-nike"></i><h4>Nike</h4></div>
+      <div class="brand-item"><i class="fa-brands fa-adidas"></i><h4>Adidas</h4></div>
+      <div class="brand-item"><i class="fa-brands fa-puma"></i><h4>Puma</h4></div>
+      <div class="brand-item"><i class="fa-brands fa-new-balance"></i><h4>New Balance</h4></div>
+      <div class="brand-item"><i class="fa-brands fa-converse"></i><h4>Converse</h4></div>
+      <div class="brand-item"><i class="fa-brands fa-vans"></i><h4>Vans</h4></div>
+    </div>
+  </div>
+</section>
+
+<section class="shop-features">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item">
+        <i class="fa-solid fa-truck-fast" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
+        <h3>Free Shipping</h3>
+        <p>Gratis ongkir ke seluruh Indonesia.</p>
+      </div>
+      <div class="feature-item">
+        <i class="fa-solid fa-shield-halved" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
+        <h3>100% Original</h3>
+        <p>Garansi keaslian produk atau uang kembali.</p>
+      </div>
+      <div class="feature-item">
+        <i class="fa-solid fa-rotate-left" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
+        <h3>Easy Return</h3>
+        <p>Pengembalian barang dalam 30 hari.</p>
+      </div>
+      <div class="feature-item">
+        <i class="fa-solid fa-headset" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
+        <h3>24/7 Support</h3>
+        <p>Layanan bantuan kapanpun Anda butuhkan.</p>
       </div>
     </div>
-    
-    <!-- Pagination -->
-    <div class="pagination">
-      <a href="#" class="disabled">
-        <i class="fa-solid fa-chevron-left"></i>
-      </a>
-      <a href="#" class="active">1</a>
-      <a href="#">2</a>
-      <a href="#">3</a>
-      <a href="#">4</a>
-      <a href="#">5</a>
-      <a href="#">
-        <i class="fa-solid fa-chevron-right"></i>
-      </a>
+  </div>
+</section>
+
+<section class="newsletter-section">
+  <div class="container">
+    <div class="newsletter-box">
+      <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 20px;">Join The Squad</h2>
+      <p style="font-size: 1.2rem; opacity: 0.9;">Dapatkan update produk terbaru dan promo eksklusif.</p>
+      <form class="newsletter-form">
+        <input type="email" placeholder="Email Address" required>
+        <button type="submit">Subscribe</button>
+      </form>
     </div>
   </div>
 </section>
 
 <x-footer />
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    // Filter buttons functionality
-    const filterButtons = document.querySelectorAll('.btn-filter');
-    filterButtons.forEach(button => {
-      button.addEventListener('click', function() {
-        filterButtons.forEach(btn => btn.classList.remove('active'));
-        this.classList.add('active');
-      });
-    });
-    
-    // Product card hover effect
-    const productCards = document.querySelectorAll('.product-card');
-    productCards.forEach(card => {
-      card.addEventListener('mouseenter', function() {
-        this.style.transform = 'translateY(-10px) scale(1.02)';
-      });
-      
-      card.addEventListener('mouseleave', function() {
-        this.style.transform = 'translateY(0) scale(1)';
-      });
-    });
-    
-    // Add to cart animation
-    const addToCartButtons = document.querySelectorAll('.btn-cart');
-    addToCartButtons.forEach(button => {
-      button.addEventListener('click', function(e) {
-        e.preventDefault();
-        const cartCount = document.querySelector('.cart-count');
-        let count = parseInt(cartCount.textContent);
-        cartCount.textContent = count + 1;
-        
-        const originalText = this.innerHTML;
-        this.innerHTML = '<i class="fa-solid fa-check"></i> Ditambah';
-        this.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2ECC71 100%)';
-        
-        setTimeout(() => {
-          this.innerHTML = originalText;
-          this.style.background = '';
-          
-          // Redirect to cart page
-          window.location.href = '{{ route("cart") }}';
-        }, 1000);
-      });
+    // Hover Animation Logic
+    const hoverElements = document.querySelectorAll('.product-card, .brand-item, .feature-item');
+    hoverElements.forEach(el => {
+      el.addEventListener('mouseenter', () => el.style.boxShadow = 'var(--card-shadow-hover)');
+      el.addEventListener('mouseleave', () => el.style.boxShadow = 'var(--card-shadow)');
     });
   });
 </script>
+
 </body>
 </html>

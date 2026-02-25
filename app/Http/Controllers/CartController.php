@@ -53,7 +53,7 @@ class CartController extends Controller
         }
 
         session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'Produk berhasil ditambahkan ke keranjang!');
+        return redirect()->route('cart')->with('success', 'Produk berhasil ditambahkan ke keranjang!');
     }
 
     /**

@@ -67,7 +67,9 @@ class FrontendController extends Controller
 
     public function products()
     {
-        return redirect()->route('shop');
+        $products = Product::with('categoryModel')->active()->paginate(24);
+        $categories = Category::all();
+        return view('products', compact('products', 'categories'));
     }
 
     public function about()

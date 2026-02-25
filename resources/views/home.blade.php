@@ -1044,7 +1044,12 @@
             <span style="color: var(--gray); margin-left: 10px;">(4.5)</span>
           </div>
           <div class="product-price">
-            Rp {{ number_format($product->price, 0, ',', '.') }}
+            @if($product->discount_price)
+              Rp {{ number_format($product->discount_price, 0, ',', '.') }}
+              <span class="old-price" style="font-size: 1rem; color: var(--gray-light); text-decoration: line-through; margin-left: 10px; font-weight: 600;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+            @else
+              Rp {{ number_format($product->price, 0, ',', '.') }}
+            @endif
           </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">
             <i class="fa-solid fa-cart-plus"></i>
@@ -1092,7 +1097,14 @@
         <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800' }}" class="arrival-image" alt="{{ $product->name }}">
         <div class="arrival-info">
           <h3 class="arrival-title">{{ $product->name }}</h3>
-          <div class="arrival-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+          <div class="arrival-price">
+            @if($product->discount_price)
+              Rp {{ number_format($product->discount_price, 0, ',', '.') }}
+              <span style="font-size: 1rem; color: var(--gray-light); text-decoration: line-through; margin-left: 10px; font-weight: 600;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+            @else
+              Rp {{ number_format($product->price, 0, ',', '.') }}
+            @endif
+          </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn-view">
             <i class="fa-solid fa-eye"></i>
             Lihat Detail

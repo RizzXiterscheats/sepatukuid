@@ -834,7 +834,14 @@
         <div class="product-info">
           <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
           <h3 class="product-title">{{ $product->name }}</h3>
-          <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+          <div class="product-price">
+            @if($product->discount_price)
+              Rp {{ number_format($product->discount_price, 0, ',', '.') }}
+              <span class="old-price" style="font-size: 0.9rem; color: var(--gray-light); text-decoration: line-through; margin-left: 10px; font-weight: 500;">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+            @else
+              Rp {{ number_format($product->price, 0, ',', '.') }}
+            @endif
+          </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">Lihat Detail</a>
         </div>
       </div>

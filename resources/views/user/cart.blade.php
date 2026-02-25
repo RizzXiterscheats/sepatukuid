@@ -11,6 +11,9 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   <style>
     :root {
       --primary: #E50914;
@@ -178,6 +181,28 @@
             });
         }
     });
+</script>
+
+<script>
+  // Session Notifications
+  @if(session('success'))
+    Swal.fire({
+      icon: 'success',
+      title: 'Berhasil!',
+      text: "{{ session('success') }}",
+      timer: 3000,
+      showConfirmButton: false,
+      timerProgressBar: true
+    });
+  @endif
+
+  @if(session('error'))
+    Swal.fire({
+      icon: 'error',
+      title: 'Oops...',
+      text: "{{ session('error') }}",
+    });
+  @endif
 </script>
 
 </body>
