@@ -13,8 +13,11 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->alias([
             'role' => \App\Http\Middleware\CheckRole::class,
+            'admin' => \App\Http\Middleware\AdminMiddleware::class,
+            'petugas' => \App\Http\Middleware\PetugasMiddleware::class,
+            'user.only' => \App\Http\Middleware\UserOnly::class,
         ]);
-        
+
         $middleware->group('web', [
             \Illuminate\Cookie\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
@@ -24,14 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
     })
-
-    ->withMiddleware(function (Middleware $middleware) {
-    $middleware->alias([
-        'role' => \App\Http\Middleware\CheckRole::class,
-        'user.only' => \App\Http\Middleware\UserOnly::class, // Tambahkan ini
-    ]);
-})
-
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();

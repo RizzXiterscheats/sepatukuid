@@ -3,110 +3,76 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
-use App\Models\User;
 use App\Models\Order;
+use App\Models\User;
 use App\Models\Product;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
+    /**
+     * Tampilkan halaman utama dasbor admin dengan metrik analitik.
+     */
     public function index()
     {
-        // Data statistik (bisa diambil dari database nanti)
-        $data = [
-            'totalProducts' => 1248,
-            'productsDown' => 45,
-            'ordersToday' => 32,
-            'ordersPending' => 123,
-            'customerSatisfaction' => 94,
-            'satisfactionTarget' => 80,
-            'monthlyRevenue' => 24000000,
-            'revenuePercentage' => 16,
-            
-            // Pesanan terbaru
-            'recentOrders' => [
-                (object)[
-                    'id' => 'WNV001',
-                    'customer' => 'Raki Aranda',
-                    'product' => 'Running Shoes Pro',
-                    'status' => 'Lunas',
-                    'status_class' => 'status-lunas',
-                    'total' => 1450000
-                ],
-                (object)[
-                    'id' => 'WHV002',
-                    'customer' => 'Andi Pratama',
-                    'product' => 'Basketball Elite',
-                    'status' => 'Pending',
-                    'status_class' => 'status-pending',
-                    'total' => 1850000
-                ],
-                (object)[
-                    'id' => 'HTNV003',
-                    'customer' => 'Sinta Wijaya',
-                    'product' => 'Casual Sneakers',
-                    'status' => 'Ditandatangani',
-                    'status_class' => 'status-ditandatangani',
-                    'total' => 780000
-                ],
-                (object)[
-                    'id' => 'WNV004',
-                    'customer' => 'Budi Santoso',
-                    'product' => 'Training Pro',
-                    'status' => 'Lunas',
-                    'status_class' => 'status-lunas',
-                    'total' => 890000
-                ],
-                (object)[
-                    'id' => 'WNV005',
-                    'customer' => 'Cici Amelia',
-                    'product' => 'Running Shoes Lite',
-                    'status' => 'Diproses',
-                    'status_class' => 'status-proses',
-                    'total' => 1250000
-                ],
-            ],
-            
-            // Produk terlaris
-            'topProducts' => [
-                (object)[
-                    'name' => 'Running Shoes Pro 2023',
-                    'category' => 'Running',
-                    'stock' => 42,
-                    'rating' => 4.8,
-                    'price' => 1450000
-                ],
-                (object)[
-                    'name' => 'Basketball Elite',
-                    'category' => 'Basket',
-                    'stock' => 28,
-                    'rating' => 4.7,
-                    'price' => 1850000
-                ],
-                (object)[
-                    'name' => 'Training Pro',
-                    'category' => 'Training',
-                    'stock' => 65,
-                    'rating' => 4.5,
-                    'price' => 890000
-                ],
-                (object)[
-                    'name' => 'Casual Sneakers',
-                    'category' => 'Casual',
-                    'stock' => 38,
-                    'rating' => 4.6,
-                    'price' => 780000
-                ],
-                (object)[
-                    'name' => 'Hiking Boots',
-                    'category' => 'Outdoor',
-                    'stock' => 22,
-                    'rating' => 4.9,
-                    'price' => 1250000
-                ],
-            ]
-        ];
+        // 1. KPI Cards (Statistik Cerdas Hari / Bulan Ini)
+        $startOfMonth = Carbon::now()->startOfMonth();
+        
+        $totalRevenueThisMonth = Order::where('payment_status', 'paid')
+                                     ->where('status', 'delivered')
+                                     ->where('created_at', '>=', $startOfMonth)
+                                     ->sum('total');
 
-        return view('admin.dashboard', $data);
+        $newOrdersToday = Order::whereDate('created_at', Carbon::today())->count();
+        $totalCustomers = User::where('role', 'user')->count();
+        $totalActiveProducts = Product::count();
+
+        // 2. Data Grafik Penjualan (7 Hari Terakhir)
+        $chartData = $this->getWeeklySalesChart();
+
+        // 3. Pesanan Terbaru Saja (5 Data Teratas)
+        $recentOrders = Order::with('user')
+                            ->orderBy('created_at', 'desc')
+                            ->take(6)
+                            ->get();
+
+        return view('admin.dashboard', compact(
+            'totalRevenueThisMonth',
+            'newOrdersToday',
+            'totalCustomers',
+            'totalActiveProducts',
+            'chartData',
+            'recentOrders'
+        ));
+    }
+
+    /**
+     * Membangkitkan array data untuk Chart.js (Penjualan 7 Hari Terakhir).
+     */
+    private function getWeeklySalesChart()
+    {
+        $labels = [];
+        $data = [];
+        
+        // Looping mundur 6 hari sampai hari ini (Total 7 Hari)
+        for ($i = 6; $i >= 0; $i--) {
+            $date = Carbon::now()->subDays($i);
+            
+            // Format Label X-Axis
+            $labels[] = $date->format('d M'); 
+            
+            // Total penjualan gross pada hari tersebut
+            $dailySales = Order::whereDate('created_at', $date->format('Y-m-d'))
+                               ->where('payment_status', 'paid')
+                               ->sum('total');
+            
+            $data[] = $dailySales;
+        }
+
+        return [
+            'labels' => $labels,
+            'data'   => $data,
+        ];
     }
 }

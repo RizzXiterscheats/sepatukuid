@@ -11,275 +11,11 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+
   <style>
-    :root {
-      --primary: #E53935;
-      --primary-light: #FF5252;
-      --primary-dark: #C62828;
-      --secondary: #2196F3;
-      --dark: #121212;
-      --gray-dark: #333;
-      --gray: #666;
-      --gray-light: #999;
-      --light: #f8f9fa;
-      --bg: #ffffff;
-      --success: #4CAF50;
-      --warning: #FF9800;
-      --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-      --card-shadow-hover: 0 25px 60px rgba(0, 0, 0, 0.15);
-      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      --border-radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: var(--dark);
-      background: var(--bg);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      transition: var(--transition);
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 16px 36px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(229, 57, 53, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    .btn-view {
-      background: transparent;
-      border: 2px solid var(--gray-light);
-      color: var(--gray-dark);
-      padding: 12px 24px;
-      font-weight: 600;
-      border-radius: 50px;
-      transition: var(--transition);
-    }
-
-    .btn-view:hover {
-      background: var(--gray-dark);
-      color: white;
-      border-color: var(--gray-dark);
-      transform: translateY(-2px);
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 70px;
-      position: relative;
-    }
-
-    .section-title h2 {
-      font-size: 3rem;
-      font-weight: 900;
-      margin-bottom: 20px;
-      position: relative;
-      display: inline-block;
-      background: linear-gradient(45deg, var(--dark), var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-
-    .section-title h2::after {
-      content: '';
-      position: absolute;
-      bottom: -15px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 80px;
-      height: 5px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 3px;
-    }
-
-    .section-title p {
-      color: var(--gray);
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 30px auto 0;
-      line-height: 1.8;
-    }
-
-    /* NAVBAR MODERN */
-    header {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      position: fixed;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 18px 0;
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-weight: 900;
-      color: var(--primary);
-      font-size: 1.8rem;
-      letter-spacing: -0.5px;
-    }
-
-    .logo i {
-      font-size: 2.2rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .menu {
-      display: flex;
-      gap: 45px;
-      font-weight: 600;
-    }
-
-    .menu a {
-      position: relative;
-      padding: 10px 0;
-      font-size: 1.1rem;
-    }
-
-    .menu a.active {
-      color: var(--primary);
-    }
-
-    .menu a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-      transition: var(--transition);
-    }
-
-    .menu a:hover::after,
-    .menu a.active::after {
-      width: 100%;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 25px;
-      font-size: 1.3rem;
-    }
-
-    .nav-icons i {
-      cursor: pointer;
-      padding: 12px;
-      border-radius: 50%;
-      transition: var(--transition);
-      background: var(--light);
-    }
-
-    .nav-icons i:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 0.8rem;
-      min-width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      box-shadow: 0 3px 10px rgba(229, 57, 53, 0.3);
-    }
-
-    /* HERO MODERN */
+    /* Hero Section - Still page specific */
     .hero {
       padding: 200px 0 120px;
       background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
@@ -1200,70 +936,7 @@
 
 <body>
 
-<header>
-  <div class="container">
-    <div class="nav">
-      <a href="{{ route('home') }}" class="logo">
-        <i class="fa-solid fa-shoe-prints"></i>
-        SEPATUKUID
-      </a>
-      
-<nav class="menu">
-    <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-    <a href="{{ route('shop') }}" class="{{ request()->routeIs('shop') ? 'active' : '' }}">Shop</a>
-    <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'active' : '' }}">Products</a>
-    <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About Us</a>
-    <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
-</nav>
-      
-<div class="nav-actions">
-  <div class="nav-icons">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    
-    <!-- User Icon - jika sudah login arahkan ke profile, jika belum ke login -->
-    @auth
-      @if(Auth::user()->role === 'admin')
-        <a href="{{ route('admin.dashboard') }}" style="color: inherit; text-decoration: none;">
-          <div style="position: relative;">
-            <i class="fa-regular fa-user"></i>
-          </div>
-        </a>
-      @elseif(Auth::user()->role === 'petugas')
-        <a href="{{ route('petugas.dashboard') }}" style="color: inherit; text-decoration: none;">
-          <div style="position: relative;">
-            <i class="fa-regular fa-user"></i>
-          </div>
-        </a>
-      @else
-        <a href="{{ route('profile') }}" style="color: inherit; text-decoration: none;">
-          <div style="position: relative;">
-            <i class="fa-regular fa-user"></i>
-          </div>
-        </a>
-      @endif
-    @else
-      <a href="{{ route('login') }}" style="color: inherit; text-decoration: none;">
-        <div style="position: relative;">
-          <i class="fa-regular fa-user"></i>
-        </div>
-      </a>
-    @endauth
-    
-    <!-- Cart Icon - mengarah ke cart -->
-    <div style="position: relative;">
-      <a href="{{ route('cart') }}" style="color: inherit;">
-        <i class="fa-solid fa-cart-shopping"></i>
-        @auth
-          <span class="cart-count">0</span>
-        @else
-          <span class="cart-count">0</span>
-        @endauth
-      </a>
-    </div>
-  </div>
-</div>
-</header>
-
+<x-navbar />
 <section class="hero">
   <div class="container">
     <div class="hero-wrap">
@@ -1353,80 +1026,37 @@
     </div>
     
     <div class="product-grid">
+      @forelse($featuredProducts as $product)
       <div class="product-card">
-        <span class="product-badge">BEST SELLER</span>
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" class="product-image" alt="Nike Air Max">
+        @if($product->is_featured)
+          <span class="product-badge">UNGGULAN</span>
+        @endif
+        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image" alt="{{ $product->name }}">
         <div class="product-info">
-          <div class="product-category">Running Sneakers</div>
-          <h3 class="product-title">Nike Air Max 270 React</h3>
+          <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
+          <h3 class="product-title">{{ $product->name }}</h3>
           <div class="product-rating">
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star"></i>
             <i class="fa-solid fa-star-half"></i>
-            <span style="color: var(--gray); margin-left: 10px;">(428 reviews)</span>
+            <span style="color: var(--gray); margin-left: 10px;">(4.5)</span>
           </div>
           <div class="product-price">
-            Rp 1.299.000
-            <span class="old-price">Rp 1.599.000</span>
+            Rp {{ number_format($product->price, 0, ',', '.') }}
           </div>
-<a href="{{ route('login') }}" class="btn" style="width: 100%;">
-  <i class="fa-solid fa-cart-plus"></i>
-  Beli Sekarang
-</a>
-        </div>
-      </div>
-      
-      <div class="product-card">
-        <span class="product-badge">TERLARIS</span>
-        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" class="product-image" alt="Adidas Ultraboost">
-        <div class="product-info">
-          <div class="product-category">Lifestyle Sneakers</div>
-          <h3 class="product-title">Adidas Ultraboost 22</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-regular fa-star"></i>
-            <span style="color: var(--gray); margin-left: 10px;">(312 reviews)</span>
-          </div>
-          <div class="product-price">
-            Rp 1.499.000
-            <span class="old-price">Rp 1.799.000</span>
-          </div>
-          <button class="btn" style="width: 100%;">
+          <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">
             <i class="fa-solid fa-cart-plus"></i>
-            Beli Sekarang
-          </button>
+            Lihat Detail
+          </a>
         </div>
       </div>
-      
-      <div class="product-card">
-        <span class="product-badge">DISKON 30%</span>
-        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=800" class="product-image" alt="Converse Chuck Taylor">
-        <div class="product-info">
-          <div class="product-category">Casual Sneakers</div>
-          <h3 class="product-title">Converse Chuck Taylor All Star</h3>
-          <div class="product-rating">
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <i class="fa-solid fa-star"></i>
-            <span style="color: var(--gray); margin-left: 10px;">(567 reviews)</span>
-          </div>
-          <div class="product-price">
-            Rp 699.000
-            <span class="old-price">Rp 999.000</span>
-          </div>
-          <button class="btn" style="width: 100%;">
-            <i class="fa-solid fa-cart-plus"></i>
-            Beli Sekarang
-          </button>
+      @empty
+        <div style="grid-column: span 4; text-align: center; padding: 40px;">
+          <p>Belum ada produk tersedia.</p>
         </div>
-      </div>
+      @endforelse
     </div>
   </div>
 </section>
@@ -1456,57 +1086,24 @@
     </div>
     
     <div class="arrivals-grid">
+      @forelse($featuredProducts->take(4) as $product)
       <div class="arrival-card">
         <span class="new-badge">NEW ARRIVAL</span>
-        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800" class="arrival-image" alt="Nike Air Force 1">
+        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800' }}" class="arrival-image" alt="{{ $product->name }}">
         <div class="arrival-info">
-          <h3 class="arrival-title">Nike Air Force 1 '07 Premium</h3>
-          <div class="arrival-price">Rp 1.499.000</div>
-          <button class="btn-view">
+          <h3 class="arrival-title">{{ $product->name }}</h3>
+          <div class="arrival-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+          <a href="{{ route('products.show', $product->slug) }}" class="btn-view">
             <i class="fa-solid fa-eye"></i>
             Lihat Detail
-          </button>
+          </a>
         </div>
       </div>
-      
-      <div class="arrival-card">
-        <span class="new-badge">NEW ARRIVAL</span>
-        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" class="arrival-image" alt="Adidas Stan Smith">
-        <div class="arrival-info">
-          <h3 class="arrival-title">Adidas Stan Smith Premium</h3>
-          <div class="arrival-price">Rp 999.000</div>
-          <button class="btn-view">
-            <i class="fa-solid fa-eye"></i>
-            Lihat Detail
-          </button>
+      @empty
+        <div style="grid-column: span 4; text-align: center; padding: 40px;">
+          <p>Belum ada produk baru.</p>
         </div>
-      </div>
-      
-      <div class="arrival-card">
-        <span class="new-badge">NEW ARRIVAL</span>
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" class="arrival-image" alt="Puma Cali Dream">
-        <div class="arrival-info">
-          <h3 class="arrival-title">Puma Cali Dream Edition</h3>
-          <div class="arrival-price">Rp 849.000</div>
-          <button class="btn-view">
-            <i class="fa-solid fa-eye"></i>
-            Lihat Detail
-          </button>
-        </div>
-      </div>
-      
-      <div class="arrival-card">
-        <span class="new-badge">NEW ARRIVAL</span>
-        <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=800" class="arrival-image" alt="New Balance 574">
-        <div class="arrival-info">
-          <h3 class="arrival-title">New Balance 574 Core</h3>
-          <div class="arrival-price">Rp 1.099.000</div>
-          <button class="btn-view">
-            <i class="fa-solid fa-eye"></i>
-            Lihat Detail
-          </button>
-        </div>
-      </div>
+      @endforelse
     </div>
   </div>
 </section>
@@ -1620,60 +1217,7 @@
   </div>
 </section>
 
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-column">
-        <h4>SepatuKuid</h4>
-        <p style="margin-bottom: 25px; font-size: 1.1rem; line-height: 1.8; color: #aaa;">Brand sneakers lokal dengan kualitas internasional. Kami berkomitmen memberikan pengalaman berbelanja terbaik dengan produk premium dan pelayanan terbaik untuk Anda.</p>
-        <div class="social-links">
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-      
-<div class="footer-column">
-    <h4>Kategori Produk</h4>
-    <ul class="footer-links">
-        <li><a href="{{ route('products.index') }}?category=running"><i class="fa-solid fa-chevron-right"></i> Sneakers Running</a></li>
-        <li><a href="{{ route('products.index') }}?category=lifestyle"><i class="fa-solid fa-chevron-right"></i> Sneakers Lifestyle</a></li>
-        <li><a href="{{ route('products.index') }}?category=casual"><i class="fa-solid fa-chevron-right"></i> Sneakers Casual</a></li>
-        <li><a href="{{ route('products.index') }}?category=sport"><i class="fa-solid fa-chevron-right"></i> Sneakers Sport</a></li>
-        <li><a href="{{ route('products.index') }}?category=limited"><i class="fa-solid fa-chevron-right"></i> Sneakers Limited Edition</a></li>
-    </ul>
-</div>
-      
-      <div class="footer-column">
-        <h4>Bantuan & Support</h4>
-        <ul class="footer-links">
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> FAQ & Bantuan</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Info Pengiriman</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Returns & Exchanges</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Size Guide</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Cara Pemesanan</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Hubungi Kami</h4>
-        <ul class="footer-links">
-          <li><a href="#"><i class="fa-solid fa-envelope"></i> hello@sepatukuid.com</a></li>
-          <li><a href="#"><i class="fa-solid fa-phone"></i> +62 812 3456 7890</a></li>
-          <li><a href="#"><i class="fa-solid fa-location-dot"></i> Jl. Sudirman No. 123, Jakarta</a></li>
-          <li><a href="#"><i class="fa-solid fa-clock"></i> Senin - Minggu: 08:00 - 22:00 WIB</a></li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="copyright">
-      &copy; 2026 SepatuKuid. All rights reserved. | Designed with <i class="fa-solid fa-heart" style="color: var(--primary); margin: 0 5px;"></i> for sneaker lovers
-    </div>
-  </div>
-</footer>
-
+<x-footer />
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Add hover effect to all cards

@@ -241,14 +241,41 @@
             background: #e0e0e0;
         }
         
-        .btn-logout {
-            background: #ffebee;
-            color: var(--primary);
-            flex: 1;
-        }
-        
         .btn-logout:hover {
             background: #ffcdd2;
+        }
+
+        .btn-cancel {
+            background: #f0f0f0;
+            color: var(--gray);
+            display: none;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+        }
+
+        .edit-mode .btn-cancel,
+        .edit-mode .btn-save {
+            display: flex;
+        }
+
+        .edit-mode .btn-edit-toggle,
+        .edit-mode .btn-logout,
+        .edit-mode .btn-secondary {
+            display: none;
+        }
+
+        .btn-save {
+            display: none;
+            background: linear-gradient(135deg, var(--success) 0%, #388E3C 100%);
+            color: white;
+            flex: 2;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(76, 175, 80, 0.3);
         }
         
         .stats-grid {
@@ -437,8 +464,30 @@
                             <input type="tel" id="phone" name="phone" value="{{ auth()->user()->phone ?? '' }}" disabled>
                         </div>
                         <div class="form-group">
-                            <label for="address">Alamat</label>
-                            <input type="text" id="address" name="address" value="{{ auth()->user()->address ?? '' }}" disabled>
+                            <label for="address">Alamat Lengkap</label>
+                            <textarea id="address" name="address" disabled>{{ auth()->user()->address ?? '' }}</textarea>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="province">Provinsi</label>
+                            <input type="text" id="province" name="province" value="{{ auth()->user()->province ?? '' }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="city">Kota/Kabupaten</label>
+                            <input type="text" id="city" name="city" value="{{ auth()->user()->city ?? '' }}" disabled>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="district">Kecamatan</label>
+                            <input type="text" id="district" name="district" value="{{ auth()->user()->district ?? '' }}" disabled>
+                        </div>
+                        <div class="form-group">
+                            <label for="postal_code">Kode Pos</label>
+                            <input type="text" id="postal_code" name="postal_code" value="{{ auth()->user()->postal_code ?? '' }}" disabled>
                         </div>
                     </div>
                 </div>
@@ -481,13 +530,23 @@
                 
                 <!-- Action Buttons -->
                 <div class="button-group">
-                    <a href="{{ route('home') }}" class="btn btn-secondary">
-                        <i class="fa-solid fa-home"></i> Beranda
-                    </a>
+                    <button type="button" class="btn btn-primary btn-edit-toggle" id="editBtn">
+                        <i class="fa-solid fa-edit"></i> Edit Profil
+                    </button>
+                    
+                    <button type="submit" class="btn btn-save">
+                        <i class="fa-solid fa-save"></i> Simpan Perubahan
+                    </button>
+                    
+                    <button type="button" class="btn btn-cancel" id="cancelBtn">
+                        <i class="fa-solid fa-times"></i> Batal
+                    </button>
+
                     <a href="{{ route('orders') }}" class="btn btn-secondary">
                         <i class="fa-solid fa-box"></i> Pesanan Saya
                     </a>
-                    <button type="button" class="btn btn-logout" id="logoutBtn" style="flex: 1;">
+
+                    <button type="button" class="btn btn-logout" id="logoutBtn">
                         <i class="fa-solid fa-sign-out-alt"></i> Logout
                     </button>
                 </div>
@@ -501,6 +560,36 @@
     </form>
     
     <script>
+        const profileForm = document.getElementById('profileForm');
+        const editBtn = document.getElementById('editBtn');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const inputs = profileForm.querySelectorAll('input, textarea');
+        
+        // Simpan database awal untuk pembatalan
+        const initialValues = {};
+        inputs.forEach(input => {
+            initialValues[input.id] = input.value;
+        });
+
+        // Toggle Edit Mode
+        editBtn.addEventListener('click', function() {
+            profileForm.classList.add('edit-mode');
+            inputs.forEach(input => {
+                if(input.id !== 'email') { // Email tetap tidak bisa diubah demi keamanan
+                    input.disabled = false;
+                }
+            });
+        });
+
+        // Batalkan Edit
+        cancelBtn.addEventListener('click', function() {
+            profileForm.classList.remove('edit-mode');
+            inputs.forEach(input => {
+                input.disabled = true;
+                input.value = initialValues[input.id];
+            });
+        });
+
         // Handle logout button
         document.getElementById('logoutBtn').addEventListener('click', function() {
             if (confirm('Yakin ingin logout?')) {

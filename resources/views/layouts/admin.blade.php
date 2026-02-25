@@ -12,17 +12,32 @@
             --primary: #e50914;
             --primary-light: #ff4d4d;
             --primary-dark: #b2070a;
-            --secondary: #1a1a1a;
-            --accent: #00b4d8;
-            --success: #2ecc71;
-            --warning: #f39c12;
-            --danger: #e74c3c;
-            --light: #f8f9fa;
-            --dark: #121212;
-            --gray: #6c757d;
-            --gray-light: #e9ecef;
+            --primary-gradient: linear-gradient(135deg, #e50914 0%, #b2070a 100%);
+            --secondary: #18181b; /* Darker sleek match for sidebar */
+            --accent: #6366f1;
+            --success: #10b981;
+            --success-gradient: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            --warning: #f59e0b;
+            --warning-gradient: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+            --info-gradient: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            --danger: #ef4444;
+            --light: #f8fafc;
+            --dark: #0f172a;
+            --surface: #ffffff;
+            --surface-50: #f8fafc;
+            --surface-100: #f1f5f9;
+            --surface-200: #e2e8f0;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --gray: #64748b;
+            --gray-light: #e2e8f0;
             --card-bg: #ffffff;
-            --sidebar-width: 240px;
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-hover: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --sidebar-width: 260px;
         }
 
         * {
@@ -133,7 +148,10 @@
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
-            padding: 20px;
+            padding: 24px;
+            width: calc(100% - var(--sidebar-width));
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
         .header {
@@ -521,108 +539,11 @@
 </head>
 <body>
     <div class="dashboard-container">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="logo-area">
-                <a href="{{ route('admin.dashboard') }}" class="logo">
-                    <div class="logo-icon"><i class="fas fa-shoe-prints"></i></div>
-                    <span>SepatuWara</span>
-                </a>
-            </div>
-            
-            <ul class="sidebar-nav">
-                <li class="nav-item">
-                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                        <i class="fas fa-tachometer-alt nav-icon"></i>
-                        <span>Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-shoe-prints nav-icon"></i>
-                        <span>Produk</span>
-                        <span class="badge">{{ $totalProducts ?? '0' }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-shopping-cart nav-icon"></i>
-                        <span>Pesanan</span>
-                        <span class="badge">{{ $ordersToday ?? '0' }}</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-users nav-icon"></i>
-                        <span>Pelanggan</span>
-                    </a>
-                </li>
-                
-                <li class="nav-item">
-                    <div style="padding: 10px 15px; font-size: 11px; color: rgba(255, 255, 255, 0.5); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 10px;">
-                        Admin Management
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-user-cog nav-icon"></i>
-                        <span>Kelola Petugas</span>
-                        <span class="badge">5</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-chart-bar nav-icon"></i>
-                        <span>Laporan</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link">
-                        <i class="fas fa-cog nav-icon"></i>
-                        <span>Pengaturan</span>
-                    </a>
-                </li>
-            </ul>
-            
-            <div style="padding: 20px 15px 0; margin-top: 20px; border-top: 1px solid rgba(255, 255, 255, 0.1);">
-                <div class="user-profile">
-                    <div class="user-avatar">{{ substr(Auth::user()->name ?? 'AP', 0, 2) }}</div>
-                    <div class="user-info">
-                        <div class="user-name">{{ Auth::user()->name ?? 'Admin' }}</div>
-                        <div class="user-role">Role: {{ Auth::user()->role ?? 'Administrator' }}</div>
-                    </div>
-                </div>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <button type="submit" class="btn btn-outline" style="width: 100%; margin-top: 15px; color: white; border-color: rgba(255, 255, 255, 0.3);">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
-                </form>
-            </div>
-        </aside>
+        @include('layouts.admin.sidebar')
 
         <!-- Main Content -->
         <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-left">
-                    <div class="menu-toggle" onclick="toggleSidebar()">
-                        <i class="fas fa-bars"></i>
-                    </div>
-                    <h1>@yield('page-title', 'Dashboard Admin')</h1>
-                    <p>@yield('page-description', 'Selamat datang, Admin')</p>
-                </div>
-                
-                <div class="header-right">
-                    <div class="user-profile">
-                        <div class="user-info" style="text-align: right;">
-                            <div class="user-name">{{ Auth::user()?->name ?? 'Admin' }}</div>
-                            <div class="user-role">Terakhir login: {{ Auth::user()?->updated_at?->format('d M Y') ?? '-' }}</div>
-                        </div>
-                        <div class="user-avatar">{{ substr(Auth::user()?->name ?? 'AP', 0, 2) }}</div>
-                    </div>
-                </div>
-            </header>
+            @include('layouts.admin.topbar')
 
             <!-- Dashboard Content -->
             <div class="dashboard-content">

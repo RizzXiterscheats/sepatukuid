@@ -17,6 +17,10 @@ class User extends Authenticatable
         'role',
         'phone',
         'address',
+        'province',
+        'city',
+        'district',
+        'postal_code',
     ];
 
     protected $hidden = [
@@ -49,5 +53,11 @@ class User extends Authenticatable
     public function setPasswordAttribute($value)
     {
         $this->attributes['password'] = $value; // Langsung simpan tanpa hash
+    }
+
+    // Relasi ke order pesanan
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
     }
 }

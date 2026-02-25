@@ -19,6 +19,8 @@ class Product extends Model
         'sku',
         'brand',
         'category',
+        'category_id',
+        'image',
         'sizes',
         'colors',
         'specifications',
@@ -39,6 +41,12 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('is_active', true);
+    }
+
+    // Relasi ke kategori
+    public function categoryModel()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
     }
 
     // Scope untuk produk featured

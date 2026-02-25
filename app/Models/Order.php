@@ -12,17 +12,18 @@ class Order extends Model
     protected $fillable = [
         'order_number',
         'user_id',
-        'total_amount',
+        'total',
         'status',
         'payment_method',
         'payment_status',
         'shipping_address',
         'shipping_method',
+        'payment_proof',
         'notes'
     ];
 
     protected $casts = [
-        'total_amount' => 'decimal:2',
+        'total' => 'decimal:2',
     ];
 
     // Relasi ke user

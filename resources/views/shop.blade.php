@@ -11,221 +11,11 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
+
   <style>
-    :root {
-      --primary: #E53935;
-      --primary-light: #FF5252;
-      --primary-dark: #C62828;
-      --secondary: #2196F3;
-      --dark: #121212;
-      --gray-dark: #333;
-      --gray: #666;
-      --gray-light: #999;
-      --light: #f8f9fa;
-      --bg: #ffffff;
-      --success: #4CAF50;
-      --warning: #FF9800;
-      --card-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
-      --card-shadow-hover: 0 25px 60px rgba(0, 0, 0, 0.15);
-      --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      --border-radius: 20px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      color: var(--dark);
-      background: var(--bg);
-      line-height: 1.6;
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-      transition: var(--transition);
-    }
-
-    .container {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 0 20px;
-    }
-
-    .btn {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-      color: white;
-      padding: 16px 36px;
-      border: none;
-      font-weight: 700;
-      cursor: pointer;
-      border-radius: 50px;
-      transition: var(--transition);
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 16px;
-      letter-spacing: 0.5px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-      transition: 0.5s;
-    }
-
-    .btn:hover::before {
-      left: 100%;
-    }
-
-    .btn:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 15px 30px rgba(229, 57, 53, 0.3);
-    }
-
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .btn-outline:hover {
-      background: var(--primary);
-      color: white;
-    }
-
-    /* NAVBAR */
-    header {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      position: sticky;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 18px 0;
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      font-weight: 900;
-      color: var(--primary);
-      font-size: 1.8rem;
-      letter-spacing: -0.5px;
-    }
-
-    .logo i {
-      font-size: 2.2rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .menu {
-      display: flex;
-      gap: 45px;
-      font-weight: 600;
-    }
-
-    .menu a {
-      position: relative;
-      padding: 10px 0;
-      font-size: 1.1rem;
-    }
-
-    .menu a.active {
-      color: var(--primary);
-    }
-
-    .menu a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-      transition: var(--transition);
-    }
-
-    .menu a:hover::after,
-    .menu a.active::after {
-      width: 100%;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 30px;
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 25px;
-      font-size: 1.3rem;
-    }
-
-    .nav-icons i {
-      cursor: pointer;
-      padding: 12px;
-      border-radius: 50%;
-      transition: var(--transition);
-      background: var(--light);
-    }
-
-    .nav-icons i:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 0.8rem;
-      min-width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      box-shadow: 0 3px 10px rgba(229, 57, 53, 0.3);
-    }
-
-    /* SHOP HERO */
+    /* Shop Specific Styles */
     .shop-hero {
       padding: 140px 0 80px;
       background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
@@ -851,45 +641,105 @@
         padding: 30px 20px;
       }
     }
+
+    /* PRODUCT GRID */
+    .product-section {
+      padding: 80px 0;
+      background: #f8f9fa;
+    }
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 40px;
+    }
+    .product-card {
+      background: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: var(--card-shadow);
+      transition: var(--transition);
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    .product-card:hover {
+      transform: translateY(-10px);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .product-image {
+      height: 250px;
+      width: 100%;
+      object-fit: cover;
+    }
+    .product-info {
+      padding: 25px;
+    }
+    .product-category {
+      font-size: 0.9rem;
+      color: var(--gray-light);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+    .product-title {
+      font-size: 1.4rem;
+      font-weight: 800;
+      margin-bottom: 12px;
+      color: var(--dark);
+    }
+    .product-price {
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--primary);
+      margin-bottom: 20px;
+    }
+    .pagination {
+      margin-top: 50px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .pagination .page-link {
+      padding: 10px 20px;
+      border-radius: 10px;
+      background: white;
+      border: 1px solid #ddd;
+      color: var(--dark);
+      font-weight: 600;
+    }
+    .pagination .page-link.active {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+    
+    .search-filter {
+      margin-bottom: 40px;
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    .search-filter input {
+      flex: 1;
+      min-width: 250px;
+      padding: 15px 25px;
+      border-radius: 50px;
+      border: 1px solid #ddd;
+    }
+    .search-filter button {
+      padding: 10px 30px;
+      border-radius: 50px;
+      background: var(--dark);
+      color: white;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+    }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="container">
-    <div class="nav">
-      <a href="/" class="logo">
-        <i class="fa-solid fa-shoe-prints"></i>
-        SEPATUKUID
-      </a>
-      
-      <nav class="menu">
-        <a href="/">Home</a>
-        <a href="/shop" class="active">Shop</a>
-        <a href="/products">Products</a>
-        <a href="/about">About Us</a>
-        <a href="/contact">Contact</a>
-      </nav>
-      
-      <div class="nav-actions">
-        <div class="nav-icons">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <div style="position: relative;">
-            <i class="fa-regular fa-user"></i>
-          </div>
-          <div style="position: relative;">
-            <a href="/cart" style="color: inherit;">
-              <i class="fa-solid fa-cart-shopping"></i>
-              <span class="cart-count">3</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
+<x-navbar />
 <section class="shop-hero">
   <div class="container">
     <h1>Shopping Experience</h1>
@@ -941,49 +791,62 @@
     </div>
     
     <div class="categories-grid">
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" alt="Running Shoes">
+      @foreach($categories as $category)
+      <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
+        <img src="{{ $category->image ? asset('storage/' . $category->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $category->name }}">
         <div class="category-overlay">
-          <h3>Running</h3>
-          <p>Performance terbaik untuk lari</p>
-          <a href="/products?category=running" class="category-link">
+          <h3>{{ $category->name }}</h3>
+          <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
+          <a href="{{ route('shop', ['category' => $category->slug]) }}" class="category-link">
             Shop Now <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
       </div>
-      
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" alt="Lifestyle">
-        <div class="category-overlay">
-          <h3>Lifestyle</h3>
-          <p>Gaya sehari-hari yang stylish</p>
-          <a href="/products?category=lifestyle" class="category-link">
-            Shop Now <i class="fa-solid fa-arrow-right"></i>
-          </a>
+      @endforeach
+    </div>
+  </div>
+</section>
+
+<section class="product-section" id="products">
+  <div class="container">
+    <div class="section-title">
+      <h2>All Products</h2>
+      <p>Temukan koleksi lengkap sneakers kami</p>
+    </div>
+
+    <div class="search-filter">
+      <form action="{{ route('shop') }}" method="GET" style="display: flex; width: 100%; gap: 15px; flex-wrap: wrap;">
+        <input type="text" name="search" placeholder="Cari sneakers..." value="{{ request('search') }}" style="flex: 1; min-width: 250px; padding: 15px 25px; border-radius: 50px; border: 1px solid #ddd;">
+        <select name="category" style="padding: 15px 25px; border-radius: 50px; border: 1px solid #ddd;">
+          <option value="">Semua Kategori</option>
+          @foreach($categories as $cat)
+            <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }}>{{ $cat->name }}</option>
+          @endforeach
+        </select>
+        <button type="submit" style="padding: 10px 30px; border-radius: 50px; background: var(--dark); color: white; font-weight: 700; border: none; cursor: pointer;">Filter</button>
+      </form>
+    </div>
+
+    <div class="product-grid">
+      @forelse($products as $product)
+      <div class="product-card">
+        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image" alt="{{ $product->name }}">
+        <div class="product-info">
+          <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
+          <h3 class="product-title">{{ $product->name }}</h3>
+          <div class="product-price">Rp {{ number_format($product->price, 0, ',', '.') }}</div>
+          <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">Lihat Detail</a>
         </div>
       </div>
-      
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=800" alt="Casual">
-        <div class="category-overlay">
-          <h3>Casual</h3>
-          <p>Santai dan nyaman dipakai</p>
-          <a href="/products?category=casual" class="category-link">
-            Shop Now <i class="fa-solid fa-arrow-right"></i>
-          </a>
+      @empty
+        <div style="grid-column: span 3; text-align: center; padding: 50px;">
+          <p>Produk tidak ditemukan.</p>
         </div>
-      </div>
-      
-      <div class="category-card">
-        <img src="https://images.unsplash.com/photo-1605348532760-6753d2c43329?q=80&w=800" alt="Sports">
-        <div class="category-overlay">
-          <h3>Sports</h3>
-          <p>Aktivitas olahraga maksimal</p>
-          <a href="/products?category=sports" class="category-link">
-            Shop Now <i class="fa-solid fa-arrow-right"></i>
-          </a>
-        </div>
-      </div>
+      @endforelse
+    </div>
+
+    <div class="pagination" style="margin-top: 50px; display: flex; justify-content: center; gap: 10px;">
+      {{ $products->appends(request()->query())->links() }}
     </div>
   </div>
 </section>
@@ -1118,64 +981,7 @@
   </div>
 </section>
 
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-column">
-        <h4>Sepatukuid</h4>
-        <p style="margin-bottom: 25px; font-size: 1rem; line-height: 1.7; color: #aaa;">
-          Brand sneakers lokal dengan kualitas internasional. Komitmen kami memberikan pengalaman berbelanja terbaik dengan produk premium.
-        </p>
-        <div class="social-links">
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Shop</h4>
-        <ul class="footer-links">
-          <li><a href="/products?category=running"><i class="fa-solid fa-chevron-right"></i> Running</a></li>
-          <li><a href="/products?category=lifestyle"><i class="fa-solid fa-chevron-right"></i> Lifestyle</a></li>
-          <li><a href="/products?category=casual"><i class="fa-solid fa-chevron-right"></i> Casual</a></li>
-          <li><a href="/products?category=sports"><i class="fa-solid fa-chevron-right"></i> Sports</a></li>
-          <li><a href="/products?category=sale"><i class="fa-solid fa-chevron-right"></i> Sale</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Information</h4>
-        <ul class="footer-links">
-          <li><a href="/about"><i class="fa-solid fa-chevron-right"></i> About Us</a></li>
-          <li><a href="/contact"><i class="fa-solid fa-chevron-right"></i> Contact</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Privacy Policy</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Terms & Conditions</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> FAQ</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Contact Us</h4>
-        <p style="color: #aaa; margin-bottom: 15px;">
-          <i class="fa-solid fa-envelope"></i> hello@sepatukuid.com<br>
-          <i class="fa-solid fa-phone"></i> +62 812 3456 7890<br>
-          <i class="fa-solid fa-location-dot"></i> Jakarta, Indonesia
-        </p>
-        <p style="color: #aaa;">
-          <i class="fa-regular fa-clock"></i> Senin - Minggu<br>
-          08:00 - 22:00 WIB
-        </p>
-      </div>
-    </div>
-    
-    <div class="copyright">
-      &copy; 2026 Sepatukuid. All rights reserved. | Designed for sneaker enthusiasts
-    </div>
-  </div>
-</footer>
-
+<x-footer />
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Category card hover effect

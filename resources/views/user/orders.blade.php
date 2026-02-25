@@ -273,152 +273,72 @@
             </a>
         </div>
         
-        <!-- Sample Orders (replace with database queries) -->
+        @forelse($orders as $order)
         <div class="order-card">
             <div class="order-header">
                 <div class="order-id">
-                    <i class="fa-solid fa-hashtag"></i> ORD-001-2026
+                    <i class="fa-solid fa-hashtag"></i> {{ $order->order_number }}
                 </div>
-                <div class="order-status status-completed">
-                    <i class="fa-solid fa-check-circle"></i> Selesai
+                <div class="order-status status-{{ $order->status }}">
+                    <i class="fa-solid {{ $order->status == 'completed' ? 'fa-check-circle' : ($order->status == 'processing' ? 'fa-clock' : 'fa-hourglass-start') }}"></i> 
+                    {{ ucfirst($order->status) }}
                 </div>
             </div>
             
             <div class="order-details">
                 <div class="detail-item">
                     <div class="detail-label">Tanggal Pesan</div>
-                    <div class="detail-value">15 Feb 2026</div>
+                    <div class="detail-value">{{ $order->created_at->format('d M Y') }}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Total Harga</div>
-                    <div class="detail-value">Rp 1.450.000</div>
+                    <div class="detail-value">Rp {{ number_format($order->total, 0, ',', '.') }}</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Kuantitas</div>
-                    <div class="detail-value">2 Produk</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Pengiriman</div>
-                    <div class="detail-value">18 Feb 2026</div>
-                </div>
-            </div>
-            
-            <div class="order-items">
-                <div class="item-row">
-                    <span class="item-name">Running Shoes Pro</span>
-                    <span>1x @ Rp 1.000.000</span>
-                </div>
-                <div class="item-row">
-                    <span class="item-name">Sneaker Casual</span>
-                    <span>1x @ Rp 450.000</span>
-                </div>
-            </div>
-            
-            <div class="order-actions">
-                <button class="btn btn-primary">
-                    <i class="fa-solid fa-receipt"></i> Detail Pesanan
-                </button>
-                <button class="btn btn-secondary">
-                    <i class="fa-solid fa-download"></i> Unduh Invoice
-                </button>
-            </div>
-        </div>
-        
-        <div class="order-card">
-            <div class="order-header">
-                <div class="order-id">
-                    <i class="fa-solid fa-hashtag"></i> ORD-002-2026
-                </div>
-                <div class="order-status status-processing">
-                    <i class="fa-solid fa-clock"></i> Diproses
-                </div>
-            </div>
-            
-            <div class="order-details">
-                <div class="detail-item">
-                    <div class="detail-label">Tanggal Pesan</div>
-                    <div class="detail-value">18 Feb 2026</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Harga</div>
-                    <div class="detail-value">Rp 890.000</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Kuantitas</div>
-                    <div class="detail-value">1 Produk</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Pengiriman</div>
-                    <div class="detail-value">~20 Feb 2026</div>
-                </div>
-            </div>
-            
-            <div class="order-items">
-                <div class="item-row">
-                    <span class="item-name">Training Pro</span>
-                    <span>1x @ Rp 890.000</span>
-                </div>
-            </div>
-            
-            <div class="order-actions">
-                <button class="btn btn-primary">
-                    <i class="fa-solid fa-receipt"></i> Detail Pesanan
-                </button>
-                <button class="btn btn-secondary">
-                    <i class="fa-solid fa-tracking"></i> Lacak Paket
-                </button>
-            </div>
-        </div>
-        
-        <div class="order-card">
-            <div class="order-header">
-                <div class="order-id">
-                    <i class="fa-solid fa-hashtag"></i> ORD-003-2026
-                </div>
-                <div class="order-status status-pending">
-                    <i class="fa-solid fa-hourglass-start"></i> Menunggu
-                </div>
-            </div>
-            
-            <div class="order-details">
-                <div class="detail-item">
-                    <div class="detail-label">Tanggal Pesan</div>
-                    <div class="detail-value">19 Feb 2026</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Total Harga</div>
-                    <div class="detail-value">Rp 2.340.000</div>
-                </div>
-                <div class="detail-item">
-                    <div class="detail-label">Kuantitas</div>
-                    <div class="detail-value">3 Produk</div>
+                    <div class="detail-value">{{ $order->items->sum('quantity') }} Produk</div>
                 </div>
                 <div class="detail-item">
                     <div class="detail-label">Status Bayar</div>
-                    <div class="detail-value">Menunggu</div>
+                    <div class="detail-value">{{ ucfirst($order->payment_status) }}</div>
+                    @if($order->payment_proof)
+                        <div style="margin-top: 5px;">
+                            <a href="{{ asset('storage/' . $order->payment_proof) }}" target="_blank" style="font-size: 0.75rem; color: var(--secondary); text-decoration: none; font-weight: 700;">
+                                <i class="fa-solid fa-image"></i> Lihat Bukti
+                            </a>
+                        </div>
+                    @endif
                 </div>
             </div>
             
             <div class="order-items">
+                @foreach($order->items as $item)
                 <div class="item-row">
-                    <span class="item-name">Basketball Elite</span>
-                    <span>2x @ Rp 850.000</span>
+                    <span class="item-name">{{ $item->product ? $item->product->name : 'Produk Tidak Tersedia' }}</span>
+                    <span>{{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }}</span>
                 </div>
-                <div class="item-row">
-                    <span class="item-name">Hiking Boots</span>
-                    <span>1x @ Rp 640.000</span>
-                </div>
+                @endforeach
             </div>
             
             <div class="order-actions">
-                <button class="btn btn-primary">
-                    <i class="fa-solid fa-credit-card"></i> Bayar Sekarang
-                </button>
+                @if($order->payment_status == 'unpaid')
+                <a href="{{ route('checkout.payment', $order->id) }}" class="btn btn-primary">
+                    <i class="fa-solid fa-upload"></i> Upload Bukti Pembayaran
+                </a>
+                @endif
                 <button class="btn btn-secondary">
-                    <i class="fa-solid fa-receipt"></i> Detail Pesanan
+                    <i class="fa-solid fa-circle-info"></i> Lacak Pesanan
                 </button>
             </div>
         </div>
+        @empty
+        <div class="empty-orders">
+            <i class="fa-solid fa-box-open"></i>
+            <h2>Belum Ada Pesanan</h2>
+            <p>Anda belum memesan produk apapun. Yuk, mulai belanja sekarang!</p>
+            <a href="{{ route('shop') }}" class="btn btn-primary">Mulai Belanja</a>
+        </div>
+        @endforelse
     </div>
 </body>
 </html>

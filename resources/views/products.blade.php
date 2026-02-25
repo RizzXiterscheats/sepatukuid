@@ -115,199 +115,9 @@
     .btn-view {
       background: transparent;
       border: 2px solid var(--gray-light);
-      color: var(--gray-dark);
-      padding: 10px 20px;
-      font-weight: 600;
-      border-radius: 50px;
-      transition: var(--transition);
-      font-size: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .btn-view:hover {
-      background: var(--gray-dark);
-      color: white;
-      border-color: var(--gray-dark);
-      transform: translateY(-2px);
-    }
-
-    .btn-filter {
-      padding: 10px 20px;
-      background: var(--light);
-      border: none;
-      border-radius: 50px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: var(--transition);
-      font-size: 14px;
-    }
-
-    .btn-filter:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-2px);
-    }
-
-    .btn-filter.active {
-      background: var(--primary);
-      color: white;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 50px;
-      position: relative;
-    }
-
-    .section-title h2 {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin-bottom: 15px;
-      position: relative;
-      display: inline-block;
-      background: linear-gradient(45deg, var(--dark), var(--primary));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-
-    .section-title h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-
-    .section-title p {
-      color: var(--gray);
-      font-size: 1.1rem;
-      max-width: 700px;
-      margin: 15px auto 0;
-      line-height: 1.7;
-    }
-
-    /* NAVBAR */
-    header {
-      background: rgba(255, 255, 255, 0.98);
-      backdrop-filter: blur(20px);
-      position: sticky;
-      top: 0;
-      width: 100%;
-      z-index: 1000;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-      padding: 15px 0;
-      box-shadow: 0 5px 30px rgba(0, 0, 0, 0.05);
-    }
-
-    .nav {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-weight: 900;
-      color: var(--primary);
-      font-size: 1.6rem;
-      letter-spacing: -0.5px;
-    }
-
-    .logo i {
-      font-size: 2rem;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .menu {
-      display: flex;
-      gap: 35px;
-      font-weight: 600;
-    }
-
-    .menu a {
-      position: relative;
-      padding: 8px 0;
-      font-size: 1rem;
-    }
-
-    .menu a.active {
-      color: var(--primary);
-    }
-
-    .menu a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-      transition: var(--transition);
-    }
-
-    .menu a:hover::after,
-    .menu a.active::after {
-      width: 100%;
-    }
-
-    .nav-actions {
-      display: flex;
-      align-items: center;
-      gap: 25px;
-    }
-
-    .nav-icons {
-      display: flex;
-      gap: 20px;
-      font-size: 1.2rem;
-    }
-
-    .nav-icons i {
-      cursor: pointer;
-      padding: 10px;
-      border-radius: 50%;
-      transition: var(--transition);
-      background: var(--light);
-    }
-
-    .nav-icons i:hover {
-      background: var(--primary);
-      color: white;
-      transform: translateY(-3px);
-    }
-
-    .cart-count {
-      position: absolute;
-      top: -5px;
-      right: -5px;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: white;
-      font-size: 0.7rem;
-      min-width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 700;
-      box-shadow: 0 3px 10px rgba(229, 57, 53, 0.3);
-    }
-
-    /* PRODUCTS HERO */
+    /* Products Specific Styles */
     .products-hero {
-      padding: 120px 0 60px;
+      padding: 140px 0 80px;
       background: linear-gradient(135deg, #f9f9f9 0%, #ffffff 100%);
       text-align: center;
       position: relative;
@@ -600,104 +410,6 @@
       opacity: 0.95;
     }
 
-    /* FOOTER */
-    footer {
-      background: linear-gradient(135deg, var(--dark) 0%, #000000 100%);
-      color: #ccc;
-      padding: 60px 0 30px;
-      position: relative;
-    }
-
-    footer::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-    }
-
-    .footer-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-      margin-bottom: 40px;
-    }
-
-    .footer-column h4 {
-      color: white;
-      font-size: 1.2rem;
-      margin-bottom: 20px;
-      position: relative;
-      padding-bottom: 10px;
-      font-weight: 800;
-    }
-
-    .footer-column h4::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 40px;
-      height: 3px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-
-    .footer-links {
-      list-style: none;
-    }
-
-    .footer-links li {
-      margin-bottom: 12px;
-    }
-
-    .footer-links a {
-      color: #aaa;
-      transition: var(--transition);
-      font-size: 0.95rem;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .footer-links a:hover {
-      color: white;
-      padding-left: 8px;
-    }
-
-    .social-links {
-      display: flex;
-      gap: 15px;
-      margin-top: 20px;
-    }
-
-    .social-links a {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: var(--transition);
-      font-size: 1.1rem;
-    }
-
-    .social-links a:hover {
-      background: var(--primary);
-      transform: translateY(-5px) scale(1.1);
-    }
-
-    .copyright {
-      text-align: center;
-      padding-top: 30px;
-      border-top: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--gray-light);
-      font-size: 0.9rem;
-    }
-
     /* RESPONSIVE */
     @media (max-width: 1200px) {
       .products-grid {
@@ -706,15 +418,7 @@
     }
 
     @media (max-width: 992px) {
-      .menu {
-        display: none;
-      }
-      
       .products-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-      
-      .footer-grid {
         grid-template-columns: repeat(2, 1fr);
       }
       
@@ -758,69 +462,13 @@
       .btn-filter {
         white-space: nowrap;
       }
-      
-      .footer-grid {
-        grid-template-columns: 1fr;
-      }
     }
   </style>
 </head>
 
 <body>
 
-<header>
-  <div class="container">
-    <div class="nav">
-      <a href="{{ route('home') }}" class="logo">
-        <i class="fa-solid fa-shoe-prints"></i>
-        SEPATUKUID
-      </a>
-      
-      <nav class="menu">
-        <a href="{{ route('home') }}" class="{{ request()->routeIs('home') ? 'active' : '' }}">Home</a>
-        <a href="{{ route('shop') }}" class="{{ request()->routeIs('shop') ? 'active' : '' }}">Shop</a>
-        <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.index') ? 'active' : '' }}">Products</a>
-        <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">About Us</a>
-        <a href="{{ route('contact') }}" class="{{ request()->routeIs('contact') ? 'active' : '' }}">Contact</a>
-      </nav>
-      
-      <div class="nav-actions">
-        <div class="nav-icons">
-          <i class="fa-solid fa-magnifying-glass"></i>
-          <a href="{{ route('login') }}" style="color: inherit;">
-            <div style="position: relative;">
-              <i class="fa-regular fa-user"></i>
-            </div>
-          </a>
-@auth
-    @if(Auth::user()->role === 'user')
-    <a href="{{ route('user.cart') }}" style="color: inherit;">
-        <div style="position: relative;">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span class="cart-count">3</span>
-        </div>
-    </a>
-    @else
-    <a href="#" onclick="alert('Halaman ini hanya untuk user')" style="color: inherit;">
-        <div style="position: relative;">
-            <i class="fa-solid fa-cart-shopping"></i>
-            <span class="cart-count">3</span>
-        </div>
-    </a>
-    @endif
-@else
-<a href="{{ route('login') }}" style="color: inherit;">
-    <div style="position: relative;">
-        <i class="fa-solid fa-cart-shopping"></i>
-        <span class="cart-count">0</span>
-    </div>
-</a>
-@endauth
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
+<x-navbar />
 
 <section class="products-hero">
   <div class="container">
@@ -883,7 +531,7 @@
            <!-- Untuk user yang sudah login (role user) -->
 @auth
     @if(Auth::user()->role === 'user')
-        <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+        <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
     @else
         <a href="#" onclick="alert('Silakan login sebagai pembeli untuk menambah ke keranjang')" class="btn btn-cart">Tambah</a>
     @endif
@@ -915,7 +563,7 @@
             <span class="old-price">Rp 1.799.000</span>
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -941,7 +589,7 @@
             <span class="old-price">Rp 999.000</span>
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -965,7 +613,7 @@
             Rp 1.499.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -990,7 +638,7 @@
             Rp 1.099.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1016,7 +664,7 @@
             <span class="old-price">Rp 1.099.000</span>
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1040,7 +688,7 @@
             Rp 1.899.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1064,7 +712,7 @@
             Rp 899.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1090,7 +738,7 @@
             <span class="old-price">Rp 1.299.000</span>
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1115,7 +763,7 @@
             Rp 1.799.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1139,7 +787,7 @@
             Rp 1.599.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1164,7 +812,7 @@
             Rp 2.499.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1188,7 +836,7 @@
             Rp 1.399.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1214,7 +862,7 @@
             <span class="old-price">Rp 1.099.000</span>
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1223,7 +871,7 @@
       <!-- Produk 15: On Running Cloud -->
       <div class="product-card">
         <span class="product-badge new">NEW</span>
-        <img src="https://images.unsplash.com/photo-1556909211-36987daf7b4d?q=80&w=800" class="product-image" alt="On Running Cloud">
+        <img src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=800" class="product-image" alt="On Running Cloud">
         <div class="product-info">
           <div class="product-category">Running</div>
           <h3 class="product-title">On Running Cloudswift</h3>
@@ -1239,7 +887,7 @@
             Rp 2.199.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1263,7 +911,7 @@
             Rp 1.899.000
           </div>
           <div class="product-actions">
-            <a href="{{ route('user.cart') }}" class="btn btn-cart">Tambah</a>
+            <a href="{{ route('cart') }}" class="btn btn-cart">Tambah</a>
             <a href="{{ route('login') }}" class="btn-view btn-detail">Detail</a>
           </div>
         </div>
@@ -1297,60 +945,7 @@
   </div>
 </section>
 
-<footer>
-  <div class="container">
-    <div class="footer-grid">
-      <div class="footer-column">
-        <h4>SepatuKuid</h4>
-        <p style="margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6; color: #aaa;">Brand sneakers lokal dengan kualitas internasional. Kami berkomitmen memberikan pengalaman berbelanja terbaik.</p>
-        <div class="social-links">
-          <a href="#"><i class="fa-brands fa-instagram"></i></a>
-          <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
-          <a href="#"><i class="fa-brands fa-twitter"></i></a>
-          <a href="#"><i class="fa-brands fa-tiktok"></i></a>
-          <a href="#"><i class="fa-brands fa-youtube"></i></a>
-        </div>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Kategori Produk</h4>
-        <ul class="footer-links">
-          <li><a href="{{ route('products.index') }}?category=running"><i class="fa-solid fa-chevron-right"></i> Sneakers Running</a></li>
-          <li><a href="{{ route('products.index') }}?category=lifestyle"><i class="fa-solid fa-chevron-right"></i> Sneakers Lifestyle</a></li>
-          <li><a href="{{ route('products.index') }}?category=casual"><i class="fa-solid fa-chevron-right"></i> Sneakers Casual</a></li>
-          <li><a href="{{ route('products.index') }}?category=sport"><i class="fa-solid fa-chevron-right"></i> Sneakers Sport</a></li>
-          <li><a href="{{ route('products.index') }}?category=hiking"><i class="fa-solid fa-chevron-right"></i> Sneakers Hiking</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Bantuan & Support</h4>
-        <ul class="footer-links">
-          <li><a href="{{ route('login') }}"><i class="fa-solid fa-chevron-right"></i> FAQ & Bantuan</a></li>
-          <li><a href="{{ route('login') }}"><i class="fa-solid fa-chevron-right"></i> Info Pengiriman</a></li>
-          <li><a href="{{ route('login') }}"><i class="fa-solid fa-chevron-right"></i> Returns & Exchanges</a></li>
-          <li><a href="{{ route('login') }}"><i class="fa-solid fa-chevron-right"></i> Size Guide</a></li>
-          <li><a href="{{ route('login') }}"><i class="fa-solid fa-chevron-right"></i> Cara Pemesanan</a></li>
-        </ul>
-      </div>
-      
-      <div class="footer-column">
-        <h4>Hubungi Kami</h4>
-        <ul class="footer-links">
-          <li><a href="mailto:hello@sepatukuid.com"><i class="fa-solid fa-envelope"></i> hello@sepatukuid.com</a></li>
-          <li><a href="tel:+6281234567890"><i class="fa-solid fa-phone"></i> +62 812 3456 7890</a></li>
-          <li><a href="#"><i class="fa-solid fa-location-dot"></i> Jl. Sudirman No. 123, Jakarta</a></li>
-          <li><i class="fa-solid fa-clock"></i> Senin - Minggu: 08:00 - 22:00</li>
-        </ul>
-      </div>
-    </div>
-    
-    <div class="copyright">
-      &copy; 2026 SepatuKuid. All rights reserved. | Designed for sneaker lovers
-    </div>
-  </div>
-</footer>
-
+<x-footer />
 <script>
   document.addEventListener('DOMContentLoaded', function() {
     // Filter buttons functionality
@@ -1392,7 +987,7 @@
           this.style.background = '';
           
           // Redirect to cart page
-          window.location.href = '{{ route("user.cart") }}';
+          window.location.href = '{{ route("cart") }}';
         }, 1000);
       });
     });

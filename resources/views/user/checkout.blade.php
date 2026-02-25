@@ -321,45 +321,120 @@
       gap: 15px;
     }
 
-    /* PAYMENT METHODS */
-    .payment-methods {
-      margin: 30px 0;
+    /* ADDRESS CARD */
+    .address-card {
+      padding: 20px;
+      border: 2px solid var(--primary);
+      border-radius: 15px;
+      background: rgba(229, 57, 53, 0.03);
+      margin-bottom: 25px;
+      position: relative;
+    }
+
+    .address-card h4 {
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--primary);
+    }
+
+    .address-card p {
+      font-size: 0.95rem;
+      color: var(--gray-dark);
+      margin-bottom: 5px;
+    }
+
+    .btn-edit-address {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      font-size: 0.85rem;
+      color: var(--primary);
+      text-decoration: underline;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    /* GRID FOR PAYMENT METHODS */
+    .payment-methods-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin: 25px 0;
     }
 
     .payment-option {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 12px;
       padding: 15px;
       border: 2px solid var(--light);
-      border-radius: 10px;
-      margin-bottom: 10px;
+      border-radius: 12px;
       cursor: pointer;
       transition: var(--transition);
+      background: #fafafa;
+      position: relative;
     }
 
     .payment-option:hover {
       border-color: var(--primary);
+      background: white;
     }
 
     .payment-option.selected {
       border-color: var(--primary);
       background: rgba(229, 57, 53, 0.05);
+      box-shadow: 0 5px 15px rgba(229, 57, 53, 0.1);
     }
 
     .payment-option input[type="radio"] {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
       accent-color: var(--primary);
     }
 
-    .payment-option img {
-      width: 50px;
-      height: auto;
+    .payment-logo {
+      width: 40px;
+      height: 24px;
+      object-fit: contain;
+      filter: grayscale(0.2);
+      transition: var(--transition);
     }
 
-    .payment-option span {
-      font-weight: 600;
+    .payment-option:hover .payment-logo,
+    .payment-option.selected .payment-logo {
+      filter: grayscale(0);
+      transform: scale(1.1);
+    }
+
+    .payment-name {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .payment-group-title {
+      font-size: 0.9rem;
+      font-weight: 800;
+      color: var(--gray);
+      margin: 20px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .payment-group-title i {
+      color: var(--primary);
+      font-size: 1rem;
+    }
+
+    @media (max-width: 576px) {
+      .payment-methods-grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* ORDER SUMMARY */
@@ -623,7 +698,7 @@
          <a href="{{ route('cart') }}" style="color: inherit;">
             <div style="position: relative;">
               <i class="fa-solid fa-cart-shopping"></i>
-              <span class="cart-count">3</span>
+              <span class="cart-count">{{ count(session('cart', [])) }}</span>
             </div>
           </a>
         </div>
@@ -645,101 +720,211 @@
       
       <!-- Form Informasi -->
       <div class="checkout-form">
+        @if(session('error'))
+          <div style="background: #fee2e2; color: #b91c1c; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #fecaca;">
+            {{ session('error') }}
+          </div>
+        @endif
+        
+        @if($errors->any())
+          <div style="background: #fff7ed; color: #c2410c; padding: 15px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #ffedd5;">
+            <ul style="margin-left: 20px;">
+              @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div>
+        @endif
+
         <h3 class="form-title">Informasi Pengiriman</h3>
         
-        <form>
+        <form action="{{ route('checkout.process') }}" method="POST" id="checkout-form">
+          @csrf
+        @if(auth()->user()->address)
+          <div id="saved-address-container">
+            <div class="address-card" style="border: 2px solid var(--primary); background: #fff5f5; padding: 25px; border-radius: 15px; position: relative;">
+              <h4 style="color: var(--primary); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                <i class="fa-solid fa-location-dot"></i> Alamat Pengiriman Utama
+              </h4>
+              <p><strong>{{ auth()->user()->name }}</strong></p>
+              <p>{{ auth()->user()->phone }}</p>
+              <p style="margin-top: 10px; line-height: 1.5; color: var(--gray-dark);">
+                {{ auth()->user()->address }}<br>
+                {{ auth()->user()->district }}, {{ auth()->user()->city }}<br>
+                {{ auth()->user()->province }} {{ auth()->user()->postal_code }}
+              </p>
+              <div style="margin-top: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <span class="btn-edit-address" onclick="showAddressForm()" style="color: var(--secondary); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 5px;">
+                  <i class="fa-solid fa-plus-circle"></i> Gunakan Alamat Berbeda
+                </span>
+                <span style="background: var(--primary); color: white; padding: 4px 10px; border-radius: 5px; font-size: 0.8rem; font-weight: 700;">DEFAULT</span>
+              </div>
+            </div>
+            <input type="hidden" name="use_saved_address" value="1">
+          </div>
+        @endif
+
+        <div id="address-form-container" style="{{ auth()->user()->address ? 'display: none;' : '' }}">
           <div class="form-group">
             <label>Nama Lengkap</label>
-            <input type="text" placeholder="Masukkan nama lengkap" value="Raki Aranda">
+            <input type="text" name="name" placeholder="Masukkan nama lengkap" value="{{ auth()->user()->name }}" required>
           </div>
           
           <div class="form-group">
             <label>Email</label>
-            <input type="email" placeholder="Masukkan email" value="raki@example.com">
+            <input type="email" name="email" placeholder="Masukkan email" value="{{ auth()->user()->email }}" required>
           </div>
           
           <div class="form-group">
             <label>Nomor Telepon</label>
-            <input type="tel" placeholder="Masukkan nomor telepon" value="081234567890">
+            <input type="tel" name="phone" placeholder="Masukkan nomor telepon" value="{{ auth()->user()->phone ?? '' }}" required>
           </div>
           
           <div class="form-group">
             <label>Alamat Lengkap</label>
-            <textarea rows="3" placeholder="Masukkan alamat lengkap">Jl. Sudirman No. 123, Jakarta Pusat</textarea>
+            <textarea name="address" rows="3" placeholder="Masukkan alamat lengkap" required>{{ auth()->user()->address ?? '' }}</textarea>
           </div>
           
           <div class="form-row">
             <div class="form-group">
               <label>Provinsi</label>
-              <select>
-                <option>DKI Jakarta</option>
-                <option>Jawa Barat</option>
-                <option>Jawa Tengah</option>
-                <option>Jawa Timur</option>
-              </select>
+              <input type="text" name="province" placeholder="Provinsi" value="{{ auth()->user()->province ?? '' }}" required>
             </div>
             
             <div class="form-group">
               <label>Kota/Kabupaten</label>
-              <select>
-                <option>Jakarta Pusat</option>
-                <option>Jakarta Selatan</option>
-                <option>Jakarta Utara</option>
-                <option>Jakarta Timur</option>
-              </select>
+              <input type="text" name="city" placeholder="Kota/Kabupaten" value="{{ auth()->user()->city ?? '' }}" required>
             </div>
           </div>
           
           <div class="form-row">
             <div class="form-group">
               <label>Kecamatan</label>
-              <input type="text" placeholder="Kecamatan" value="Menteng">
+              <input type="text" name="district" placeholder="Kecamatan" value="{{ auth()->user()->district ?? '' }}" required>
             </div>
             
             <div class="form-group">
               <label>Kode Pos</label>
-              <input type="text" placeholder="Kode Pos" value="10310">
+              <input type="text" name="postal_code" placeholder="Kode Pos" value="{{ auth()->user()->postal_code ?? '' }}" required>
             </div>
+          </div>
+          @if(auth()->user()->address)
+            <div style="text-align: right; margin-bottom: 20px;">
+              <span style="color: var(--gray); font-size: 0.85rem; cursor: pointer; text-decoration: underline;" onclick="hideAddressForm()">Batal, gunakan alamat tersimpan</span>
+            </div>
+          @endif
+        </div>
+
+          <h3 class="form-title" style="margin-top: 30px;">Metode Pengiriman</h3>
+          <div class="form-group">
+            <select name="shipping_method" required>
+              <option value="JNE">JNE Express - Rp 25.000</option>
+              <option value="J&T">J&T Express - Rp 22.000</option>
+              <option value="Sicepat">Sicepat - Rp 20.000</option>
+              <option value="Grab/Gojek">Grab/Gojek Instant - Rp 50.000</option>
+            </select>
           </div>
           
           <h3 class="form-title" style="margin-top: 30px;">Metode Pembayaran</h3>
           
           <div class="payment-methods">
-            <label class="payment-option selected">
-              <input type="radio" name="payment" checked>
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" style="width: 50px;">
-              <span>Bank BCA - Virtual Account</span>
-            </label>
-            
-            <label class="payment-option">
-              <input type="radio" name="payment">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Bank_Mandiri_logo.svg" alt="Mandiri" style="width: 50px;">
-              <span>Bank Mandiri - Virtual Account</span>
-            </label>
-            
-            <label class="payment-option">
-              <input type="radio" name="payment">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/BNI_logo.svg" alt="BNI" style="width: 50px;">
-              <span>Bank BNI - Virtual Account</span>
-            </label>
-            
-            <label class="payment-option">
-              <input type="radio" name="payment">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/BRI_logo.svg" alt="BRI" style="width: 50px;">
-              <span>Bank BRI - Virtual Account</span>
-            </label>
-            
-            <label class="payment-option">
-              <input type="radio" name="payment">
-              <i class="fa-brands fa-cc-visa" style="font-size: 2rem; color: #1a1f71;"></i>
-              <span>Kartu Kredit / Debit</span>
-            </label>
-            
-            <label class="payment-option">
-              <input type="radio" name="payment">
-              <i class="fa-brands fa-google-pay" style="font-size: 2rem;"></i>
-              <span>Google Pay / Gopay</span>
-            </label>
+            <div class="payment-group-title"><i class="fa-solid fa-qrcode"></i> QRIS & E-Wallet</div>
+            <div class="payment-methods-grid">
+              <label class="payment-option selected">
+                <input type="radio" name="payment_method" value="QRIS" checked>
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_QRIS.svg" alt="QRIS" class="payment-logo" style="width: 60px;">
+                <span class="payment-name">QRIS (GoPay, OVO, Dana)</span>
+              </label>
+              
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="GOPAY">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Gopay_logo.svg" alt="GoPay" class="payment-logo">
+                <span class="payment-name">GoPay</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="OVO">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Logo_ovo_purple.svg" alt="OVO" class="payment-logo">
+                <span class="payment-name">OVO</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="DANA">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Dana" class="payment-logo">
+                <span class="payment-name">Dana</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="SHOPEEPAY">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/ShopeePay.svg" alt="ShopeePay" class="payment-logo">
+                <span class="payment-name">ShopeePay</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="LINKAJA">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/LinkAja.svg" alt="LinkAja" class="payment-logo">
+                <span class="payment-name">LinkAja</span>
+              </label>
+            </div>
+
+            <div class="payment-group-title"><i class="fa-solid fa-building-columns"></i> Virtual Account</div>
+            <div class="payment-methods-grid">
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="BCA">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/Bank_Central_Asia.svg" alt="BCA" class="payment-logo">
+                <span class="payment-name">Bank BCA</span>
+              </label>
+              
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="Mandiri">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Bank_Mandiri_logo.svg" alt="Mandiri" class="payment-logo">
+                <span class="payment-name">Bank Mandiri</span>
+              </label>
+              
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="BNI">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/BNI_logo.svg" alt="BNI" class="payment-logo">
+                <span class="payment-name">Bank BNI</span>
+              </label>
+              
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="BRI">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/BRI_logo.svg" alt="BRI" class="payment-logo">
+                <span class="payment-name">Bank BRI</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="CIMB">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/CIMB_Niaga_logo.svg" alt="CIMB" class="payment-logo">
+                <span class="payment-name">Bank CIMB</span>
+              </label>
+
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="Permata">
+                <img src="https://upload.wikimedia.org/wikipedia/id/d/dc/PermataBank_logo.svg" alt="Permata" class="payment-logo">
+                <span class="payment-name">Bank Permata</span>
+              </label>
+            </div>
+
+            <div class="payment-group-title"><i class="fa-solid fa-shop"></i> Gerai Retail</div>
+            <div class="payment-methods-grid">
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="ALFAMART">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/8/86/Alfamart_logo.svg" alt="Alfamart" class="payment-logo">
+                <span class="payment-name">Alfamart</span>
+              </label>
+              
+              <label class="payment-option">
+                <input type="radio" name="payment_method" value="INDOMARET">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/9/9d/Logo_Indomaret.png" alt="Indomaret" class="payment-logo">
+                <span class="payment-name">Indomaret</span>
+              </label>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label>Catatan Pesanan (Opsional)</label>
+            <textarea name="notes" rows="2" placeholder="Catatan tambahan untuk pesanan Anda"></textarea>
           </div>
           
           <button type="submit" class="btn btn-payment">
@@ -753,60 +938,33 @@
       <div class="order-summary">
         <h3 class="summary-title">Ringkasan Pesanan</h3>
         
+        @foreach($cart as $id => $details)
         <div class="order-item">
           <div class="order-item-image">
-            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800" alt="Nike Air Max">
+            <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $details['name'] }}">
           </div>
           <div class="order-item-info">
-            <h4>Nike Air Max 270 React</h4>
-            <p>Hitam/Merah • 42</p>
-            <p>1 x Rp 1.299.000</p>
-            <div class="order-item-price">Rp 1.299.000</div>
+            <h4>{{ $details['name'] }}</h4>
+            <p>{{ $details['size'] }}</p>
+            <p>{{ $details['quantity'] }} x Rp {{ number_format($details['price'], 0, ',', '.') }}</p>
+            <div class="order-item-price">Rp {{ number_format($details['price'] * $details['quantity'], 0, ',', '.') }}</div>
           </div>
         </div>
-        
-        <div class="order-item">
-          <div class="order-item-image">
-            <img src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=800" alt="Adidas Ultraboost">
-          </div>
-          <div class="order-item-info">
-            <h4>Adidas Ultraboost 22</h4>
-            <p>Putih/Hitam • 43</p>
-            <p>1 x Rp 1.499.000</p>
-            <div class="order-item-price">Rp 1.499.000</div>
-          </div>
-        </div>
-        
-        <div class="order-item">
-          <div class="order-item-image">
-            <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?q=80&w=800" alt="Converse">
-          </div>
-          <div class="order-item-info">
-            <h4>Converse Chuck Taylor All Star</h4>
-            <p>Hitam • 40</p>
-            <p>2 x Rp 699.000</p>
-            <div class="order-item-price">Rp 1.398.000</div>
-          </div>
-        </div>
+        @endforeach
         
         <div class="summary-row">
-          <span>Subtotal (4 produk)</span>
-          <span>Rp 4.196.000</span>
+          <span>Subtotal ({{ count($cart) }} produk)</span>
+          <span>Rp {{ number_format($total, 0, ',', '.') }}</span>
         </div>
         
         <div class="summary-row">
           <span>Biaya Pengiriman</span>
-          <span>Rp 50.000</span>
+          <span id="shipping-cost">Rp 20.000</span>
         </div>
-        
-        <div class="summary-row">
-          <span>Biaya Layanan</span>
-          <span>Rp 5.000</span>
-        </div>
-        
-        <div class="summary-row total">
-          <span>Total Pembayaran</span>
-          <span class="summary-total-price">Rp 4.251.000</span>
+
+        <div class="summary-row total" style="font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--light); display: flex; justify-content: space-between;">
+           <span>Total Pesanan</span>
+           <span class="summary-total-price" id="grand-total">Rp {{ number_format($total + 25000, 0, ',', '.') }}</span>
         </div>
         
 <div class="back-to-cart">
@@ -875,19 +1033,78 @@
   </div>
 </footer>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function() {
-    // Payment option selection
-    const paymentOptions = document.querySelectorAll('.payment-option');
-    paymentOptions.forEach(option => {
-      option.addEventListener('click', function() {
-        paymentOptions.forEach(opt => opt.classList.remove('selected'));
-        this.classList.add('selected');
-        this.querySelector('input[type="radio"]').checked = true;
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Payment option selection
+      const paymentOptions = document.querySelectorAll('.payment-option');
+      paymentOptions.forEach(option => {
+        option.addEventListener('click', function() {
+          paymentOptions.forEach(opt => opt.classList.remove('selected'));
+          this.classList.add('selected');
+          const radio = this.querySelector('input[type="radio"]');
+          if (radio) radio.checked = true;
+        });
       });
+
+      // Shipping selection and cost update
+      const shippingSelect = document.querySelector('select[name="shipping_method"]');
+      const shippingCostDisplay = document.getElementById('shipping-cost');
+      const grandTotalDisplay = document.getElementById('grand-total');
+      const subtotal = {{ $total }};
+
+      const shippingCosts = {
+        'JNE': 25000,
+        'J&T': 22000,
+        'Sicepat': 20000,
+        'Grab/Gojek': 50000
+      };
+
+      shippingSelect.addEventListener('change', function() {
+        const selectedMethod = this.value;
+        const cost = shippingCosts[selectedMethod];
+        
+        shippingCostDisplay.textContent = 'Rp ' + cost.toLocaleString('id-ID');
+        grandTotalDisplay.textContent = 'Rp ' + (subtotal + cost).toLocaleString('id-ID');
+      });
+      
+      // Trigger initial total calculation
+      shippingSelect.dispatchEvent(new Event('change'));
     });
-  });
-</script>
+  function showAddressForm() {
+    document.getElementById('saved-address-container').style.display = 'none';
+    document.getElementById('address-form-container').style.display = 'block';
+    // Set hidden input to 0 to indicate new address
+    document.querySelector('input[name="use_saved_address"]').value = "0";
+    
+    // Set required attributes
+    document.querySelectorAll('#address-form-container input, #address-form-container textarea').forEach(el => {
+      if(el.name !== 'notes') el.required = true;
+    });
+  }
+
+  function hideAddressForm() {
+    document.getElementById('saved-address-container').style.display = 'block';
+    document.getElementById('address-form-container').style.display = 'none';
+    // Set hidden input to 1
+    document.querySelector('input[name="use_saved_address"]').value = "1";
+    
+    // Remove required attributes
+    document.querySelectorAll('#address-form-container input, #address-form-container textarea').forEach(el => {
+      el.required = false;
+    });
+  }
+
+  // Set initial state
+  window.onload = function() {
+    if(document.getElementById('saved-address-container')) {
+      hideAddressForm();
+    } else {
+      document.querySelectorAll('#address-form-container input, #address-form-container textarea').forEach(el => {
+        if(el.name !== 'notes') el.required = true;
+      });
+    }
+  };
+  </script>
 
 </body>
 </html>
