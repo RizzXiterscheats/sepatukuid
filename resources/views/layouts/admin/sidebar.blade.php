@@ -21,6 +21,13 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('admin.tickets.index') }}" class="nav-link {{ request()->routeIs('admin.tickets.*') ? 'active' : '' }}">
+                <i class="fas fa-headset nav-icon"></i>
+                <span>Layanan Pelanggan</span>
+                <span class="badge" style="background: var(--danger); color: white;">{{ \App\Models\Ticket::where('status', 'open')->count() }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('admin.pesanan.index') }}" class="nav-link {{ request()->routeIs('admin.pesanan.*') ? 'active' : '' }}">
                 <i class="fas fa-shopping-cart nav-icon"></i>
                 <span>Pesanan</span>

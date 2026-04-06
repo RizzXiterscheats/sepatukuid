@@ -10,6 +10,9 @@
     
     <!-- Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     
     <style>
         :root {
@@ -314,7 +317,14 @@
             <div class="order-items">
                 @foreach($order->items as $item)
                 <div class="item-row">
-                    <span class="item-name">{{ $item->product ? $item->product->name : 'Produk Tidak Tersedia' }}</span>
+                    <div style="display: flex; flex-direction: column;">
+                        <span class="item-name">{{ $item->product ? $item->product->name : 'Produk Tidak Tersedia' }}</span>
+                        @if($order->status == 'completed' && $item->product)
+                            <button onclick="openReviewModal('{{ $item->product->id }}', '{{ $order->id }}', '{{ $item->product->name }}')" style="background: none; border: none; color: var(--secondary); font-size: 0.8rem; font-weight: 700; cursor: pointer; text-align: left; padding: 5px 0; display: flex; align-items: center; gap: 5px;">
+                                <i class="fa-solid fa-star"></i> Beri Ulasan
+                            </button>
+                        @endif
+                    </div>
                     <span>{{ $item->quantity }}x @ Rp {{ number_format($item->price, 0, ',', '.') }}</span>
                 </div>
                 @endforeach
@@ -326,9 +336,9 @@
                     <i class="fa-solid fa-upload"></i> Upload Bukti Pembayaran
                 </a>
                 @endif
-                <button class="btn btn-secondary">
+                <a href="{{ route('orders.track', $order->id) }}" class="btn btn-secondary">
                     <i class="fa-solid fa-circle-info"></i> Lacak Pesanan
-                </button>
+                </a>
             </div>
         </div>
         @empty
@@ -340,5 +350,95 @@
         </div>
         @endforelse
     </div>
+
+    <script>
+        function openReviewModal(productId, orderId, productName) {
+            Swal.fire({
+                title: 'Beri Ulasan - ' + productName,
+                html: `
+                    <div style="text-align: left;">
+                        <label style="display: block; margin-bottom: 10px; font-weight: 700;">Rating (1-5 star)</label>
+                        <select id="swal-rating" class="swal2-input" style="width: 100%; margin: 10px 0;">
+                            <option value="5">⭐⭐⭐⭐⭐ (Sempurna)</option>
+                            <option value="4">⭐⭐⭐⭐ (Bagus)</option>
+                            <option value="3">⭐⭐⭐ (Cukup)</option>
+                            <option value="2">⭐⭐ (Kurang)</option>
+                            <option value="1">⭐ (Buruk)</option>
+                        </select>
+                        <label style="display: block; margin-top: 15px; margin-bottom: 10px; font-weight: 700;">Ulasan Anda</label>
+                        <textarea id="swal-comment" class="swal2-textarea" placeholder="Tuliskan pengalaman Anda menggunakan produk ini..." style="width: 100%; height: 100px; margin: 0;"></textarea>
+                    </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: 'Kirim Ulasan',
+                cancelButtonText: 'Batal',
+                confirmButtonColor: '#E53935',
+                preConfirm: () => {
+                    const rating = document.getElementById('swal-rating').value;
+                    const comment = document.getElementById('swal-comment').value;
+                    
+                    if (!comment) {
+                        Swal.showValidationMessage('Ulasan tidak boleh kosong!');
+                        return false;
+                    }
+                    
+                    return { rating, comment };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Send via form submission
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = "{{ route('reviews.store') }}";
+                    
+                    const csrfInput = document.createElement('input');
+                    csrfInput.type = 'hidden';
+                    csrfInput.name = '_token';
+                    csrfInput.value = "{{ csrf_token() }}";
+                    
+                    const pIdInput = document.createElement('input');
+                    pIdInput.type = 'hidden';
+                    pIdInput.name = 'product_id';
+                    pIdInput.value = productId;
+                    
+                    const oIdInput = document.createElement('input');
+                    oIdInput.type = 'hidden';
+                    oIdInput.name = 'order_id';
+                    oIdInput.value = orderId;
+                    
+                    const ratingInput = document.createElement('input');
+                    ratingInput.type = 'hidden';
+                    ratingInput.name = 'rating';
+                    ratingInput.value = result.value.rating;
+                    
+                    const commentInput = document.createElement('input');
+                    commentInput.type = 'hidden';
+                    commentInput.name = 'comment';
+                    commentInput.value = result.value.comment;
+                    
+                    form.appendChild(csrfInput);
+                    form.appendChild(pIdInput);
+                    form.appendChild(oIdInput);
+                    form.appendChild(ratingInput);
+                    form.appendChild(commentInput);
+                    
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            });
+        }
+
+        // Session Notifications
+        @if(session('success'))
+            Swal.fire({
+                icon: 'success',
+                title: 'Berhasil!',
+                text: "{{ session('success') }}",
+                timer: 3000,
+                showConfirmButton: false,
+                timerProgressBar: true
+            });
+        @endif
+    </script>
 </body>
 </html>

@@ -100,6 +100,18 @@
     .tab-link.active { color: var(--dark); }
     .tab-link.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--primary); }
 
+    /* Review Styles */
+    .review-item { padding: 25px 0; border-bottom: 1px solid #eee; }
+    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .review-user { font-weight: 700; font-size: 1rem; color: var(--dark); }
+    .review-date { font-size: 0.85rem; color: var(--gray); }
+    .review-stars { color: #FFB400; font-size: 0.9rem; }
+    .review-comment { font-size: 0.95rem; color: var(--gray-dark); line-height: 1.6; }
+    .no-reviews { text-align: center; padding: 40px 0; color: var(--gray); font-style: italic; }
+    .rating-summary { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 20px; background: var(--light); border-radius: 15px; }
+    .avg-rating { font-size: 3rem; font-weight: 800; color: var(--dark); }
+    .star-bars { flex: 1; }
+
     /* Related Products */
     .related-section { padding: 100px 0; border-top: 1px solid #eee; }
     .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
@@ -152,6 +164,12 @@
         @endif
       </div>
 
+      <div class="stock-status" style="margin-bottom: 25px; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; border: 1px solid #eee;">
+        <i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i>
+        <span style="color: var(--gray-dark);">Stok Tersedia:</span>
+        <span style="color: var(--dark);">{{ $product->stock }} produk</span>
+      </div>
+
       <div class="description" style="margin-bottom: 30px;">
         @if($product->description)
           {!! nl2br(e($product->description)) !!}
@@ -162,7 +180,7 @@
 
       @if($product->stock > 0 && $product->stock <= 5)
         <div style="background: rgba(229, 9, 20, 0.05); color: var(--primary); padding: 12px 20px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; margin-bottom: 30px; display: flex; align-items: center; gap: 10px;">
-          <i class="fa-solid fa-fire-flame-curved"></i> Hurry up, only {{ $product->stock }} item left in stock.
+          <i class="fa-solid fa-fire-flame-curved"></i> Segera pesan! Stok terbatas, hanya tersisa {{ $product->stock }} produk.
         </div>
       @endif
 
@@ -203,17 +221,18 @@
           <button type="submit" class="btn-add">
             <i class="fa-solid fa-cart-plus"></i> Tambah ke Keranjang
           </button>
-          <button type="button" class="btn-wishlist">
-            <i class="fa-regular fa-heart"></i>
+          <button type="button" class="btn-wishlist" onclick="toggleWishlist({{ $product->id }}, this)">
+            <i class="fa-solid fa-heart" id="wishlist-icon" style="color: {{ auth()->check() && \App\Models\Wishlist::where('user_id', auth()->id())->where('product_id', $product->id)->exists() ? 'var(--primary)' : 'var(--gray)' }};"></i>
           </button>
         </div>
       </form>
 
       <div class="product-tabs">
         <div class="tab-nav">
-          <div class="tab-link active">Spesifikasi</div>
+          <div class="tab-link active" onclick="switchTab(this, 'spec')">Spesifikasi</div>
+          <div class="tab-link" onclick="switchTab(this, 'reviews')">Ulasan ({{ count($reviews) }})</div>
         </div>
-        <div class="tab-content" style="font-size: 0.95rem; color: var(--gray-dark); line-height: 1.8;">
+        <div id="tab-spec" class="tab-content" style="font-size: 0.95rem; color: var(--gray-dark); line-height: 1.8;">
           @if($product->specifications)
             {!! nl2br(e($product->specifications)) !!}
           @else
@@ -221,6 +240,42 @@
             • Sole: Rubber Construction for comfort<br>
             • Style: Modern Lifestyle / Sporty<br>
             • 100% Original Brand Lokal
+          @endif
+        </div>
+        
+        <div id="tab-reviews" class="tab-content" style="display: none;">
+          @if(count($reviews) > 0)
+            <div class="rating-summary">
+              <div class="avg-rating">{{ number_format($reviews->avg('rating'), 1) }}</div>
+              <div>
+                <div class="review-stars">
+                  @for($i = 1; $i <= 5; $i++)
+                    <i class="fa-{{ $i <= round($reviews->avg('rating')) ? 'solid' : 'regular' }} fa-star"></i>
+                  @endfor
+                </div>
+                <div style="font-size: 0.9rem; color: var(--gray); margin-top: 5px;">Berdasarkan {{ count($reviews) }} ulasan</div>
+              </div>
+            </div>
+
+            @foreach($reviews as $review)
+              <div class="review-item">
+                <div class="review-header">
+                  <div class="review-user">{{ $review->user->name }}</div>
+                  <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                </div>
+                <div class="review-stars" style="margin-bottom: 10px;">
+                  @for($i = 1; $i <= 5; $i++)
+                    <i class="fa-{{ $i <= $review->rating ? 'solid' : 'regular' }} fa-star"></i>
+                  @endfor
+                </div>
+                <div class="review-comment">{{ $review->comment }}</div>
+              </div>
+            @endforeach
+          @else
+            <div class="no-reviews">
+              <i class="fa-regular fa-comment-dots" style="font-size: 3rem; margin-bottom: 15px; display: block; opacity: 0.2;"></i>
+              Belum ada ulasan untuk produk ini.
+            </div>
           @endif
         </div>
       </div>
@@ -260,6 +315,45 @@
     if (newVal >= 1 && newVal <= {{ $product->stock }}) {
       input.value = newVal;
     }
+  }
+
+  function switchTab(el, tabId) {
+    document.querySelectorAll('.tab-link').forEach(link => link.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+    
+    el.classList.add('active');
+    document.getElementById('tab-' + tabId).style.display = 'block';
+  }
+
+  function toggleWishlist(productId, btn) {
+    fetch('{{ route("wishlist.toggle") }}', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        },
+        body: JSON.stringify({ product_id: productId })
+    })
+    .then(response => {
+        if(response.status === 401) {
+            window.location.href = "{{ route('login') }}";
+            return;
+        }
+        return response.json();
+    })
+    .then(data => {
+        if (data) {
+            const icon = btn.querySelector('i');
+            if (data.status === 'added') {
+                icon.style.color = 'var(--primary)';
+                Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, icon: 'success', title: data.message });
+            } else if (data.status === 'removed') {
+                icon.style.color = 'var(--gray)';
+                Swal.fire({ toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, icon: 'info', title: data.message });
+            }
+        }
+    })
+    .catch(error => console.error('Error:', error));
   }
 
   // Session Notifications

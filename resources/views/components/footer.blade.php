@@ -18,6 +18,7 @@
         <ul class="footer-links">
           <li><a href="{{ route('products.index') }}?category=running"><i class="fa-solid fa-chevron-right"></i> Sneakers Running</a></li>
           <li><a href="{{ route('products.index') }}?category=lifestyle"><i class="fa-solid fa-chevron-right"></i> Sneakers Lifestyle</a></li>
+          <li><a href="{{ route('products.index') }}?category=training"><i class="fa-solid fa-chevron-right"></i> Sneakers Training</a></li>
           <li><a href="{{ route('products.index') }}?category=casual"><i class="fa-solid fa-chevron-right"></i> Sneakers Casual</a></li>
           <li><a href="{{ route('products.index') }}?category=sport"><i class="fa-solid fa-chevron-right"></i> Sneakers Sport</a></li>
           <li><a href="{{ route('products.index') }}?category=limited"><i class="fa-solid fa-chevron-right"></i> Sneakers Limited Edition</a></li>
@@ -29,8 +30,8 @@
         <ul class="footer-links">
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> FAQ & Bantuan</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Info Pengiriman</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Returns & Exchanges</a></li>
-          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Size Guide</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Pengembalian & Penukaran</a></li>
+          <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Panduan Ukuran</a></li>
           <li><a href="#"><i class="fa-solid fa-chevron-right"></i> Cara Pemesanan</a></li>
         </ul>
       </div>
@@ -47,7 +48,7 @@
     </div>
     
     <div class="copyright">
-      &copy; {{ date('Y') }} SepatuKuid. All rights reserved. | Designed with <i class="fa-solid fa-heart" style="color: var(--primary); margin: 0 5px;"></i> for sneaker lovers
+      &copy; {{ date('Y') }} SepatuKuid. Seluruh hak cipta dilindungi. | Dibuat dengan IT Sepatukuid
     </div>
   </div>
 </footer>

@@ -315,64 +315,20 @@
                 </div>
                 <div class="card-body">
                     <!-- Timeline Visual -->
-                    <div style="margin-bottom: 32px;">
-                        @php
-                            $stepPending = in_array($order->status, ['pending', 'processing', 'shipped', 'delivered']);
-                            $stepProcessing = in_array($order->status, ['processing', 'shipped', 'delivered']);
-                            $stepShipped = in_array($order->status, ['shipped', 'delivered']);
-                            $stepDelivered = $order->status === 'delivered';
-                            $isCancelled = $order->status === 'cancelled';
-                        @endphp
-
-                        @if($isCancelled)
+                    <div style="margin-bottom: 32px; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                        @forelse($order->tracks as $index => $track)
                             <div class="timeline-item">
-                                <div class="timeline-icon icon-completed" style="background: var(--danger-light); color: var(--danger);"><i class="fas fa-ban"></i></div>
-                                <div class="timeline-content">
-                                    <div class="timeline-title">Pesanan Dibatalkan</div>
-                                    <div class="timeline-desc">Transaksi ini telah dibatalkan.</div>
-                                </div>
-                            </div>
-                        @else
-                            <div class="timeline-item">
-                                <div class="timeline-icon {{ $stepPending ? ($order->status == 'pending' ? 'icon-current' : 'icon-completed') : 'icon-pending' }}">
-                                    @if($stepProcessing) <i class="fas fa-check"></i> @else 1 @endif
+                                <div class="timeline-icon {{ $index == 0 ? 'icon-current' : 'icon-completed' }}">
+                                    @if($index == 0) <i class="fas fa-location-dot"></i> @else <i class="fas fa-check"></i> @endif
                                 </div>
                                 <div class="timeline-content">
-                                    <div class="timeline-title">Menunggu Konfirmasi</div>
-                                    <div class="timeline-desc">Pesanan baru masuk & belum diproses.</div>
+                                    <div class="timeline-title">{{ $track->status_title }}</div>
+                                    <div class="timeline-desc">{{ $track->description ?: '-' }} <br><small style="color:var(--text-muted); opacity:0.8;">{{ $track->created_at->format('d M Y H:i') }}</small></div>
                                 </div>
                             </div>
-
-                            <div class="timeline-item">
-                                <div class="timeline-icon {{ $stepProcessing ? ($order->status == 'processing' ? 'icon-current' : 'icon-completed') : 'icon-pending' }}">
-                                    @if($stepShipped) <i class="fas fa-check"></i> @else 2 @endif
-                                </div>
-                                <div class="timeline-content">
-                                    <div class="timeline-title">Diproses</div>
-                                    <div class="timeline-desc">Pesanan sedang disiapkan.</div>
-                                </div>
-                            </div>
-
-                            <div class="timeline-item">
-                                <div class="timeline-icon {{ $stepShipped ? ($order->status == 'shipped' ? 'icon-current' : 'icon-completed') : 'icon-pending' }}">
-                                    @if($stepDelivered) <i class="fas fa-check"></i> @else 3 @endif
-                                </div>
-                                <div class="timeline-content">
-                                    <div class="timeline-title">Dikirim</div>
-                                    <div class="timeline-desc">Pesanan dalam perjalanan kurir.</div>
-                                </div>
-                            </div>
-
-                            <div class="timeline-item">
-                                <div class="timeline-icon {{ $stepDelivered ? 'icon-completed' : 'icon-pending' }}">
-                                    @if($stepDelivered) <i class="fas fa-check"></i> @else 4 @endif
-                                </div>
-                                <div class="timeline-content">
-                                    <div class="timeline-title">Selesai</div>
-                                    <div class="timeline-desc">Pesanan diterima oleh pelanggan.</div>
-                                </div>
-                            </div>
-                        @endif
+                        @empty
+                            <div style="text-align: center; color: var(--text-muted); font-size: 13px; font-weight: 600; padding: 20px;">Belum ada riwayat pelacakan rinci.</div>
+                        @endforelse
                     </div>
 
                     <form action="{{ route('admin.pesanan.update-status', $order) }}" method="POST">
@@ -390,6 +346,18 @@
                         </div>
                         <button type="submit" class="btn-submit">
                             Simpan Perubahan <i class="fas fa-save"></i>
+                        </button>
+                    </form>
+
+                    <form action="{{ route('admin.pesanan.add-track', $order) }}" method="POST" style="margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--surface-200);">
+                        @csrf
+                        <div class="form-group">
+                            <label class="form-label" for="status_title">Tambah Riwayat Lacak (Kustom)</label>
+                            <input type="text" name="status_title" class="premium-select" style="background-image: none; margin-bottom: 10px;" placeholder="Contoh: Paket Diserahkan ke Kurir" required>
+                            <textarea name="description" class="premium-select" style="background-image: none; height: 80px; resize: vertical;" placeholder="Catatan opsional (misal nama kurir, atau resi)"></textarea>
+                        </div>
+                        <button type="submit" class="btn-submit" style="background:var(--success);color:white;">
+                            Update Timeline <i class="fas fa-map-pin"></i>
                         </button>
                     </form>
                 </div>

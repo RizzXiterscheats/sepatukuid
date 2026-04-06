@@ -102,43 +102,6 @@
       opacity: 0.9;
     }
 
-    /* BRANDS SECTION */
-    .brands-section {
-      padding: 60px 0;
-      background: white;
-    }
-
-    .brands-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 30px;
-      align-items: center;
-    }
-
-    .brand-item {
-      text-align: center;
-      padding: 20px;
-      background: var(--light);
-      border-radius: 15px;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-
-    .brand-item:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--card-shadow);
-    }
-
-    .brand-item i {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 10px;
-    }
-
-    .brand-item h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
 
     /* FEATURES */
     .shop-features {
@@ -269,6 +232,12 @@
       border-radius: 50px;
       font-weight: 700;
       margin-top: 15px;
+      transition: var(--transition);
+    }
+    .btn-detail:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(229,57,53,0.2);
     }
   </style>
 </head>
@@ -279,7 +248,7 @@
 
 <section class="products-hero">
   <div class="container">
-    <h1>All Sneakers</h1>
+    <h1>Katalog Sneakers</h1>
     <p>Koleksi lengkap dari brand ternama kelas dunia hanya untuk Anda.</p>
   </div>
 </section>
@@ -308,8 +277,41 @@
 <section class="products-section">
   <div class="container">
     <div class="section-title">
-      <h2>Featured Collection</h2>
+      <h2>Koleksi Pilihan</h2>
       <p>Pilih dari ratusan model sneakers yang sesuai dengan gaya Anda.</p>
+    </div>
+
+    <div class="search-filter">
+      <form action="{{ route('products.index') }}" method="GET" class="filter-form">
+        <div class="filter-group">
+          <label>Cari Produk</label>
+          <input type="text" name="search" class="filter-input" placeholder="Apa yang Anda cari hari ini?" value="{{ request('search') }}">
+        </div>
+
+        <div class="filter-group">
+          <label>Kategori</label>
+          <select name="category" class="filter-input">
+            <option value="">Semua Kategori</option>
+            @foreach($categories as $cat)
+              <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }}>{{ $cat->name }}</option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Gender</label>
+          <select name="gender" class="filter-input">
+            <option value="">Semua Gender</option>
+            <option value="pria" {{ request('gender') == 'pria' ? 'selected' : '' }}>Pria</option>
+            <option value="wanita" {{ request('gender') == 'wanita' ? 'selected' : '' }}>Wanita</option>
+            <option value="unisex" {{ request('gender') == 'unisex' ? 'selected' : '' }}>Unisex</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-filter">
+          <i class="fa-solid fa-sliders"></i> Filter
+        </button>
+      </form>
     </div>
 
     <div class="product-grid">
@@ -339,6 +341,10 @@
               Rp {{ number_format($product->price, 0, ',', '.') }}
             @endif
           </div>
+          
+          <div class="product-stock" style="font-size: 0.9rem; color: var(--gray-light); margin-bottom: 20px; font-weight: 600;">
+            <i class="fa-solid fa-box-open" style="font-size: 0.85rem; margin-right: 5px; opacity: 0.7;"></i> Stok: {{ $product->stock }}
+          </div>
 
           <a href="{{ route('products.show', $product->slug) }}" class="btn-detail">
             Lihat Detail
@@ -361,16 +367,16 @@
 <section class="brands-section">
   <div class="container">
     <div class="section-title">
-      <h2>Our Premium Brands</h2>
-      <p>Bekerjasama dengan brand terbaik untuk kualitas maksimal.</p>
+      <h2>Brand Terpopuler</h2>
+      <p>Bekerja sama dengan brand terbaik untuk kualitas maksimal.</p>
     </div>
     <div class="brands-grid">
-      <div class="brand-item"><i class="fa-brands fa-nike"></i><h4>Nike</h4></div>
-      <div class="brand-item"><i class="fa-brands fa-adidas"></i><h4>Adidas</h4></div>
-      <div class="brand-item"><i class="fa-brands fa-puma"></i><h4>Puma</h4></div>
-      <div class="brand-item"><i class="fa-brands fa-new-balance"></i><h4>New Balance</h4></div>
-      <div class="brand-item"><i class="fa-brands fa-converse"></i><h4>Converse</h4></div>
-      <div class="brand-item"><i class="fa-brands fa-vans"></i><h4>Vans</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/nike.png') }}" alt="Nike"><h4>Nike</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/adidas.png') }}" alt="Adidas"><h4>Adidas</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/puma.png') }}" alt="Puma"><h4>Puma</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/new-balance.png') }}" alt="New Balance"><h4>New Balance</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/converse.png') }}" alt="Converse"><h4>Converse</h4></div>
+      <div class="brand-item"><img src="{{ asset('img/brands/vans.png') }}" alt="Vans"><h4>Vans</h4></div>
     </div>
   </div>
 </section>
@@ -380,7 +386,7 @@
     <div class="features-grid">
       <div class="feature-item">
         <i class="fa-solid fa-truck-fast" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
-        <h3>Free Shipping</h3>
+        <h3>Gratis Ongkir</h3>
         <p>Gratis ongkir ke seluruh Indonesia.</p>
       </div>
       <div class="feature-item">
@@ -390,7 +396,7 @@
       </div>
       <div class="feature-item">
         <i class="fa-solid fa-rotate-left" style="font-size: 2.5rem; margin-bottom: 20px;"></i>
-        <h3>Easy Return</h3>
+        <h3>Retur Mudah</h3>
         <p>Pengembalian barang dalam 30 hari.</p>
       </div>
       <div class="feature-item">
@@ -405,11 +411,11 @@
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-box">
-      <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 20px;">Join The Squad</h2>
+      <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 20px;">Gabung Komunitas</h2>
       <p style="font-size: 1.2rem; opacity: 0.9;">Dapatkan update produk terbaru dan promo eksklusif.</p>
       <form class="newsletter-form">
-        <input type="email" placeholder="Email Address" required>
-        <button type="submit">Subscribe</button>
+        <input type="email" placeholder="Alamat Email" required>
+        <button type="submit">Daftar</button>
       </form>
     </div>
   </div>

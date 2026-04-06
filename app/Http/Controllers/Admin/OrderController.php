@@ -69,8 +69,10 @@ class OrderController extends Controller
      */
     public function show(Order $order)
     {
-        // Eager load related user, order items and their products
-        $order->load(['user', 'items.product']);
+        // Eager load related user, order items and their products, and order tracks
+        $order->load(['user', 'items.product', 'tracks' => function($query) {
+            $query->orderBy('created_at', 'desc');
+        }]);
 
         $statuses = [
             'pending' => 'Menunggu Konfirmasi',
@@ -116,5 +118,23 @@ class OrderController extends Controller
         $order->update(['payment_status' => $validated['payment_status']]);
 
         return back()->with('success', 'Status pembayaran berhasil diperbarui!');
+    }
+
+    /**
+     * Add a custom track timeline.
+     */
+    public function addTrack(Request $request, Order $order)
+    {
+        $validated = $request->validate([
+            'status_title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $order->tracks()->create([
+            'status_title' => $validated['status_title'],
+            'description' => $validated['description'],
+        ]);
+
+        return back()->with('success', 'Timeline pelacakan berhasil ditambahkan!');
     }
 }

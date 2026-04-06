@@ -476,6 +476,23 @@
             gap: 30px;
         }
 
+        @if(auth()->user()->role === 'admin')
+            <li class="nav-item">
+                <a href="{{ route('admin.pelanggan.index') }}" class="nav-link {{ request()->routeIs('admin.pelanggan.*') ? 'active' : '' }}">
+                    <i class="fa-solid fa-users nav-icon"></i>
+                    Manajemen Pelanggan
+                </a>
+            </li>
+        @endif
+
+        <li class="nav-section">LAYANAN PELANGGAN</li>
+        <li class="nav-item">
+            <a href="{{ route('admin.tickets.index') }}" class="nav-link {{ request()->routeIs('admin.tickets.*') ? 'active' : '' }}">
+                <i class="fa-solid fa-headset nav-icon"></i>
+                Tiket Bantuan
+            </a>
+        </li>
+
         @media (max-width: 1200px) {
             .sidebar {
                 transform: translateX(-100%);

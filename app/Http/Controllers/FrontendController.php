@@ -20,7 +20,9 @@ class FrontendController extends Controller
             ->take(8)
             ->get();
 
-        return view('home', compact('featuredProducts'));
+        $categories = Category::active()->get();
+
+        return view('home', compact('featuredProducts', 'categories'));
     }
 
     /**
@@ -30,20 +32,31 @@ class FrontendController extends Controller
     {
         $query = Product::with('categoryModel')->active();
 
-        // Pencarian (opsional)
-        if ($request->has('search')) {
+        // Pencarian
+        if ($request->filled('search')) {
             $query->where('name', 'like', '%' . $request->search . '%');
         }
 
-        // Filter by Kategori (opsional)
-        if ($request->has('category')) {
-            $query->whereHas('category', function ($q) use ($request) {
-                $q->where('slug', $request->category);
-            });
+        // Filter by Kategori
+        if ($request->filled('category')) {
+            $category = Category::where('slug', $request->category)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
+            }
+        }
+
+        // Filter by Gender
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        // Filter by Brand (Opsi tambahan jika ada)
+        if ($request->filled('brand')) {
+            $query->where('brand', 'like', '%' . $request->brand . '%');
         }
 
         $products = $query->paginate(12);
-        $categories = Category::all();
+        $categories = Category::active()->get();
 
         return view('shop', compact('products', 'categories'));
     }
@@ -53,7 +66,7 @@ class FrontendController extends Controller
      */
     public function show($slug)
     {
-        $product = Product::with('categoryModel')->where('slug', $slug)->active()->firstOrFail();
+        $product = Product::where('slug', $slug)->active()->firstOrFail();
         
         // Produk terkait
         $relatedProducts = Product::where('category_id', $product->category_id)
@@ -61,14 +74,37 @@ class FrontendController extends Controller
             ->active()
             ->take(4)
             ->get();
+            
+        // Load reviews with user
+        $reviews = $product->reviews()->with('user')->latest()->get();
 
-        return view('product-detail', compact('product', 'relatedProducts'));
+        return view('product-detail', compact('product', 'relatedProducts', 'reviews'));
     }
 
-    public function products()
+    public function products(Request $request)
     {
-        $products = Product::with('categoryModel')->active()->paginate(24);
-        $categories = Category::all();
+        $query = Product::with('categoryModel')->active();
+
+        // Pencarian
+        if ($request->filled('search')) {
+            $query->where('name', 'like', '%' . $request->search . '%');
+        }
+
+        // Filter by Kategori
+        if ($request->filled('category')) {
+            $category = Category::where('slug', $request->category)->first();
+            if ($category) {
+                $query->where('category_id', $category->id);
+            }
+        }
+
+        // Filter by Gender
+        if ($request->filled('gender')) {
+            $query->where('gender', $request->gender);
+        }
+
+        $products = $query->paginate(24);
+        $categories = Category::active()->get();
         return view('products', compact('products', 'categories'));
     }
 

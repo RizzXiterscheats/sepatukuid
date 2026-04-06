@@ -60,4 +60,20 @@ class User extends Authenticatable
     {
         return $this->hasMany(Order::class);
     }
+
+    // Relasi ke ulasan
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function tickets()
+    {
+        return $this->hasMany(Ticket::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
 }

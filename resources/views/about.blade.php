@@ -619,7 +619,7 @@
   <div class="container">
     <div class="story-grid">
       <div class="story-content">
-        <h2>Our Story</h2>
+        <h2>Cerita Kami</h2>
         <p>Sepatukuid lahir dari kecintaan yang mendalam terhadap dunia sneakers. Berawal dari sebuah mimpi sederhana pada tahun 2020, kami memulai perjalanan sebagai kolektor sneakers yang ingin berbagi passion dengan komunitas yang lebih luas.</p>
         <p>Kami percaya bahwa sepasang sneakers bukan hanya alas kaki, tetapi juga cerminan kepribadian, gaya hidup, dan semangat. Setiap langkah yang diambil adalah pernyataan diri.</p>
         <p class="highlight">"Kualitas adalah prioritas, kepuasan pelanggan adalah misi kami."</p>
@@ -644,7 +644,7 @@
         <div class="mission-icon">
           <i class="fa-solid fa-bullseye"></i>
         </div>
-        <h3>Our Mission</h3>
+        <h3>Misi Kami</h3>
         <p>Menjadi platform sneakers terdepan yang menyediakan produk original berkualitas tinggi dengan pengalaman berbelanja yang tak terlupakan.</p>
         <ul class="mission-list">
           <li><i class="fa-solid fa-check"></i> Menyediakan 100% produk original</li>
@@ -658,7 +658,7 @@
         <div class="mission-icon">
           <i class="fa-solid fa-eye"></i>
         </div>
-        <h3>Our Vision</h3>
+        <h3>Visi Kami</h3>
         <p>Menjadi destinasi utama bagi pecinta sneakers di Indonesia dengan menghadirkan koleksi terlengkap dan pengalaman berbelanja terbaik.</p>
         <ul class="mission-list">
           <li><i class="fa-solid fa-check"></i> Ekspansi ke seluruh Indonesia</li>
@@ -697,7 +697,7 @@
 <section class="values-section">
   <div class="container">
     <div class="section-title">
-      <h2>Our Core Values</h2>
+      <h2>Nilai Utama Kami</h2>
       <p>Nilai-nilai yang menjadi fondasi setiap langkah kami</p>
     </div>
     
@@ -740,7 +740,7 @@
 <section class="timeline-section">
   <div class="container">
     <div class="section-title">
-      <h2>Our Journey</h2>
+      <h2>Perjalanan Kami</h2>
       <p>Perjalanan Sepatukuid dari awal hingga sekarang</p>
     </div>
     
@@ -796,13 +796,13 @@
 <section class="team-section">
   <div class="container">
     <div class="section-title">
-      <h2>Meet Our Team</h2>
+      <h2>Tim Kami</h2>
       <p>Tim profesional di balik Sepatukuid</p>
     </div>
     
     <div class="team-grid">
       <div class="team-card">
-        <img src="https://randomuser.me/api/portraits/men/32.jpg" class="team-image" alt="Founder">
+        <div class="team-image" style="background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#cbd5e1;"><i class="fa-solid fa-user-secret" style="font-size: 80px;"></i></div>
         <div class="team-info">
           <h3>Rizky Pratama</h3>
           <div class="position">Founder & CEO</div>
@@ -816,7 +816,7 @@
       </div>
       
       <div class="team-card">
-        <img src="https://randomuser.me/api/portraits/women/44.jpg" class="team-image" alt="Operations">
+        <div class="team-image" style="background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#cbd5e1;"><i class="fa-solid fa-user-secret" style="font-size: 80px;"></i></div>
         <div class="team-info">
           <h3>Sarah Wijaya</h3>
           <div class="position">Head of Operations</div>
@@ -830,7 +830,7 @@
       </div>
       
       <div class="team-card">
-        <img src="https://randomuser.me/api/portraits/men/62.jpg" class="team-image" alt="Marketing">
+        <div class="team-image" style="background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#cbd5e1;"><i class="fa-solid fa-user-secret" style="font-size: 80px;"></i></div>
         <div class="team-info">
           <h3>Andi Kurniawan</h3>
           <div class="position">Marketing Manager</div>
@@ -844,7 +844,7 @@
       </div>
       
       <div class="team-card">
-        <img src="https://randomuser.me/api/portraits/women/68.jpg" class="team-image" alt="Customer Service">
+        <div class="team-image" style="background:#f1f5f9; display:flex; align-items:center; justify-content:center; color:#cbd5e1;"><i class="fa-solid fa-user-secret" style="font-size: 80px;"></i></div>
         <div class="team-info">
           <h3>Diana Putri</h3>
           <div class="position">Customer Service Lead</div>

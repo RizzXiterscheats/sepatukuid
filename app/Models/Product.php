@@ -20,6 +20,7 @@ class Product extends Model
         'brand',
         'category',
         'category_id',
+        'gender',
         'image',
         'sizes',
         'colors',
@@ -65,5 +66,16 @@ class Product extends Model
     public function getHasDiscountAttribute()
     {
         return !is_null($this->discount_price) && $this->discount_price < $this->price;
+    }
+
+    // Relasi ke ulasan
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function sizes_details()
+    {
+        return $this->hasMany(ProductSize::class);
     }
 }

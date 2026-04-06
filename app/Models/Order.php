@@ -38,6 +38,16 @@ class Order extends Model
         return $this->hasMany(OrderItem::class);
     }
 
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function tracks()
+    {
+        return $this->hasMany(OrderTrack::class);
+    }
+
     // Generate order number
     public static function generateOrderNumber()
     {

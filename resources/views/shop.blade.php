@@ -115,123 +115,6 @@
       opacity: 0.9;
     }
 
-    /* CATEGORIES SECTION */
-    .categories-section {
-      padding: 80px 0;
-      background: white;
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 50px;
-      position: relative;
-    }
-
-    .section-title h2 {
-      font-size: 2.5rem;
-      font-weight: 900;
-      margin-bottom: 15px;
-      position: relative;
-      display: inline-block;
-      background: linear-gradient(45deg, var(--dark), var(--primary));
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: -0.5px;
-    }
-
-    .section-title h2::after {
-      content: '';
-      position: absolute;
-      bottom: -10px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60px;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary), var(--secondary));
-      border-radius: 2px;
-    }
-
-    .section-title p {
-      color: var(--gray);
-      font-size: 1.2rem;
-      max-width: 700px;
-      margin: 20px auto 0;
-      line-height: 1.8;
-    }
-
-    .categories-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 30px;
-    }
-
-    .category-card {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      height: 300px;
-      cursor: pointer;
-      box-shadow: var(--card-shadow);
-      transition: var(--transition);
-    }
-
-    .category-card:hover {
-      transform: translateY(-15px) scale(1.02);
-      box-shadow: var(--card-shadow-hover);
-    }
-
-    .category-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    .category-card:hover img {
-      transform: scale(1.1);
-    }
-
-    .category-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      padding: 30px;
-      color: white;
-    }
-
-    .category-overlay h3 {
-      font-size: 2rem;
-      font-weight: 800;
-      margin-bottom: 10px;
-    }
-
-    .category-overlay p {
-      font-size: 1.1rem;
-      opacity: 0.9;
-      margin-bottom: 20px;
-    }
-
-    .category-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: white;
-      font-weight: 600;
-      transition: var(--transition);
-    }
-
-    .category-link:hover {
-      gap: 15px;
-      color: var(--primary);
-    }
-
     /* FEATURED COLLECTIONS */
     .featured-section {
       padding: 80px 0;
@@ -311,43 +194,6 @@
       z-index: 2;
     }
 
-    /* BRANDS SECTION */
-    .brands-section {
-      padding: 60px 0;
-      background: white;
-    }
-
-    .brands-grid {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 30px;
-      align-items: center;
-    }
-
-    .brand-item {
-      text-align: center;
-      padding: 20px;
-      background: var(--light);
-      border-radius: 15px;
-      transition: var(--transition);
-      cursor: pointer;
-    }
-
-    .brand-item:hover {
-      transform: translateY(-5px);
-      box-shadow: var(--card-shadow);
-    }
-
-    .brand-item i {
-      font-size: 2.5rem;
-      color: var(--primary);
-      margin-bottom: 10px;
-    }
-
-    .brand-item h4 {
-      font-size: 1.1rem;
-      font-weight: 700;
-    }
 
     /* FEATURES SHOP */
     .shop-features {
@@ -712,27 +558,22 @@
       border-color: var(--primary);
     }
     
-    .search-filter {
-      margin-bottom: 40px;
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    .search-filter input {
-      flex: 1;
-      min-width: 250px;
-      padding: 15px 25px;
-      border-radius: 50px;
-      border: 1px solid #ddd;
-    }
-    .search-filter button {
-      padding: 10px 30px;
-      border-radius: 50px;
+    .btn-detail {
+      display: inline-block;
+      width: 100%;
+      text-align: center;
+      padding: 15px;
       background: var(--dark);
       color: white;
+      border-radius: 50px;
       font-weight: 700;
-      border: none;
-      cursor: pointer;
+      margin-top: 15px;
+      transition: var(--transition);
+    }
+    .btn-detail:hover {
+      background: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(229,57,53,0.2);
     }
   </style>
 </head>
@@ -742,7 +583,7 @@
 <x-navbar />
 <section class="shop-hero">
   <div class="container">
-    <h1>Shopping Experience</h1>
+    <h1>Koleksi Sneakers Premium</h1>
     <p>Temukan berbagai koleksi sneakers premium dari brand-brand ternama. Dengan pilihan terlengkap dan harga terbaik, belanja kebutuhan sneakersmu hanya di Sepatukuid.</p>
     <a href="#categories" class="btn">
       <i class="fa-solid fa-shop"></i>
@@ -754,11 +595,11 @@
 <section class="shop-banner">
   <div class="container">
     <div class="banner-content">
-      <h2>Special Offer for You!</h2>
+      <h2>Penawaran Khusus Untuk Anda!</h2>
       <p>Dapatkan diskon hingga 50% untuk pembelian pertama di Sepatukuid. Gratis ongkir ke seluruh Indonesia!</p>
       <a href="/products" class="btn btn-outline" style="color: white; border-color: white;">
         <i class="fa-solid fa-gift"></i>
-        Claim Voucher
+        Ambil Voucher
       </a>
       
       <div class="banner-stats">
@@ -786,19 +627,19 @@
 <section class="categories-section" id="categories">
   <div class="container">
     <div class="section-title">
-      <h2>Shop by Categories</h2>
+      <h2>Pilihan Kategori</h2>
       <p>Jelajahi koleksi sneakers berdasarkan kategori yang kamu sukai</p>
     </div>
     
     <div class="categories-grid">
       @foreach($categories as $category)
       <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
-        <img src="{{ $category->image ? asset('storage/' . $category->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $category->name }}">
+        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $category->name }}">
         <div class="category-overlay">
           <h3>{{ $category->name }}</h3>
           <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
           <a href="{{ route('shop', ['category' => $category->slug]) }}" class="category-link">
-            Shop Now <i class="fa-solid fa-arrow-right"></i>
+            Belanja Sekarang <i class="fa-solid fa-arrow-right"></i>
           </a>
         </div>
       </div>
@@ -810,20 +651,40 @@
 <section class="product-section" id="products">
   <div class="container">
     <div class="section-title">
-      <h2>All Products</h2>
+      <h2>Semua Produk</h2>
       <p>Temukan koleksi lengkap sneakers kami</p>
     </div>
 
     <div class="search-filter">
-      <form action="{{ route('shop') }}" method="GET" style="display: flex; width: 100%; gap: 15px; flex-wrap: wrap;">
-        <input type="text" name="search" placeholder="Cari sneakers..." value="{{ request('search') }}" style="flex: 1; min-width: 250px; padding: 15px 25px; border-radius: 50px; border: 1px solid #ddd;">
-        <select name="category" style="padding: 15px 25px; border-radius: 50px; border: 1px solid #ddd;">
-          <option value="">Semua Kategori</option>
-          @foreach($categories as $cat)
-            <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }}>{{ $cat->name }}</option>
-          @endforeach
-        </select>
-        <button type="submit" style="padding: 10px 30px; border-radius: 50px; background: var(--dark); color: white; font-weight: 700; border: none; cursor: pointer;">Filter</button>
+      <form action="{{ route('shop') }}" method="GET" class="filter-form">
+        <div class="filter-group">
+          <label>Cari Produk</label>
+          <input type="text" name="search" class="filter-input" placeholder="Apa yang Anda cari hari ini?" value="{{ request('search') }}">
+        </div>
+
+        <div class="filter-group">
+          <label>Kategori</label>
+          <select name="category" class="filter-input">
+            <option value="">Semua Kategori</option>
+            @foreach($categories as $cat)
+              <option value="{{ $cat->slug }}" {{ request('category') == $cat->slug ? 'selected' : '' }}>{{ $cat->name }}</option>
+            @endforeach
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>Gender</label>
+          <select name="gender" class="filter-input">
+            <option value="">Semua Gender</option>
+            <option value="pria" {{ request('gender') == 'pria' ? 'selected' : '' }}>Pria</option>
+            <option value="wanita" {{ request('gender') == 'wanita' ? 'selected' : '' }}>Wanita</option>
+            <option value="unisex" {{ request('gender') == 'unisex' ? 'selected' : '' }}>Unisex</option>
+          </select>
+        </div>
+
+        <button type="submit" class="btn-filter">
+          <i class="fa-solid fa-sliders"></i> Filter
+        </button>
       </form>
     </div>
 
@@ -841,6 +702,9 @@
             @else
               Rp {{ number_format($product->price, 0, ',', '.') }}
             @endif
+          </div>
+          <div class="product-stock" style="font-size: 0.85rem; color: var(--gray); margin-bottom: 15px; font-weight: 600;">
+            <i class="fa-solid fa-box-open" style="font-size: 0.8rem; margin-right: 5px; opacity: 0.7;"></i> Stok: {{ $product->stock }}
           </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">Lihat Detail</a>
         </div>
@@ -861,31 +725,31 @@
 <section class="featured-section">
   <div class="container">
     <div class="section-title">
-      <h2>Featured Collections</h2>
+      <h2>Koleksi Unggulan</h2>
       <p>Koleksi pilihan yang sedang tren saat ini</p>
     </div>
     
     <div class="collections-grid">
       <div class="collection-card">
-        <span class="collection-badge">Limited Edition</span>
-        <img src="https://images.unsplash.com/photo-1556909212-d5b604d0c90d?q=80&w=800" alt="Summer Collection">
+        <span class="collection-badge">Edisi Terbatas</span>
+        <img src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=800" alt="Summer Collection">
         <div class="collection-overlay">
           <h3>Summer Vibes</h3>
           <p>Koleksi sneakers warna-warni untuk musim panas</p>
           <a href="/products?collection=summer" class="btn" style="background: white; color: var(--primary);">
-            Explore
+            Jelajahi
           </a>
         </div>
       </div>
       
       <div class="collection-card">
-        <span class="collection-badge">New Arrival</span>
-        <img src="https://images.unsplash.com/photo-1587563871167-f11eaf1b3fa4?q=80&w=800" alt="Urban Collection">
+        <span class="collection-badge">Produk Terbaru</span>
+        <img src="https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=800" alt="Urban Collection">
         <div class="collection-overlay">
           <h3>Urban Street</h3>
           <p>Tampil stylish dengan gaya urban masa kini</p>
           <a href="/products?collection=urban" class="btn" style="background: white; color: var(--primary);">
-            Explore
+            Jelajahi
           </a>
         </div>
       </div>
@@ -902,32 +766,32 @@
     
     <div class="brands-grid">
       <div class="brand-item">
-        <i class="fa-brands fa-nike"></i>
+        <img src="{{ asset('img/brands/nike.png') }}" alt="Nike">
         <h4>Nike</h4>
       </div>
       
       <div class="brand-item">
-        <i class="fa-brands fa-adidas"></i>
+        <img src="{{ asset('img/brands/adidas.png') }}" alt="Adidas">
         <h4>Adidas</h4>
       </div>
       
       <div class="brand-item">
-        <i class="fa-brands fa-puma"></i>
+        <img src="{{ asset('img/brands/puma.png') }}" alt="Puma">
         <h4>Puma</h4>
       </div>
       
       <div class="brand-item">
-        <i class="fa-brands fa-new-balance"></i>
+        <img src="{{ asset('img/brands/new-balance.png') }}" alt="New Balance">
         <h4>New Balance</h4>
       </div>
       
       <div class="brand-item">
-        <i class="fa-brands fa-converse"></i>
+        <img src="{{ asset('img/brands/converse.png') }}" alt="Converse">
         <h4>Converse</h4>
       </div>
       
       <div class="brand-item">
-        <i class="fa-brands fa-vans"></i>
+        <img src="{{ asset('img/brands/vans.png') }}" alt="Vans">
         <h4>Vans</h4>
       </div>
     </div>
@@ -975,13 +839,13 @@
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-box">
-      <h3>Subscribe Newsletter</h3>
+      <h3>Informasi Langganan</h3>
       <p>Dapatkan informasi terbaru tentang produk dan promo spesial langsung ke emailmu</p>
       <form class="newsletter-form">
         <input type="email" placeholder="Masukkan email kamu" required>
         <button type="submit">
           <i class="fa-solid fa-paper-plane"></i>
-          Subscribe
+          Daftar
         </button>
       </form>
     </div>
@@ -1034,7 +898,7 @@
         e.preventDefault();
         const email = this.querySelector('input[type="email"]').value;
         if (email) {
-          alert('Terima kasih telah berlangganan newsletter kami!');
+          alert('Terima kasih telah berlangganan dengan kami!');
           this.reset();
         }
       });

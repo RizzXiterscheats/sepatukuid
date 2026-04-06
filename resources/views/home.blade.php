@@ -941,12 +941,17 @@
   <div class="container">
     <div class="hero-wrap">
       <div class="hero-content">
-        <h1>Style Sneakers yang Mengubah Permainan Fashionmu</h1>
-        <p>Koleksi sneakers premium dengan teknologi terbaru dan desain terkini. Kenyamanan maksimal, harga terjangkau, kualitas terjamin. Upgrade style harianmu sekarang!</p>
-<a href="{{ route('products.index') }}" class="btn">
-  <i class="fa-solid fa-bolt"></i>
-  EXPLORE KOLEKSI
-</a>
+        <h1>Masa Depan Gaya Sneakers</h1>
+        <p>Rasakan generasi terbaru sneakers premium dengan kenyamanan maksimal dan desain ikonik yang mendefinisikan jati dirimu.</p>
+        <div style="display: flex; gap: 20px;">
+          <a href="/shop" class="btn">
+            <i class="fa-solid fa-bag-shopping"></i>
+            Belanja Sekarang
+          </a>
+          <a href="/products" class="btn btn-outline">
+            Jelajahi Koleksi
+          </a>
+        </div>
         
         <div class="hero-stats">
           <div class="stat-item">
@@ -967,6 +972,30 @@
       <div class="hero-image">
         <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=1200" alt="Sneaker Premium Collection">
       </div>
+    </div>
+  </div>
+</section>
+
+<section class="categories-section" id="categories">
+  <div class="container">
+    <div class="section-title">
+      <h2>Pilihan Kategori</h2>
+      <p>Jelajahi koleksi sneakers berdasarkan kategori yang kamu sukai</p>
+    </div>
+    
+    <div class="categories-grid">
+      @foreach($categories as $category)
+      <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
+        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $category->name }}">
+        <div class="category-overlay">
+          <h3>{{ $category->name }}</h3>
+          <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
+          <a href="{{ route('shop', ['category' => $category->slug]) }}" class="category-link">
+            Belanja Sekarang <i class="fa-solid fa-arrow-right"></i>
+          </a>
+        </div>
+      </div>
+      @endforeach
     </div>
   </div>
 </section>
@@ -1051,6 +1080,9 @@
               Rp {{ number_format($product->price, 0, ',', '.') }}
             @endif
           </div>
+          <div class="product-stock" style="font-size: 0.85rem; color: var(--gray); margin-bottom: 20px; font-weight: 600;">
+            <i class="fa-solid fa-box-open" style="font-size: 0.8rem; margin-right: 5px; opacity: 0.7;"></i> Stok: {{ $product->stock }}
+          </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn" style="width: 100%;">
             <i class="fa-solid fa-cart-plus"></i>
             Lihat Detail
@@ -1104,6 +1136,9 @@
             @else
               Rp {{ number_format($product->price, 0, ',', '.') }}
             @endif
+          </div>
+          <div class="product-stock" style="font-size: 0.85rem; color: var(--gray); margin-bottom: 20px; font-weight: 600;">
+            <i class="fa-solid fa-box-open" style="font-size: 0.8rem; margin-right: 5px; opacity: 0.7;"></i> Stok: {{ $product->stock }}
           </div>
           <a href="{{ route('products.show', $product->slug) }}" class="btn-view">
             <i class="fa-solid fa-eye"></i>
@@ -1174,7 +1209,7 @@
     <div class="testimonial-grid">
       <div class="testimonial-card">
         <div class="testimonial-header">
-          <img src="https://randomuser.me/api/portraits/men/32.jpg" class="testimonial-avatar" alt="Customer">
+          <img src="https://www.gravatar.com/avatar/?d=mp&f=y&s=200" class="testimonial-avatar" alt="Customer">
           <div class="testimonial-info">
             <h4>Rizal A.</h4>
             <p>Jakarta • Pembeli Setia</p>
@@ -1192,7 +1227,7 @@
       
       <div class="testimonial-card">
         <div class="testimonial-header">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" class="testimonial-avatar" alt="Customer">
+          <img src="https://www.gravatar.com/avatar/?d=mp&f=y&s=200" class="testimonial-avatar" alt="Customer">
           <div class="testimonial-info">
             <h4>Dina P.</h4>
             <p>Bandung • Fashion Enthusiast</p>
@@ -1210,7 +1245,7 @@
       
       <div class="testimonial-card">
         <div class="testimonial-header">
-          <img src="https://randomuser.me/api/portraits/women/68.jpg" class="testimonial-avatar" alt="Customer">
+          <img src="https://www.gravatar.com/avatar/?d=mp&f=y&s=200" class="testimonial-avatar" alt="Customer">
           <div class="testimonial-info">
             <h4>Carolyn S.</h4>
             <p>Surabaya • Sneaker Collector</p>
@@ -1307,7 +1342,7 @@
       button.addEventListener('click', function() {
         // Animation feedback
         const originalHTML = this.innerHTML;
-        this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Loading...';
+        this.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Memuat...';
         
         setTimeout(() => {
           this.innerHTML = originalHTML;
@@ -1322,13 +1357,13 @@
     if (offerButton) {
       offerButton.addEventListener('click', function() {
         const originalHTML = this.innerHTML;
-        this.innerHTML = '<i class="fa-solid fa-gift"></i> PROMO DICLAIM!';
+        this.innerHTML = '<i class="fa-solid fa-gift"></i> PROMO DIAMBIL!';
         this.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2ECC71 100%)';
         
         setTimeout(() => {
           this.innerHTML = originalHTML;
           this.style.background = 'white';
-          alert('Selamat! Anda mendapatkan promo 90% off. Kode promo telah dikirim ke email Anda.');
+          alert('Selamat! Anda mendapatkan promo diskon 90%. Kode promo telah dikirim ke email Anda.');
         }, 2000);
       });
     }

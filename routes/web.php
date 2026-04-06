@@ -59,6 +59,18 @@ Route::middleware(['auth'])->group(function () {
     
     // Orders (history pesanan user)
     Route::get('/orders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('orders');
+    Route::get('/orders/{id}/track', [App\Http\Controllers\ProfileController::class, 'trackOrder'])->name('orders.track');
+    
+    // Helpdesk Tickets (User)
+    Route::get('/bantuan', [\App\Http\Controllers\TicketController::class, 'index'])->name('tickets.index');
+    Route::post('/bantuan', [\App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');
+    Route::get('/bantuan/{id}', [\App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
+    Route::post('/bantuan/{id}/reply', [\App\Http\Controllers\TicketController::class, 'reply'])->name('tickets.reply');
+    Route::post('/chat-ai', [\App\Http\Controllers\TicketController::class, 'storeAjax'])->name('chat-ai.store');
+    
+    // Wishlist (User)
+    Route::get('/wishlist', [\App\Http\Controllers\WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/toggle', [\App\Http\Controllers\WishlistController::class, 'toggle'])->name('wishlist.toggle');
     
     // Profile user
     Route::get('/profile', function () {
@@ -67,6 +79,9 @@ Route::middleware(['auth'])->group(function () {
     
     // Profile update
     Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    // Reviews
+    Route::post('/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
 });
 
 // ==================== ADMINISTRATIVE ROUTES (ADMIN & PETUGAS) ====================
@@ -85,10 +100,18 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
         Route::get('pesanan/{order}', [\App\Http\Controllers\Admin\OrderController::class, 'show'])->name('pesanan.show');
         Route::patch('pesanan/{order}/status', [\App\Http\Controllers\Admin\OrderController::class, 'updateStatus'])->name('pesanan.update-status');
         Route::patch('pesanan/{order}/payment', [\App\Http\Controllers\Admin\OrderController::class, 'updatePayment'])->name('pesanan.update-payment');
+        Route::post('pesanan/{order}/track', [\App\Http\Controllers\Admin\OrderController::class, 'addTrack'])->name('pesanan.add-track');
 
         // Customer Routes
         Route::get('pelanggan', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('pelanggan.index');
         Route::get('pelanggan/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('pelanggan.show');
+
+        // Helpdesk Tickets (Admin)
+        Route::get('tiket-bantuan', [\App\Http\Controllers\Admin\TicketController::class, 'index'])->name('tickets.index');
+        Route::get('tiket-bantuan/{id}', [\App\Http\Controllers\Admin\TicketController::class, 'show'])->name('tickets.show');
+        Route::post('tiket-bantuan/{id}/reply', [\App\Http\Controllers\Admin\TicketController::class, 'reply'])->name('tickets.reply');
+        Route::patch('tiket-bantuan/{id}/status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.update-status');
+        Route::delete('tiket-bantuan/{id}', [\App\Http\Controllers\Admin\TicketController::class, 'destroy'])->name('tickets.destroy');
     });
 
     // Petugas Prefix (Redirect to Admin Dashboard)

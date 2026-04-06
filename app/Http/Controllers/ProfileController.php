@@ -55,6 +55,20 @@ class ProfileController extends Controller
     }
 
     /**
+     * Track a specific order's timeline.
+     */
+    public function trackOrder($id): View
+    {
+        $order = Order::where('user_id', Auth::id())
+            ->with(['items.product', 'tracks' => function($q) {
+                $q->orderBy('created_at', 'desc');
+            }])
+            ->findOrFail($id);
+
+        return view('user.order-track', compact('order'));
+    }
+
+    /**
      * Delete the user's account.
      */
     public function destroy(Request $request): RedirectResponse
