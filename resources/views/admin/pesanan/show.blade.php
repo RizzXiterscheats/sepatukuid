@@ -352,8 +352,16 @@
                     <form action="{{ route('admin.pesanan.add-track', $order) }}" method="POST" style="margin-top: 24px; padding-top: 24px; border-top: 1px dashed var(--surface-200);">
                         @csrf
                         <div class="form-group">
-                            <label class="form-label" for="status_title">Tambah Riwayat Lacak (Kustom)</label>
-                            <input type="text" name="status_title" class="premium-select" style="background-image: none; margin-bottom: 10px;" placeholder="Contoh: Paket Diserahkan ke Kurir" required>
+                            <label class="form-label" for="status_title">Tambah Riwayat Lacak (Pilih Status)</label>
+                            <select name="status_title" class="premium-select" style="background-image: none; margin-bottom: 10px;" required>
+                                <option value="" disabled selected>--- Pilih Status Lacak ---</option>
+                                <option value="Pesanan Sedang Diproses">📦 Pesanan Sedang Diproses</option>
+                                <option value="Pesanan Telah Diserahkan ke Kurir">🚚 Pesanan Telah Diserahkan ke Kurir</option>
+                                <option value="Dalam Pengiriman ke Alamat Tujuan">🛣️ Dalam Pengiriman (In Transit)</option>
+                                <option value="Paket Telah Sampai di Kota Tujuan">📍 Paket Telah Sampai di Kota Tujuan</option>
+                                <option value="Pesanan Sedang Dibawa Kurir ke Alamat">🛵 Sedang Dibawa Kurir ke Alamat</option>
+                                <option value="Pesanan Telah Diterima">✅ Pesanan Telah Diterima</option>
+                            </select>
                             <textarea name="description" class="premium-select" style="background-image: none; height: 80px; resize: vertical;" placeholder="Catatan opsional (misal nama kurir, atau resi)"></textarea>
                         </div>
                         <button type="submit" class="btn-submit" style="background:var(--success);color:white;">

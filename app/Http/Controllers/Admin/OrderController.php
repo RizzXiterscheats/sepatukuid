@@ -130,10 +130,17 @@ class OrderController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        $order->tracks()->create([
+        $track = $order->tracks()->create([
             'status_title' => $validated['status_title'],
             'description' => $validated['description'],
         ]);
+
+        // Otomatis update status utama jika milestone tercapai
+        if (str_contains($validated['status_title'], 'Diserahkan ke Kurir')) {
+            $order->update(['status' => 'shipped']);
+        } elseif (str_contains($validated['status_title'], 'Telah Diterima')) {
+            $order->update(['status' => 'delivered']);
+        }
 
         return back()->with('success', 'Timeline pelacakan berhasil ditambahkan!');
     }

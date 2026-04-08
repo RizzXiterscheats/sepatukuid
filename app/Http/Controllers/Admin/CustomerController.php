@@ -87,4 +87,46 @@ class CustomerController extends Controller
         $customer->delete();
         return redirect()->route('admin.pelanggan.index')->with('success', 'Akun pelanggan berhasil dihapus.');
     }
+
+    /**
+     * Show the form for editing the specified customer.
+     */
+    public function edit(User $customer)
+    {
+        if ($customer->role !== 'user') {
+            abort(404, 'Data pelanggan tidak ditemukan.');
+        }
+
+        return view('admin.pelanggan.edit', compact('customer'));
+    }
+
+    /**
+     * Update the specified customer in storage.
+     */
+    public function update(Request $request, User $customer)
+    {
+        if ($customer->role !== 'user') {
+            return back()->with('error', 'Hanya bisa mengedit akun pelanggan.');
+        }
+
+        $validated = $request->validate([
+            'name'     => 'required|string|max:255',
+            'email'    => ['required', 'string', 'email', 'max:255', \Illuminate\Validation\Rule::unique('users')->ignore($customer->id)],
+            'phone'    => 'nullable|string|max:20',
+            'password' => 'nullable|string|min:4',
+        ]);
+
+        $customer->name  = $validated['name'];
+        $customer->email = $validated['email'];
+        $customer->phone = $validated['phone'];
+
+        // Jika password diisi, maka update
+        if (!empty($validated['password'])) {
+            $customer->password = $validated['password'];
+        }
+
+        $customer->save();
+
+        return redirect()->route('admin.pelanggan.index')->with('success', 'Data pelanggan berhasil diperbarui.');
+    }
 }

@@ -213,7 +213,7 @@
                             </td>
                             <td>
                                 <div class="action-group">
-                                    <a href="{{ route('admin.petugas.edit', $staff) }}" class="action-btn btn-edit" title="Edit Profil">
+                                    <a href="{{ route('admin.petugas.edit', $staff) }}" class="action-btn btn-edit" title="Edit Profil & Password">
                                         <i class="fas fa-pen"></i>
                                     </a>
                                     
@@ -245,5 +245,4 @@
                 {{ $staffs->links('pagination::bootstrap-4') }}
             </div>
         @endif
-    </div>
 @endsection

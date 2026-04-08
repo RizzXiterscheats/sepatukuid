@@ -19,7 +19,8 @@ class Order extends Model
         'shipping_address',
         'shipping_method',
         'payment_proof',
-        'notes'
+        'notes',
+        'cancel_reason'
     ];
 
     protected $casts = [

@@ -32,7 +32,7 @@
     <div class="ticket-grid">
         <div>
             <!-- Chat Box -->
-            <div class="chat-container">
+            <div class="chat-container" id="adminChatContainer">
                 <div style="text-align: center; margin-bottom: 20px; color: #94a3b8; font-size: 12px; font-weight: 600; text-transform: uppercase;">
                     Topik: {{ $ticket->subject }} &middot; Dibuat {{ $ticket->created_at->format('d M Y') }}
                 </div>
@@ -49,13 +49,13 @@
             <!-- Balas Box -->
             @if($ticket->status != 'closed')
             <div class="control-panel">
-                <form action="{{ route('admin.tickets.reply', $ticket->id) }}" method="POST">
+                <form action="{{ route('admin.tickets.reply', $ticket->id) }}" method="POST" id="adminReplyForm">
                     @csrf
                     <div style="margin-bottom: 15px;">
                         <label style="font-weight: 700; display: block; margin-bottom: 10px;">Balas Ke Pelanggan</label>
-                        <textarea name="message" rows="4" style="width: 100%; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; font-family: inherit;" required placeholder="Ketik balasan Anda memberikan solusi..."></textarea>
+                        <textarea name="message" id="adminReplyMessage" rows="4" style="width: 100%; border: 2px solid #e2e8f0; border-radius: 8px; padding: 15px; font-family: inherit;" required placeholder="Ketik balasan Anda memberikan solusi..."></textarea>
                     </div>
-                    <button type="submit" style="background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">
+                    <button type="submit" id="adminSubmitBtn" style="background: var(--primary); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: 700; cursor: pointer;">
                         <i class="fa-solid fa-paper-plane"></i> Kirim Jawaban
                     </button>
                 </form>
@@ -99,3 +99,110 @@
         </div>
     </div>
 @endsection
+
+@push('scripts')
+<script>
+    const ticketId = {{ $ticket->id }};
+    const ticketUserId = {{ $ticket->user_id }};
+    const chatContainer = document.getElementById('adminChatContainer');
+    const replyForm = document.getElementById('adminReplyForm');
+    const replyMessage = document.getElementById('adminReplyMessage');
+    const submitBtn = document.getElementById('adminSubmitBtn');
+    let lastReplyCount = {{ $ticket->replies->count() }};
+
+    // Scroll to bottom on load
+    chatContainer.scrollTop = chatContainer.scrollHeight;
+
+    // Handle AJAX Form Submission
+    if (replyForm) {
+        replyForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const message = replyMessage.value.trim();
+            if (!message) return;
+
+            // Disable button
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+            const formData = new FormData(replyForm);
+            
+            fetch(replyForm.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    replyMessage.value = '';
+                    fetchReplies(); // Refresh immediately
+                }
+            })
+            .catch(error => console.error('Error:', error))
+            .finally(() => {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '<i class="fa-solid fa-paper-plane"></i> Kirim Jawaban';
+            });
+        });
+    }
+
+    // Fetch Replies Automatically
+    function fetchReplies() {
+        fetch(`{{ route('admin.tickets.replies', $ticket->id) }}`, {
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success && data.replies.length > lastReplyCount) {
+                renderReplies(data.replies);
+                lastReplyCount = data.replies.length;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        })
+        .catch(error => console.error('Error fetching replies:', error));
+    }
+
+    function renderReplies(replies) {
+        // Keep the topic header
+        const topicHeader = chatContainer.querySelector('div:first-child');
+        chatContainer.innerHTML = '';
+        chatContainer.appendChild(topicHeader);
+
+        replies.forEach(reply => {
+            const isClient = reply.user.role === 'user';
+            const date = new Date(reply.created_at);
+            const timeString = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' }) + ', ' + 
+                             date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short', year: 'numeric' });
+
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isClient ? 'msg-client' : 'msg-admin'}`;
+            
+            const authorRole = reply.user.id === ticketUserId ? '(Client)' : '(Staff)';
+            
+            const escapedMessage = reply.message
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+
+            let html = '';
+            html += `<div class="msg-author">${reply.user.name} ${authorRole}</div>`;
+            html += `<div class="msg-text">${escapedMessage.replace(/\n/g, '<br>')}</div>`;
+            html += `<span class="msg-time">${timeString}</span>`;
+            
+            messageDiv.innerHTML = html;
+            chatContainer.appendChild(messageDiv);
+        });
+    }
+
+    // Start polling
+    setInterval(fetchReplies, 3000);
+</script>
+@endpush

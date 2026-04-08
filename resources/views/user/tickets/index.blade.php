@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pusat Bantuan - Sepatukuid</title>
+    <title>Ticket Bantuan - Sepatukuid</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -57,12 +57,22 @@
         .form-label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
         .form-control { width: 100%; padding: 12px; border: 2px solid #e2e8f0; border-radius: 8px; font-family: inherit; }
         .form-control:focus { border-color: var(--primary); outline: none; }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 15px; }
+            .header h1 { font-size: 1.5rem; }
+            .ticket-card { flex-direction: column; align-items: flex-start; gap: 15px; position: relative; }
+            .ticket-meta { flex-direction: column; gap: 5px; }
+            .ticket-card > div:last-child { align-self: flex-start; margin-top: 10px; }
+            .ticket-card i.fa-chevron-right { position: absolute; right: 20px; top: 50%; transform: translateY(-50%); }
+            .modal { width: 90%; margin: 20px auto; padding: 20px; max-height: 90vh; overflow-y: auto; }
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1><i class="fa-solid fa-headset"></i> Pusat Bantuan</h1>
+            <h1><i class="fa-solid fa-headset"></i> Ticket Bantuan</h1>
             <div style="display: flex; gap: 10px;">
                 <a href="{{ route('home') }}" class="btn btn-back">Kembali</a>
                 <button onclick="document.getElementById('ticketModal').style.display='flex'" class="btn btn-primary">

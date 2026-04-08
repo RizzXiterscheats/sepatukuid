@@ -65,7 +65,24 @@ class TicketController extends Controller
             $ticket->update(['status' => 'open']);
         }
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Balasan berhasil dikirim!'
+            ]);
+        }
+
         return back()->with('success', 'Balasan berhasil dikirim!');
+    }
+
+    public function getReplies($id)
+    {
+        $ticket = Ticket::where('user_id', Auth::id())->with(['replies.user'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'replies' => $ticket->replies
+        ]);
     }
 
     public function storeAjax(Request $request)
@@ -90,7 +107,7 @@ class TicketController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Pesan berhasil dikirim ke Admin. Kami akan membalas di menu Pusat Bantuan.'
+            'message' => 'Pesan berhasil dikirim ke Admin. Kami akan membalas di menu Ticket Bantuan.'
         ]);
     }
 }

@@ -14,120 +14,7 @@
   <!-- SweetAlert2 -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-  <!-- Custom CSS -->
   <link rel="stylesheet" href="{{ asset('css/frontend.css') }}">
-
-  <style>
-    :root {
-      --primary: #E50914; /* Red theme */
-      --primary-dark: #b20710;
-      --dark: #141414;
-      --light: #f5f5f7;
-      --gray: #86868b;
-      --border: #d2d2d7;
-      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: 'Inter', sans-serif; background: #fff; color: var(--dark); line-height: 1.5; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-    a { text-decoration: none; color: inherit; }
-
-    /* Detailed Layout Improvements */
-    .detail-container {
-      max-width: 1200px;
-      margin: 120px auto 80px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 50px;
-      padding: 0 20px;
-    }
-
-    .back-nav {
-      margin-bottom: 30px;
-      grid-column: 1 / -1;
-    }
-
-    .btn-back-shop {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      color: var(--gray);
-      font-weight: 600;
-      font-size: 0.95rem;
-      transition: var(--transition);
-      padding: 10px 0;
-    }
-
-    .btn-back-shop:hover {
-      color: var(--primary);
-      transform: translateX(-5px);
-    }
-
-    /* Image Gallery */
-    .product-gallery { position: sticky; top: 120px; }
-    .main-image { width: 100%; border-radius: 20px; background: #fafafa; overflow: hidden; border: 1px solid var(--border); }
-    .main-image img { width: 100%; height: auto; display: block; mix-blend-mode: multiply; }
-
-    /* Product Info */
-    .product-info h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 5px; letter-spacing: -1px; line-height: 1.1; }
-    .sku-code { color: var(--gray); font-size: 0.85rem; margin-bottom: 20px; display: block; font-weight: 500; }
-    .category-badge { display: inline-block; padding: 6px 16px; background: rgba(229, 9, 20, 0.05); color: var(--primary); border-radius: 50px; font-size: 0.85rem; font-weight: 700; margin-bottom: 15px; }
-    .price-container { display: flex; align-items: baseline; gap: 15px; margin-bottom: 30px; }
-    .price { font-size: 2.2rem; font-weight: 800; color: var(--primary); }
-    .original-price { font-size: 1.2rem; color: var(--gray); text-decoration: line-through; }
-    .description { color: var(--gray-dark); font-size: 1.05rem; margin-bottom: 35px; line-height: 1.7; }
-
-    /* Options */
-    .option-group { margin-bottom: 35px; }
-    .option-label { font-size: 0.95rem; font-weight: 800; margin-bottom: 15px; display: block; color: var(--dark); text-transform: uppercase; letter-spacing: 0.5px; }
-    .size-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(65px, 1fr)); gap: 12px; }
-    .size-btn { padding: 14px; border: 2px solid #eee; border-radius: 12px; text-align: center; cursor: pointer; transition: var(--transition); font-weight: 700; font-size: 0.9rem; background: #fff; }
-    .size-btn:hover { border-color: var(--primary); color: var(--primary); }
-    .size-btn.active { background: var(--dark); color: #fff; border-color: var(--dark); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
-
-    /* Action Buttons */
-    .action-group { display: flex; gap: 15px; margin-top: 40px; }
-    .btn-add { flex: 1; padding: 20px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: #fff; border: none; border-radius: 50px; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; gap: 12px; box-shadow: 0 10px 25px rgba(229, 9, 20, 0.2); }
-    .btn-add:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(229, 9, 20, 0.3); }
-    .btn-wishlist { width: 64px; height: 64px; border: 2px solid #eee; border-radius: 50%; background: #fff; cursor: pointer; transition: var(--transition); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: var(--gray); }
-    .btn-wishlist:hover { border-color: var(--primary); color: var(--primary); background: #fff5f5; }
-
-    /* Information Tabs */
-    .product-tabs { margin-top: 50px; padding-top: 40px; border-top: 1px solid #eee; }
-    .tab-nav { display: flex; gap: 30px; margin-bottom: 25px; border-bottom: 1px solid #eee; }
-    .tab-link { padding: 15px 0; font-weight: 700; font-size: 1rem; color: var(--gray); cursor: pointer; position: relative; }
-    .tab-link.active { color: var(--dark); }
-    .tab-link.active::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 100%; height: 2px; background: var(--primary); }
-
-    /* Review Styles */
-    .review-item { padding: 25px 0; border-bottom: 1px solid #eee; }
-    .review-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .review-user { font-weight: 700; font-size: 1rem; color: var(--dark); }
-    .review-date { font-size: 0.85rem; color: var(--gray); }
-    .review-stars { color: #FFB400; font-size: 0.9rem; }
-    .review-comment { font-size: 0.95rem; color: var(--gray-dark); line-height: 1.6; }
-    .no-reviews { text-align: center; padding: 40px 0; color: var(--gray); font-style: italic; }
-    .rating-summary { display: flex; align-items: center; gap: 20px; margin-bottom: 30px; padding: 20px; background: var(--light); border-radius: 15px; }
-    .avg-rating { font-size: 3rem; font-weight: 800; color: var(--dark); }
-    .star-bars { flex: 1; }
-
-    /* Related Products */
-    .related-section { padding: 100px 0; border-top: 1px solid #eee; }
-    .related-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 30px; }
-    .related-card { border-radius: 20px; overflow: hidden; transition: var(--transition); background: #fff; border: 1px solid #f0f0f0; }
-    .related-card:hover { transform: translateY(-10px); box-shadow: var(--card-shadow); border-color: transparent; }
-    .related-card img { width: 100%; height: 280px; object-fit: cover; background: #fafafa; }
-    .related-info { padding: 20px; }
-    .related-title { font-weight: 700; margin-bottom: 8px; font-size: 1.1rem; color: var(--dark); }
-    .related-price { color: var(--primary); font-weight: 800; font-size: 1rem; }
-
-    @media (max-width: 992px) {
-      .detail-container { grid-template-columns: 1fr; margin-top: 100px; gap: 30px; }
-      .product-info h1 { font-size: 2.2rem; }
-      .related-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-  </style>
 </head>
 <body>
 
@@ -164,10 +51,17 @@
         @endif
       </div>
 
-      <div class="stock-status" style="margin-bottom: 25px; padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; border: 1px solid #eee;">
-        <i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i>
-        <span style="color: var(--gray-dark);">Stok Tersedia:</span>
-        <span style="color: var(--dark);">{{ $product->stock }} produk</span>
+      <div style="display: flex; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;">
+        <div class="stock-status" style="padding: 8px 15px; background: #f8f9fa; border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; border: 1px solid #eee;">
+          <i class="fa-solid fa-boxes-stacked" style="color: var(--primary);"></i>
+          <span style="color: var(--gray-dark);">Stok Tersedia:</span>
+          <span style="color: var(--dark);">{{ $product->stock }} produk</span>
+        </div>
+        <div class="sold-status" style="padding: 8px 15px; background: rgba(255, 152, 0, 0.05); border-radius: 8px; display: inline-flex; align-items: center; gap: 10px; font-weight: 700; font-size: 0.95rem; border: 1px solid rgba(255, 152, 0, 0.1);">
+          <i class="fa-solid fa-fire" style="color: #FF9800;"></i>
+          <span style="color: var(--gray-dark);">Total Terjual:</span>
+          <span style="color: var(--dark);">{{ $product->total_sold ?? 0 }} produk</span>
+        </div>
       </div>
 
       <div class="description" style="margin-bottom: 30px;">

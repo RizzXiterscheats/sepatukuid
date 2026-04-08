@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
+use App\Http\Controllers\Auth\ForgotPasswordOTPController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CheckoutController;
 
@@ -37,6 +38,12 @@ Route::middleware('guest')->group(function () {
     // Register
     Route::get('/register', [RegisterController::class, 'showRegisterForm'])->name('register');
     Route::post('/register', [RegisterController::class, 'register'])->name('register');
+
+    // Password Reset (OTP)
+    Route::get('/forgot-password', [ForgotPasswordOTPController::class, 'requestForm'])->name('password.request');
+    Route::post('/forgot-password', [ForgotPasswordOTPController::class, 'sendOTP'])->name('password.email-post');
+    Route::get('/verify-otp', [ForgotPasswordOTPController::class, 'verifyForm'])->name('password.verifyForm');
+    Route::post('/reset-password', [ForgotPasswordOTPController::class, 'resetPassword'])->name('password.reset-post');
 });
 
 // Logout
@@ -60,11 +67,14 @@ Route::middleware(['auth'])->group(function () {
     // Orders (history pesanan user)
     Route::get('/orders', [App\Http\Controllers\ProfileController::class, 'orders'])->name('orders');
     Route::get('/orders/{id}/track', [App\Http\Controllers\ProfileController::class, 'trackOrder'])->name('orders.track');
+    Route::post('/orders/{id}/cancel', [App\Http\Controllers\ProfileController::class, 'cancelOrder'])->name('orders.cancel');
+    Route::post('/orders/{id}/change-payment', [App\Http\Controllers\ProfileController::class, 'changePaymentMethod'])->name('orders.change-payment');
     
     // Helpdesk Tickets (User)
     Route::get('/bantuan', [\App\Http\Controllers\TicketController::class, 'index'])->name('tickets.index');
     Route::post('/bantuan', [\App\Http\Controllers\TicketController::class, 'store'])->name('tickets.store');
     Route::get('/bantuan/{id}', [\App\Http\Controllers\TicketController::class, 'show'])->name('tickets.show');
+    Route::get('/bantuan/{id}/replies', [\App\Http\Controllers\TicketController::class, 'getReplies'])->name('tickets.replies');
     Route::post('/bantuan/{id}/reply', [\App\Http\Controllers\TicketController::class, 'reply'])->name('tickets.reply');
     Route::post('/chat-ai', [\App\Http\Controllers\TicketController::class, 'storeAjax'])->name('chat-ai.store');
     
@@ -82,6 +92,9 @@ Route::middleware(['auth'])->group(function () {
 
     // Reviews
     Route::post('/reviews', [App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+
+    // Order Returns
+    Route::post('/returns', [\App\Http\Controllers\OrderReturnController::class, 'store'])->name('returns.store');
 });
 
 // ==================== ADMINISTRATIVE ROUTES (ADMIN & PETUGAS) ====================
@@ -105,13 +118,27 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
         // Customer Routes
         Route::get('pelanggan', [\App\Http\Controllers\Admin\CustomerController::class, 'index'])->name('pelanggan.index');
         Route::get('pelanggan/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'show'])->name('pelanggan.show');
+        Route::get('pelanggan/{customer}/edit', [\App\Http\Controllers\Admin\CustomerController::class, 'edit'])->name('pelanggan.edit');
+        Route::put('pelanggan/{customer}', [\App\Http\Controllers\Admin\CustomerController::class, 'update'])->name('pelanggan.update');
 
         // Helpdesk Tickets (Admin)
         Route::get('tiket-bantuan', [\App\Http\Controllers\Admin\TicketController::class, 'index'])->name('tickets.index');
         Route::get('tiket-bantuan/{id}', [\App\Http\Controllers\Admin\TicketController::class, 'show'])->name('tickets.show');
+        Route::get('tiket-bantuan/{id}/replies', [\App\Http\Controllers\Admin\TicketController::class, 'getReplies'])->name('tickets.replies');
         Route::post('tiket-bantuan/{id}/reply', [\App\Http\Controllers\Admin\TicketController::class, 'reply'])->name('tickets.reply');
         Route::patch('tiket-bantuan/{id}/status', [\App\Http\Controllers\Admin\TicketController::class, 'updateStatus'])->name('tickets.update-status');
         Route::delete('tiket-bantuan/{id}', [\App\Http\Controllers\Admin\TicketController::class, 'destroy'])->name('tickets.destroy');
+
+        // Review Management (Ulasan)
+        Route::get('ulasan', [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('ulasan.index');
+        Route::get('ulasan/{review}/edit', [\App\Http\Controllers\Admin\ReviewController::class, 'edit'])->name('ulasan.edit');
+        Route::put('ulasan/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'update'])->name('ulasan.update');
+        Route::delete('ulasan/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('ulasan.destroy');
+
+        // Order Return Management
+        Route::get('returns', [\App\Http\Controllers\Admin\OrderReturnController::class, 'index'])->name('returns.index');
+        Route::get('returns/{orderReturn}', [\App\Http\Controllers\Admin\OrderReturnController::class, 'show'])->name('returns.show');
+        Route::patch('returns/{orderReturn}/status', [\App\Http\Controllers\Admin\OrderReturnController::class, 'updateStatus'])->name('returns.update-status');
     });
 
     // Petugas Prefix (Redirect to Admin Dashboard)

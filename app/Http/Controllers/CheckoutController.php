@@ -122,10 +122,11 @@ class CheckoutController extends Controller
                     'price' => $details['price'],
                 ]);
 
-                // Kurangi stok produk
+                // Kurangi stok produk dan tambah total terjual
                 $product = Product::find($details['id']);
                 if ($product) {
                     $product->decrement('stock', $details['quantity']);
+                    $product->increment('total_sold', $details['quantity']);
                 }
             }
 

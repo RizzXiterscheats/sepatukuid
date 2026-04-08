@@ -334,7 +334,7 @@
             <input type="checkbox" id="remember" name="remember">
             <span>Ingat saya</span>
         </label>
-        <a href="#" class="forgot-password">Lupa password?</a>
+        <a href="{{ route('password.request') }}" class="forgot-password">Lupa password?</a>
     </div>
     
     <button type="submit" class="btn-login">

@@ -855,12 +855,6 @@
               </label>
 
               <label class="payment-option">
-                <input type="radio" name="payment_method" value="SHOPEEPAY">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/f/fe/ShopeePay.svg" alt="ShopeePay" class="payment-logo">
-                <span class="payment-name">ShopeePay</span>
-              </label>
-
-              <label class="payment-option">
                 <input type="radio" name="payment_method" value="LINKAJA">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/8/85/LinkAja.svg" alt="LinkAja" class="payment-logo">
                 <span class="payment-name">LinkAja</span>
@@ -876,33 +870,9 @@
               </label>
               
               <label class="payment-option">
-                <input type="radio" name="payment_method" value="Mandiri">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5a/Bank_Mandiri_logo.svg" alt="Mandiri" class="payment-logo">
-                <span class="payment-name">Bank Mandiri</span>
-              </label>
-              
-              <label class="payment-option">
                 <input type="radio" name="payment_method" value="BNI">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/BNI_logo.svg" alt="BNI" class="payment-logo">
+               <img src="{{ asset('img/bni.png') }}" alt="BNI" class="payment-logo">
                 <span class="payment-name">Bank BNI</span>
-              </label>
-              
-              <label class="payment-option">
-                <input type="radio" name="payment_method" value="BRI">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/5/5c/BRI_logo.svg" alt="BRI" class="payment-logo">
-                <span class="payment-name">Bank BRI</span>
-              </label>
-
-              <label class="payment-option">
-                <input type="radio" name="payment_method" value="CIMB">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/e0/CIMB_Niaga_logo.svg" alt="CIMB" class="payment-logo">
-                <span class="payment-name">Bank CIMB</span>
-              </label>
-
-              <label class="payment-option">
-                <input type="radio" name="payment_method" value="Permata">
-                <img src="https://upload.wikimedia.org/wikipedia/id/d/dc/PermataBank_logo.svg" alt="Permata" class="payment-logo">
-                <span class="payment-name">Bank Permata</span>
               </label>
             </div>
 

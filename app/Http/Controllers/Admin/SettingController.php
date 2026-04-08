@@ -18,10 +18,10 @@ class SettingController extends Controller
         
         // Definisikan default values jika belum ada di database
         $defaults = [
-            'store_name' => 'SepatuWara',
+            'store_name' => 'SepatukuID',
             'store_description' => 'Toko sepatu online termurah dan terpercaya',
             'store_phone' => '08123456789',
-            'store_email' => 'admin@sepatuwara.com',
+            'store_email' => 'admin@sepatukuid.com',
             'store_address' => 'Jl. Kebon Jeruk No. 123, Jakarta Barat',
             'social_instagram' => 'https://instagram.com/',
             'social_facebook' => 'https://facebook.com/',

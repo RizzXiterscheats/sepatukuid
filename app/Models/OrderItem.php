@@ -41,4 +41,9 @@ class OrderItem extends Model
     {
         return ($this->price - $this->discount) * $this->quantity;
     }
+
+    public function returnRequest()
+    {
+        return $this->hasOne(OrderReturn::class, 'order_item_id');
+    }
 }

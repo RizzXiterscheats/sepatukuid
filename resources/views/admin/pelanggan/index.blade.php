@@ -82,6 +82,7 @@
     .action-group { display: flex; gap: 8px; justify-content: center; }
     .action-btn { width: 36px; height: 36px; border-radius: 10px; display: inline-flex; align-items: center; justify-content: center; background: var(--surface-50); color: var(--text-muted); border: 1px solid var(--surface-200); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); text-decoration: none; cursor: pointer; }
     .btn-view:hover { background: #4f46e5; color: white; border-color: #4f46e5; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3); }
+    .btn-edit:hover { background: #3b82f6; color: white; border-color: #3b82f6; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
     .btn-delete:hover { background: #ef4444; color: white; border-color: #ef4444; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3); }
 
     /* Empty State */
@@ -211,6 +212,9 @@
                                     <a href="{{ route('admin.pelanggan.show', $customer) }}" class="action-btn btn-view" title="Lihat Profil & Riwayat">
                                         <i class="fas fa-eye"></i>
                                     </a>
+                                    <a href="{{ route('admin.pelanggan.edit', $customer) }}" class="action-btn btn-edit" title="Edit Profil & Password">
+                                        <i class="fas fa-pen"></i>
+                                    </a>
                                     <form action="{{ route('admin.pelanggan.destroy', $customer) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pelanggan ini? Perhatian: Anda tidak dapat menghapus pelanggan jika mereka sudah memiliki riwayat transaksi.');">
                                         @csrf
                                         @method('DELETE')
@@ -254,5 +258,4 @@
                 </div>
             </div>
         @endif
-    </div>
 @endsection

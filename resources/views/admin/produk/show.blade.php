@@ -193,5 +193,5 @@
         </div>
     </div>
 
-    <div class="footer">© 2026 SepatuWara Admin • Detail Produk</div>
+    <div class="footer">© 2026 SepatukuID Admin • Detail Produk</div>
 @endsection

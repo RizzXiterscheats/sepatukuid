@@ -26,7 +26,8 @@ class Product extends Model
         'colors',
         'specifications',
         'is_featured',
-        'is_active'
+        'is_active',
+        'total_sold'
     ];
 
     protected $casts = [

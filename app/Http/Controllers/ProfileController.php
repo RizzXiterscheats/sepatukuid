@@ -47,7 +47,7 @@ class ProfileController extends Controller
     public function orders(): View
     {
         $orders = Order::where('user_id', Auth::id())
-            ->with(['items.product'])
+            ->with(['items.product', 'items.returnRequest'])
             ->latest()
             ->get();
 
@@ -66,6 +66,56 @@ class ProfileController extends Controller
             ->findOrFail($id);
 
         return view('user.order-track', compact('order'));
+    }
+
+    /**
+     * Cancel the user's order.
+     */
+    public function cancelOrder(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'cancel_reason' => 'required|string|max:255'
+        ]);
+
+        $order = Order::where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->where('payment_status', 'unpaid')
+            ->findOrFail($id);
+
+        $order->update([
+            'status' => 'cancelled',
+            'cancel_reason' => $request->cancel_reason
+        ]);
+
+        // Kembalikan stok produk
+        foreach ($order->items as $item) {
+            if ($item->product) {
+                $item->product->increment('stock', $item->quantity);
+            }
+        }
+
+        return Redirect::back()->with('success', 'Pesanan berhasil dibatalkan.');
+    }
+
+    /**
+     * Change the payment method for an unpaid order.
+     */
+    public function changePaymentMethod(Request $request, $id): RedirectResponse
+    {
+        $request->validate([
+            'payment_method' => 'required|string|max:50'
+        ]);
+
+        $order = Order::where('user_id', Auth::id())
+            ->where('status', 'pending')
+            ->where('payment_status', 'unpaid')
+            ->findOrFail($id);
+
+        $order->update([
+            'payment_method' => $request->payment_method
+        ]);
+
+        return Redirect::back()->with('success', 'Metode pembayaran berhasil diubah.');
     }
 
     /**

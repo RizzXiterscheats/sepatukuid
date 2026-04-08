@@ -35,10 +35,24 @@
             </a>
         </li>
         <li class="nav-item">
+            <a href="{{ route('admin.returns.index') }}" class="nav-link {{ request()->routeIs('admin.returns.*') ? 'active' : '' }}">
+                <i class="fas fa-rotate-left nav-icon"></i>
+                <span>Pengembalian</span>
+                <span class="badge" style="background: var(--danger); color: white;">{{ \App\Models\OrderReturn::where('status', 'pending')->count() }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
             <a href="{{ route('admin.pelanggan.index') }}" class="nav-link {{ request()->routeIs('admin.pelanggan.*') ? 'active' : '' }}">
                 <i class="fas fa-users nav-icon"></i>
                 <span>Pelanggan</span>
                 <span class="badge" style="background: var(--info); color: white;">{{ \App\Models\User::where('role', 'user')->count() ?? '0' }}</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.ulasan.index') }}" class="nav-link {{ request()->routeIs('admin.ulasan.*') ? 'active' : '' }}">
+                <i class="fas fa-star nav-icon"></i>
+                <span>Ulasan</span>
+                <span class="badge" style="background: #f59e0b; color: white;">{{ \App\Models\Review::count() }}</span>
             </a>
         </li>
         

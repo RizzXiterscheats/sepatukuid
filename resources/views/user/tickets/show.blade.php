@@ -39,6 +39,15 @@
         .btn-reply:hover { background: var(--primary-dark); }
         
         .status-badge { padding: 5px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; background: rgba(255,255,255,0.2); }
+
+        @media (max-width: 768px) {
+            .header { flex-direction: column; align-items: flex-start; gap: 15px; padding: 20px; }
+            .status-badge { align-self: flex-start; }
+            .message { max-width: 95%; padding: 12px; }
+            .chat-container { padding: 15px; }
+            .reply-box { padding: 15px; }
+            .btn-reply { width: 100%; float: none; text-align: center; justify-content: center; display: block; }
+        }
     </style>
 </head>
 <body>
@@ -54,7 +63,7 @@
             </div>
         </div>
 
-        <div class="chat-container">
+        <div class="chat-container" id="chatContainer">
             @foreach($ticket->replies as $reply)
                 <div class="message {{ $reply->user_id == Auth::id() ? 'msg-user' : 'msg-admin' }}">
                     @if($reply->user_id != Auth::id())
@@ -68,11 +77,11 @@
 
         @if($ticket->status != 'closed')
         <div class="reply-box">
-            <form action="{{ route('tickets.reply', $ticket->id) }}" method="POST">
+            <form action="{{ route('tickets.reply', $ticket->id) }}" method="POST" id="replyForm">
                 @csrf
-                <textarea name="message" rows="3" placeholder="Balas pesan di sini..." required></textarea>
+                <textarea name="message" id="replyMessage" rows="3" placeholder="Balas pesan di sini..." required></textarea>
                 <div style="overflow: hidden;">
-                    <button type="submit" class="btn-reply">Kirim Balasan <i class="fa-solid fa-paper-plane"></i></button>
+                    <button type="submit" id="submitBtn" class="btn-reply">Kirim Balasan <i class="fa-solid fa-paper-plane"></i></button>
                 </div>
             </form>
         </div>
@@ -82,5 +91,106 @@
         </div>
         @endif
     </div>
+
+    <script>
+        const currentUserId = {{ Auth::id() }};
+        const ticketId = {{ $ticket->id }};
+        const chatContainer = document.getElementById('chatContainer');
+        const replyForm = document.getElementById('replyForm');
+        const replyMessage = document.getElementById('replyMessage');
+        const submitBtn = document.getElementById('submitBtn');
+        let lastReplyCount = {{ $ticket->replies->count() }};
+
+        // Scroll to bottom on load
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+
+        // Handle AJAX Form Submission
+        if (replyForm) {
+            replyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = replyMessage.value.trim();
+                if (!message) return;
+
+                // Disable button
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = 'Mengirim... <i class="fa-solid fa-spinner fa-spin"></i>';
+
+                const formData = new FormData(replyForm);
+                
+                fetch(replyForm.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'X-CSRF-TOKEN': document.querySelector('input[name="_token"]').value
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        replyMessage.value = '';
+                        fetchReplies(); // Refresh immediately
+                    }
+                })
+                .catch(error => console.error('Error:', error))
+                .finally(() => {
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Kirim Balasan <i class="fa-solid fa-paper-plane"></i>';
+                });
+            });
+        }
+
+        // Fetch Replies Automatically
+        function fetchReplies() {
+            fetch(`{{ route('tickets.replies', $ticket->id) }}`, {
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.replies.length > lastReplyCount) {
+                    renderReplies(data.replies);
+                    lastReplyCount = data.replies.length;
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
+                }
+            })
+            .catch(error => console.error('Error fetching replies:', error));
+        }
+
+        function renderReplies(replies) {
+            chatContainer.innerHTML = '';
+            replies.forEach(reply => {
+                const isMe = reply.user_id == currentUserId;
+                const date = new Date(reply.created_at);
+                const timeString = date.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }) + ', ' + 
+                                 date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isMe ? 'msg-user' : 'msg-admin'}`;
+                
+                let html = '';
+                if (!isMe) {
+                    html += `<div class="msg-author"><i class="fa-solid fa-user-shield"></i> ${reply.user.name} (Admin/Support)</div>`;
+                }
+                const escapedMessage = reply.message
+                    .replace(/&/g, "&amp;")
+                    .replace(/</g, "&lt;")
+                    .replace(/>/g, "&gt;")
+                    .replace(/"/g, "&quot;")
+                    .replace(/'/g, "&#039;");
+
+                html += `<div class="msg-text">${escapedMessage.replace(/\n/g, '<br>')}</div>`;
+                html += `<span class="msg-time">${timeString}</span>`;
+                
+                messageDiv.innerHTML = html;
+                chatContainer.appendChild(messageDiv);
+            });
+        }
+
+        // Start polling
+        setInterval(fetchReplies, 3000);
+    </script>
 </body>
 </html>

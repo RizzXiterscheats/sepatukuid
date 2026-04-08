@@ -970,7 +970,7 @@
       </div>
       
       <div class="hero-image">
-        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=1200" alt="Sneaker Premium Collection">
+        <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800" alt="Sneaker Premium Collection" loading="lazy">
       </div>
     </div>
   </div>
@@ -986,7 +986,7 @@
     <div class="categories-grid">
       @foreach($categories as $category)
       <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
-        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $category->name }}">
+        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" alt="{{ $category->name }}" loading="lazy">
         <div class="category-overlay">
           <h3>{{ $category->name }}</h3>
           <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
@@ -1060,9 +1060,14 @@
         @if($product->is_featured)
           <span class="product-badge">UNGGULAN</span>
         @endif
-        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image" alt="{{ $product->name }}">
+        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" class="product-image" alt="{{ $product->name }}" loading="lazy">
         <div class="product-info">
-          <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
+            <div class="product-sold">
+              <i class="fa-solid fa-fire"></i> Terjual {{ $product->total_sold ?? 0 }}
+            </div>
+          </div>
           <h3 class="product-title">{{ $product->name }}</h3>
           <div class="product-rating">
             <i class="fa-solid fa-star"></i>
@@ -1106,9 +1111,9 @@
       <div class="offer-main">90%</div>
       <h2 class="offer-subtitle">Diskon Meriah Sneakers Terlaris</h2>
       <p class="offer-desc">Best seller dengan potongan harga luar biasa! Kualitas premium dengan harga terjangkau. Stok terbatas, jangan sampai kehabisan kesempatan ini!</p>
-<a href="{{ route('login') }}" class="offer-btn">
+<a href="{{ route('products.index') }}" class="offer-btn">
   <i class="fa-solid fa-gift"></i>
-  DAPATKAN PROMO SEKARANG
+  BELANJA SEKARANG
 </a>
     </div>
   </div>
@@ -1352,22 +1357,7 @@
       });
     });
     
-    // Monthly offer button
-    const offerButton = document.querySelector('.offer-btn');
-    if (offerButton) {
-      offerButton.addEventListener('click', function() {
-        const originalHTML = this.innerHTML;
-        this.innerHTML = '<i class="fa-solid fa-gift"></i> PROMO DIAMBIL!';
-        this.style.background = 'linear-gradient(135deg, #4CAF50 0%, #2ECC71 100%)';
-        
-        setTimeout(() => {
-          this.innerHTML = originalHTML;
-          this.style.background = 'white';
-          alert('Selamat! Anda mendapatkan promo diskon 90%. Kode promo telah dikirim ke email Anda.');
-        }, 2000);
-      });
-    }
-    
+    // Removed offer button annoying popup script
     // Add CSS animations
     const style = document.createElement('style');
     style.textContent = `

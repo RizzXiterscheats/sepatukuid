@@ -11,9 +11,9 @@
         <a href="{{ route('shop') }}" class="{{ request()->routeIs('shop') ? 'active' : '' }}">Katalog</a>
         <a href="{{ route('about') }}" class="{{ request()->routeIs('about') ? 'active' : '' }}">Tentang Kami</a>
         @auth
-          <a href="{{ route('tickets.index') }}" class="{{ request()->routeIs('tickets.*') ? 'active' : '' }}">Pusat Bantuan</a>
+          <a href="{{ route('tickets.index') }}" class="{{ request()->routeIs('tickets.*') ? 'active' : '' }}">Ticket Bantuan</a>
         @else
-          <a href="{{ route('login') }}">Pusat Bantuan</a>
+          <a href="{{ route('login') }}">Ticket Bantuan</a>
         @endauth
       </nav>
       
@@ -59,6 +59,11 @@
           </div>
         </div>
       </div>
+
+      <!-- Hamburger Menu for Mobile -->
+      <button class="hamburger-btn" id="hamburger-btn">
+        <i class="fa-solid fa-bars"></i>
+      </button>
     </div>
   </div>
 </header>
@@ -72,5 +77,14 @@
         input.focus();
       }
     });
+
+    const hamburgerBtn = document.getElementById('hamburger-btn');
+    const mainMenu = document.querySelector('.menu');
+    
+    if(hamburgerBtn && mainMenu) {
+        hamburgerBtn.addEventListener('click', function() {
+            mainMenu.classList.toggle('show-mobile');
+        });
+    }
   });
 </script>

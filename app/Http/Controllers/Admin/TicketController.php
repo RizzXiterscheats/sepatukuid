@@ -52,7 +52,24 @@ class TicketController extends Controller
             'message' => $validated['message'],
         ]);
 
+        if ($request->ajax()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Balasan terkirim ke pelanggan!'
+            ]);
+        }
+
         return back()->with('success', 'Balasan terkirim ke pelanggan!');
+    }
+
+    public function getReplies($id)
+    {
+        $ticket = Ticket::with(['replies.user'])->findOrFail($id);
+        
+        return response()->json([
+            'success' => true,
+            'replies' => $ticket->replies
+        ]);
     }
 
     public function updateStatus(Request $request, $id)
