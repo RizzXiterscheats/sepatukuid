@@ -12,7 +12,11 @@
 - **Katalog Produk Interaktif:** Penelusuran produk dengan filter kategori, gender, dan pencarian cerdas.
 - **Wishlist & Keranjang Belanja:** Simpan produk favorit dan kelola belanjaan dengan sistem AJAX (tanpa reload halaman).
 - **Lacak Pesanan Real-time:** Pantau status pengiriman dari persiapan hingga sampai di tujuan.
+<<<<<<< HEAD
 - **Ticket Bantuan (Helpdesk):** Sistem tiket terintegrasi untuk komunikasi langsung dengan tim dukungan.
+=======
+- **Pusat Bantuan (Helpdesk):** Sistem tiket terintegrasi untuk komunikasi langsung dengan tim dukungan.
+>>>>>>> 465a42efd578a37906ac02a505c739bbcb6bf17f
 - **Review Produk:** Berikan rating dan ulasan untuk setiap produk yang telah dibeli.
 
 ### 🛡️ Sisi Admin & Petugas (Management)
@@ -51,4 +55,8 @@ Gunakan akun di bawah ini untuk mencoba berbagai level akses pada platform Sepat
 
 ---
 
+<<<<<<< HEAD
 <p align="center">Made with ❤️ for Sneakers lovers.</p>
+=======
+<p align="center">Made with ❤️ for Rizki Ramadhan Zafitra.</p>
+>>>>>>> 465a42efd578a37906ac02a505c739bbcb6bf17f
