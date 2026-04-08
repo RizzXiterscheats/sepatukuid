@@ -22,6 +22,24 @@ class Category extends Model
         'is_active' => 'boolean',
     ];
 
+    /**
+     * Get the category's image URL.
+     *
+     * @return string
+     */
+    public function getImageUrlAttribute()
+    {
+        if (!$this->image) {
+            return 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600';
+        }
+
+        if (str_starts_with($this->image, 'http')) {
+            return $this->image;
+        }
+
+        return asset('storage/' . $this->image);
+    }
+
     // Relasi ke parent category
     public function parent()
     {

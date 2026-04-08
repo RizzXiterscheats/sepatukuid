@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Voucher;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,9 +24,16 @@ class CheckoutController extends Controller
         }
 
         $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        foreach ($cart as $key => &$item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                $item['price'] = $product->final_price;
+                $item['image_url'] = $product->image_url;
+                $total += $item['price'] * $item['quantity'];
+            }
         }
+        
+        session()->put('cart', $cart);
 
         return view('user.checkout', compact('cart', 'total'));
     }
@@ -62,6 +70,7 @@ class CheckoutController extends Controller
             'shipping_method' => 'required|string',
             'payment_method' => 'required|string',
             'notes' => 'nullable|string',
+            'voucher_code' => 'nullable|string|exists:vouchers,code',
         ]);
 
         $cart = session()->get('cart', []);
@@ -70,11 +79,17 @@ class CheckoutController extends Controller
             return redirect()->route('shop')->with('error', 'Keranjang belanja Anda kosong.');
         }
 
-        // Hitung subtotal
+        // Hitung subtotal dan sinkronisasi harga terbaru
         $subtotal = 0;
-        foreach ($cart as $item) {
-            $subtotal += $item['price'] * $item['quantity'];
+        foreach ($cart as $key => &$item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                $item['price'] = $product->final_price;
+                $subtotal += $item['price'] * $item['quantity'];
+            }
         }
+        
+        session()->put('cart', $cart);
 
         // Tentukan biaya pengiriman
         $shippingCosts = [
@@ -85,8 +100,18 @@ class CheckoutController extends Controller
         ];
         $shippingCost = $shippingCosts[$request->shipping_method] ?? 0;
 
+        // Kerjakan logika voucher jika ada
+        $discountAmount = 0;
+        if ($request->voucher_code) {
+            $voucher = Voucher::where('code', $request->voucher_code)->where('is_active', true)->first();
+            if ($voucher && $voucher->isValid($subtotal)) {
+                $discountAmount = $voucher->calculateDiscount($subtotal);
+            }
+        }
+
         // Total akhir
-        $total = $subtotal + $shippingCost;
+        $total = ($subtotal + $shippingCost) - $discountAmount;
+        $total = max(0, $total); // Ensure total is not negative
 
         // Gabungkan alamat
         $fullAddress = sprintf(
@@ -107,12 +132,19 @@ class CheckoutController extends Controller
                 'user_id' => Auth::id(),
                 'total' => $total,
                 'status' => 'pending',
+                'voucher_code' => $request->voucher_code,
+                'discount_amount' => $discountAmount,
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'unpaid',
                 'shipping_address' => $fullAddress,
                 'shipping_method' => $request->shipping_method,
                 'notes' => $request->notes,
             ]);
+
+            // Increment used count if voucher used
+            if ($request->voucher_code && $discountAmount > 0) {
+                Voucher::where('code', $request->voucher_code)->increment('used_count');
+            }
 
             foreach ($cart as $id => $details) {
                 OrderItem::create([
@@ -192,7 +224,53 @@ class CheckoutController extends Controller
 
             return redirect()->route('orders')->with('success', 'Bukti pembayaran berhasil diupload. Kami akan segera memverifikasi pesanan Anda.');
         }
-
         return back()->with('error', 'Gagal upload bukti pembayaran.');
+    }
+
+    /**
+     * AJAX: Validasi voucher
+     */
+    public function applyVoucher(Request $request)
+    {
+        $request->validate([
+            'code' => 'required|string',
+            'subtotal' => 'required|numeric'
+        ]);
+
+        $voucher = Voucher::where('code', $request->code)->where('is_active', true)->first();
+
+        if (!$voucher) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Kode voucher tidak valid.'
+            ]);
+        }
+
+        if (!$voucher->isValid($request->subtotal)) {
+            // Check specific reasons
+            if ($voucher->expires_at && $voucher->expires_at->isPast()) {
+                $msg = 'Voucher sudah kadaluarsa.';
+            } elseif ($voucher->usage_limit && $voucher->used_count >= $voucher->usage_limit) {
+                $msg = 'Batas penggunaan voucher telah tercapai.';
+            } elseif ($request->subtotal < $voucher->min_purchase) {
+                $msg = 'Minimal belanja untuk voucher ini adalah Rp ' . number_format($voucher->min_purchase, 0, ',', '.');
+            } else {
+                $msg = 'Voucher tidak dapat digunakan.';
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => $msg
+            ]);
+        }
+
+        $discount = $voucher->calculateDiscount($request->subtotal);
+
+        return response()->json([
+            'success' => true,
+            'code' => $voucher->code,
+            'discount' => $discount,
+            'message' => 'Voucher berhasil diterapkan.'
+        ]);
     }
 }

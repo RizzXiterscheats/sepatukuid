@@ -63,7 +63,7 @@
     <div class="categories-grid">
       @foreach($categories as $category)
       <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
-        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" alt="{{ $category->name }}" loading="lazy">
+        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy">
         <div class="category-overlay">
           <h3>{{ $category->name }}</h3>
           <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
@@ -80,8 +80,16 @@
 <section class="product-section" id="products">
   <div class="container">
     <div class="section-title">
-      <h2>Semua Produk</h2>
-      <p>Temukan koleksi lengkap sneakers kami</p>
+      @if(request('category'))
+        @php
+          $currentCat = $categories->where('slug', request('category'))->first();
+        @endphp
+        <h2>Koleksi {{ $currentCat->name ?? 'Sneakers' }}</h2>
+        <p>Jelajahi koleksi terbaik untuk kategori {{ $currentCat->name ?? 'pilihan Anda' }}</p>
+      @else
+        <h2>Semua Produk</h2>
+        <p>Temukan koleksi lengkap sneakers kami</p>
+      @endif
     </div>
 
     <div class="search-filter">
@@ -101,18 +109,19 @@
           </select>
         </div>
 
-        <div class="filter-group">
+        <div class="filter-group" style="flex: 2;">
           <label>Gender</label>
-          <select name="gender" class="filter-input">
-            <option value="">Semua Gender</option>
-            <option value="pria" {{ request('gender') == 'pria' ? 'selected' : '' }}>Pria</option>
-            <option value="wanita" {{ request('gender') == 'wanita' ? 'selected' : '' }}>Wanita</option>
-            <option value="unisex" {{ request('gender') == 'unisex' ? 'selected' : '' }}>Unisex</option>
-          </select>
+          <div style="display: flex; gap: 10px; margin-top: 10px;">
+            <a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => ''])) }}" class="filter-chip {{ request('gender') == '' ? 'active' : '' }}" style="padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); font-weight: 600; font-size: 0.85rem; background: {{ request('gender') == '' ? 'var(--dark)' : 'white' }}; color: {{ request('gender') == '' ? 'white' : 'var(--dark)' }};">Semua</a>
+            <a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => 'pria'])) }}" class="filter-chip {{ request('gender') == 'pria' ? 'active' : '' }}" style="padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); font-weight: 600; font-size: 0.85rem; background: {{ request('gender') == 'pria' ? 'var(--dark)' : 'white' }}; color: {{ request('gender') == 'pria' ? 'white' : 'var(--dark)' }};">Pria</a>
+            <a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => 'wanita'])) }}" class="filter-chip {{ request('gender') == 'wanita' ? 'active' : '' }}" style="padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); font-weight: 600; font-size: 0.85rem; background: {{ request('gender') == 'wanita' ? 'var(--dark)' : 'white' }}; color: {{ request('gender') == 'wanita' ? 'white' : 'var(--dark)' }};">Wanita</a>
+            <a href="{{ route('shop', array_merge(request()->except('gender'), ['gender' => 'unisex'])) }}" class="filter-chip {{ request('gender') == 'unisex' ? 'active' : '' }}" style="padding: 10px 20px; border-radius: 50px; border: 1px solid var(--border); font-weight: 600; font-size: 0.85rem; background: {{ request('gender') == 'unisex' ? 'var(--dark)' : 'white' }}; color: {{ request('gender') == 'unisex' ? 'white' : 'var(--dark)' }};">Unisex</a>
+          </div>
+          <input type="hidden" name="gender" value="{{ request('gender') }}">
         </div>
 
-        <button type="submit" class="btn-filter">
-          <i class="fa-solid fa-sliders"></i> Filter
+        <button type="submit" class="btn-filter" style="align-self: flex-end;">
+          <i class="fa-solid fa-sliders"></i> Terapkan
         </button>
       </form>
     </div>
@@ -120,10 +129,13 @@
     <div class="product-grid">
       @forelse($products as $product)
       <div class="product-card">
-        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" class="product-image" alt="{{ $product->name }}" loading="lazy">
+        <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}" loading="lazy">
         <div class="product-info">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-            <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
+            <div class="product-category" style="display: flex; align-items: center; gap: 5px;">
+              {{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}
+              <span style="font-size: 0.7rem; background: #eee; padding: 2px 6px; border-radius: 4px; color: #777;">{{ strtoupper($product->gender) }}</span>
+            </div>
             <div class="product-sold">
               <i class="fa-solid fa-fire"></i> Terjual {{ $product->total_sold ?? 0 }}
             </div>
@@ -170,8 +182,8 @@
         <div class="collection-overlay">
           <h3>Summer Vibes</h3>
           <p>Koleksi sneakers warna-warni untuk musim panas</p>
-          <a href="/products?collection=summer" class="btn" style="background: white; color: var(--primary);">
-            Jelajahi
+          <a href="/shop?gender=wanita" class="btn" style="background: white; color: var(--primary);">
+            Lihat Koleksi Wanita
           </a>
         </div>
       </div>
@@ -182,8 +194,8 @@
         <div class="collection-overlay">
           <h3>Urban Street</h3>
           <p>Tampil stylish dengan gaya urban masa kini</p>
-          <a href="/products?collection=urban" class="btn" style="background: white; color: var(--primary);">
-            Jelajahi
+          <a href="/shop?gender=pria" class="btn" style="background: white; color: var(--primary);">
+            Lihat Koleksi Pria
           </a>
         </div>
       </div>
@@ -200,32 +212,32 @@
     
     <div class="brands-grid">
       <div class="brand-item">
-        <img src="{{ asset('img/brands/nike.png') }}" alt="Nike">
+        <img src="{{ asset('img/brands/nike.png') }}" alt="Nike" style="height: 40px; object-fit: contain;">
         <h4>Nike</h4>
       </div>
       
       <div class="brand-item">
-        <img src="{{ asset('img/brands/adidas.png') }}" alt="Adidas">
+        <img src="{{ asset('img/brands/adidas.png') }}" alt="Adidas" style="height: 40px; object-fit: contain;">
         <h4>Adidas</h4>
       </div>
       
       <div class="brand-item">
-        <img src="{{ asset('img/brands/puma.png') }}" alt="Puma">
+        <img src="{{ asset('img/brands/puma.png') }}" alt="Puma" style="height: 40px; object-fit: contain;">
         <h4>Puma</h4>
       </div>
       
       <div class="brand-item">
-        <img src="{{ asset('img/brands/new-balance.png') }}" alt="New Balance">
+        <img src="{{ asset('img/brands/new-balance.png') }}" alt="New Balance" style="height: 40px; object-fit: contain;">
         <h4>New Balance</h4>
       </div>
       
       <div class="brand-item">
-        <img src="{{ asset('img/brands/converse.png') }}" alt="Converse">
+        <img src="{{ asset('img/brands/converse.png') }}" alt="Converse" style="height: 40px; object-fit: contain;">
         <h4>Converse</h4>
       </div>
       
       <div class="brand-item">
-        <img src="{{ asset('img/brands/vans.png') }}" alt="Vans">
+        <img src="{{ asset('img/brands/vans.png') }}" alt="Vans" style="height: 40px; object-fit: contain;">
         <h4>Vans</h4>
       </div>
     </div>
@@ -273,15 +285,8 @@
 <section class="newsletter-section">
   <div class="container">
     <div class="newsletter-box">
-      <h3>Informasi Langganan</h3>
-      <p>Dapatkan informasi terbaru tentang produk dan promo spesial langsung ke emailmu</p>
-      <form class="newsletter-form">
-        <input type="email" placeholder="Masukkan email kamu" required>
-        <button type="submit">
-          <i class="fa-solid fa-paper-plane"></i>
-          Daftar
-        </button>
-      </form>
+      <h3>Dibuat Oleh Rizki Ramadhan</h3>
+      <p>Terima kasih telah berkunjung ke toko sneakers terbaik kami. Designed with love by Rizki Ramadhan.</p>
     </div>
   </div>
 </section>

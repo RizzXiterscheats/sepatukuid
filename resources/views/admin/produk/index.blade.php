@@ -712,7 +712,7 @@
                 <div class="product-card">
                     <div class="card-image-wrapper">
                         @if($product->image)
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="{{ $product->name }}">
+                            <img src="{{ $product->image_url }}" alt="{{ $product->name }}">
                         @else
                             <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; background: #eee; color: #ccc;">
                                 <i class="fas fa-shoe-prints fa-4x"></i>

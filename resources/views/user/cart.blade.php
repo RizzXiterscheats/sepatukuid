@@ -99,7 +99,7 @@
         @foreach($cart as $id => $details)
           <div class="cart-row" data-id="{{ $id }}">
             <div class="product-info">
-              <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image">
+              <img src="{{ $details['image_url'] ?? (isset($details['image']) ? asset('storage/' . $details['image']) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800') }}" class="product-image">
               <div class="product-details">
                 <h3>{{ $details['name'] }}</h3>
                 <p>Ukuran: {{ $details['size'] }}</p>

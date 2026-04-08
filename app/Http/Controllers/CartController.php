@@ -14,9 +14,18 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
         $total = 0;
-        foreach ($cart as $item) {
-            $total += $item['price'] * $item['quantity'];
+        
+        // Sinkronisasi harga dengan database untuk memastikan diskon terbaru diterapkan
+        foreach ($cart as $key => &$item) {
+            $product = Product::find($item['id']);
+            if ($product) {
+                $item['price'] = $product->final_price;
+                $item['image_url'] = $product->image_url;
+                $total += $item['price'] * $item['quantity'];
+            }
         }
+        
+        session()->put('cart', $cart);
 
         return view('user.cart', compact('cart', 'total'));
     }
@@ -45,7 +54,7 @@ class CartController extends Controller
                 "id" => $product->id,
                 "name" => $product->name,
                 "quantity" => $request->quantity,
-                "price" => $product->price,
+                "price" => $product->final_price,
                 "size" => $request->size,
                 "image" => $product->image,
                 "slug" => $product->slug

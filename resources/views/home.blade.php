@@ -986,7 +986,7 @@
     <div class="categories-grid">
       @foreach($categories as $category)
       <div class="category-card" onclick="window.location.href='{{ route('shop', ['category' => $category->slug]) }}'">
-        <img src="{{ $category->image ? (str_starts_with($category->image, 'http') ? $category->image : asset('storage/' . $category->image)) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" alt="{{ $category->name }}" loading="lazy">
+        <img src="{{ $category->image_url }}" alt="{{ $category->name }}" loading="lazy">
         <div class="category-overlay">
           <h3>{{ $category->name }}</h3>
           <p>{{ $category->description ?? 'Koleksi ' . $category->name }}</p>
@@ -1004,8 +1004,24 @@
 <section class="model-section">
   <div class="container">
     <div class="section-title">
-      <h2>Koleksi Model Sneakers</h2>
-      <p>Pilih dari berbagai model sneakers terbaik dengan desain yang sesuai gaya hidupmu</p>
+      <h2>Koleksi Sneakers Terbaik</h2>
+      <p>Temukan berbagai pilihan sneakers premium untuk melengkapi gaya harianmu</p>
+    </div>
+
+    <!-- Shop by Gender -->
+    <div style="display: flex; justify-content: center; gap: 20px; margin-bottom: 60px;">
+      <a href="{{ route('shop', ['gender' => 'pria']) }}" style="flex: 1; max-width: 400px; height: 180px; border-radius: 20px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=800') center/cover; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="text-align: center;">
+          <h3 style="font-size: 2rem; font-weight: 900; letter-spacing: 2px;">PRIA</h3>
+          <span style="font-weight: 600; text-transform: uppercase; font-size: 0.8rem; border-bottom: 2px solid white; padding-bottom: 5px;">Belanja Sekarang</span>
+        </div>
+      </a>
+      <a href="{{ route('shop', ['gender' => 'wanita']) }}" style="flex: 1; max-width: 400px; height: 180px; border-radius: 20px; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800') center/cover; display: flex; align-items: center; justify-content: center; color: white; transition: all 0.3s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
+        <div style="text-align: center;">
+          <h3 style="font-size: 2rem; font-weight: 900; letter-spacing: 2px;">WANITA</h3>
+          <span style="font-weight: 600; text-transform: uppercase; font-size: 0.8rem; border-bottom: 2px solid white; padding-bottom: 5px;">Belanja Sekarang</span>
+        </div>
+      </a>
     </div>
     
     <div class="model-grid">
@@ -1060,7 +1076,7 @@
         @if($product->is_featured)
           <span class="product-badge">UNGGULAN</span>
         @endif
-        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=600' }}" class="product-image" alt="{{ $product->name }}" loading="lazy">
+        <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}" loading="lazy">
         <div class="product-info">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
             <div class="product-category">{{ $product->categoryModel->name ?? $product->category ?? 'Sneakers' }}</div>
@@ -1131,7 +1147,7 @@
       @forelse($featuredProducts->take(4) as $product)
       <div class="arrival-card">
         <span class="new-badge">NEW ARRIVAL</span>
-        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?q=80&w=800' }}" class="arrival-image" alt="{{ $product->name }}">
+        <img src="{{ $product->image_url }}" class="arrival-image" alt="{{ $product->name }}">
         <div class="arrival-info">
           <h3 class="arrival-title">{{ $product->name }}</h3>
           <div class="arrival-price">

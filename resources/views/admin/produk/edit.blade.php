@@ -214,7 +214,7 @@
                         
                         <div id="image_preview_container" class="image-preview-container" style="{{ $product->image ? 'display: flex;' : '' }}">
                             @if($product->image)
-                                <img id="image_preview" src="{{ asset('storage/' . $product->image) }}" alt="Preview">
+                                <img id="image_preview" src="{{ $product->image_url }}" alt="Preview">
                                 <div class="remove-image-preview" onclick="event.preventDefault(); removePreview();" title="Hapus Gambar">
                                     <i class="fas fa-times"></i>
                                 </div>

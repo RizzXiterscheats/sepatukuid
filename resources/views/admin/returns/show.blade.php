@@ -21,7 +21,7 @@
             <div style="display: flex; gap: 20px; align-items: center;">
                 <div style="width: 100px; height: 100px; background: #f8f9fa; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                     @if($orderReturn->item->product && $orderReturn->item->product->image)
-                        <img src="{{ asset('storage/' . $orderReturn->item->product->image) }}" style="max-width: 100%; border-radius: 8px;">
+                        <img src="{{ $orderReturn->item->product->image_url }}" style="max-width: 100%; border-radius: 8px;">
                     @else
                         <i class="fas fa-shoe-prints" style="font-size: 32px; color: #ccc;"></i>
                     @endif

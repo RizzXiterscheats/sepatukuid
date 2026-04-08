@@ -324,7 +324,7 @@
         @endif
         
         <a href="{{ route('products.show', $product->slug) }}">
-          <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" class="product-image" alt="{{ $product->name }}">
+          <img src="{{ $product->image_url }}" class="product-image" alt="{{ $product->name }}">
         </a>
         
         <div class="product-info">

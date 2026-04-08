@@ -241,7 +241,7 @@
                                             <div class="product-item">
                                                 <div class="product-img">
                                                     @if($item->product && $item->product->image)
-                                                        <img src="{{ asset('storage/' . $item->product->image) }}" alt="Img">
+                                                        <img src="{{ $item->product->image_url }}" alt="Img">
                                                     @else
                                                         <i class="fas fa-shoe-prints"></i>
                                                     @endif

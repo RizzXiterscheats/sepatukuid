@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sepatukuid - Checkout</title>
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -911,7 +912,7 @@
         @foreach($cart as $id => $details)
         <div class="order-item">
           <div class="order-item-image">
-            <img src="{{ $details['image'] ? asset('storage/' . $details['image']) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $details['name'] }}">
+            <img src="{{ $details['image_url'] ?? (isset($details['image']) ? asset('storage/' . $details['image']) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800') }}" alt="{{ $details['name'] }}">
           </div>
           <div class="order-item-info">
             <h4>{{ $details['name'] }}</h4>
@@ -932,9 +933,24 @@
           <span id="shipping-cost">Rp 20.000</span>
         </div>
 
+         <div class="summary-row" id="voucher-row" style="display: none; color: var(--success); font-weight: 700;">
+           <span id="voucher-label">Voucher (Dihapus)</span>
+           <span id="discount-amount">-Rp 0</span>
+         </div>
+
         <div class="summary-row total" style="font-size: 1.2rem; font-weight: 800; color: var(--dark); margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--light); display: flex; justify-content: space-between;">
            <span>Total Pesanan</span>
            <span class="summary-total-price" id="grand-total">Rp {{ number_format($total + 25000, 0, ',', '.') }}</span>
+        </div>
+
+        <div class="voucher-section" style="margin-top: 25px;">
+          <label style="display: block; font-weight: 700; font-size: 0.85rem; margin-bottom: 10px; color: var(--gray-dark);">Punya Kode Produk / Voucher?</label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" id="voucher-input" placeholder="Masukkan kode" style="flex: 1; padding: 10px 15px; border: 2px solid var(--light); border-radius: 10px; font-size: 0.9rem;">
+            <button type="button" id="apply-voucher-btn" style="padding: 10px 20px; border-radius: 10px; border: none; background: var(--dark); color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem;">Pakai</button>
+          </div>
+          <div id="voucher-message" style="margin-top: 8px; font-size: 0.8rem; display: none;"></div>
+          <input type="hidden" name="voucher_code" id="hidden-voucher-code">
         </div>
         
 <div class="back-to-cart">
@@ -998,7 +1014,7 @@
     </div>
     
     <div class="copyright">
-      &copy; 2026 SepatuKuid. All rights reserved. | Designed for sneaker lovers
+      &copy; 2026 SepatuKuid. All rights reserved. | Designed by Rizki Ramadhan | Dibuat oleh Rizki Ramadhan
     </div>
   </div>
 </footer>
@@ -1039,6 +1055,101 @@
       
       // Trigger initial total calculation
       shippingSelect.dispatchEvent(new Event('change'));
+
+      // Voucher system logic
+      const voucherInput = document.getElementById('voucher-input');
+      const applyBtn = document.getElementById('apply-voucher-btn');
+      const voucherMsg = document.getElementById('voucher-message');
+      const voucherRow = document.getElementById('voucher-row');
+      const voucherLabel = document.getElementById('voucher-label');
+      const discountDisplay = document.getElementById('discount-amount');
+      const hiddenVoucherInput = document.getElementById('hidden-voucher-code');
+      
+      let currentDiscount = 0;
+      let checkTimeout;
+
+      function applyVoucher() {
+          const code = voucherInput.value.trim();
+          if (!code || code === hiddenVoucherInput.value) return;
+
+          applyBtn.disabled = true;
+          applyBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+          
+          fetch("{{ route('vouchers.apply') }}", {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+              },
+              body: JSON.stringify({
+                  code: code,
+                  subtotal: subtotal
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              applyBtn.disabled = false;
+              applyBtn.textContent = 'Pakai';
+              voucherMsg.style.display = 'block';
+
+              if (data.success) {
+                  currentDiscount = data.discount;
+                  voucherMsg.style.color = 'var(--success)';
+                  voucherMsg.innerHTML = '<i class="fas fa-check-circle"></i> ' + data.message;
+                  
+                  voucherRow.style.display = 'flex';
+                  voucherLabel.textContent = 'Voucher (' + data.code.toUpperCase() + ')';
+                  discountDisplay.textContent = '-Rp ' + currentDiscount.toLocaleString('id-ID');
+                  hiddenVoucherInput.value = data.code;
+                  
+                  updateGrandTotal();
+              } else {
+                  currentDiscount = 0;
+                  voucherMsg.style.color = 'var(--primary)';
+                  voucherMsg.innerHTML = '<i class="fas fa-times-circle"></i> ' + data.message;
+                  voucherRow.style.display = 'none';
+                  hiddenVoucherInput.value = '';
+                  updateGrandTotal();
+              }
+          })
+          .catch(error => {
+              applyBtn.disabled = false;
+              applyBtn.textContent = 'Pakai';
+              console.error('Error:', error);
+          });
+      }
+
+      applyBtn.addEventListener('click', applyVoucher);
+
+      // Percepat dengan Enter
+      voucherInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+              e.preventDefault();
+              applyVoucher();
+          }
+      });
+
+      // Auto-check saat berhenti mengetik (Debounce)
+      voucherInput.addEventListener('input', function() {
+          clearTimeout(checkTimeout);
+          if (this.value.length >= 4) {
+              checkTimeout = setTimeout(() => {
+                  applyVoucher();
+              }, 1000); // Cek setelah 1 detik berhenti mengetik
+          }
+      });
+
+      function updateGrandTotal() {
+          const selectedMethod = shippingSelect.value;
+          const shippingCost = shippingCosts[selectedMethod] || 0;
+          const finalTotal = subtotal + shippingCost - currentDiscount;
+          
+          shippingCostDisplay.textContent = 'Rp ' + shippingCost.toLocaleString('id-ID');
+          grandTotalDisplay.textContent = 'Rp ' + Math.max(0, finalTotal).toLocaleString('id-ID');
+      }
+
+      // Override the shipping change event to use updateGrandTotal
+      shippingSelect.addEventListener('change', updateGrandTotal);
     });
   function showAddressForm() {
     document.getElementById('saved-address-container').style.display = 'none';

@@ -45,7 +45,7 @@
                 @if($wishlist->product)
                 <div class="product-card" id="wishlist-item-{{ $wishlist->product->id }}">
                     <a href="{{ route('products.show', $wishlist->product->slug) }}">
-                        <img src="{{ asset('storage/' . $wishlist->product->image) }}" class="product-img" alt="{{ $wishlist->product->name }}">
+                        <img src="{{ $wishlist->product->image_url }}" class="product-img" alt="{{ $wishlist->product->name }}">
                     </a>
                     <button class="btn-remove" onclick="toggleWishlist({{ $wishlist->product->id }})" title="Hapus dari Wishlist">
                         <i class="fa-solid fa-trash-can"></i>

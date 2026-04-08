@@ -48,7 +48,7 @@
     </div>
     
     <div class="copyright">
-      &copy; {{ date('Y') }} SepatuKuid. Seluruh hak cipta dilindungi. | Dibuat dengan IT Sepatukuid
+      &copy; 2026 SepatuKuid. All rights reserved. | Designed by Rizki Ramadhan | Dibuat oleh Rizki Ramadhan
     </div>
   </div>
 </footer>

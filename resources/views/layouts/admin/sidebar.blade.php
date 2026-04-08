@@ -55,6 +55,13 @@
                 <span class="badge" style="background: #f59e0b; color: white;">{{ \App\Models\Review::count() }}</span>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ route('admin.vouchers.index') }}" class="nav-link {{ request()->routeIs('admin.vouchers.*') ? 'active' : '' }}">
+                <i class="fas fa-ticket-alt nav-icon"></i>
+                <span>Voucher</span>
+                <span class="badge" style="background: var(--primary); color: white;">{{ \App\Models\Voucher::count() }}</span>
+            </a>
+        </li>
         
         @if(Auth::user()->role === 'admin')
         <li class="nav-item">

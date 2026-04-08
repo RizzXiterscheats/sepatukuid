@@ -32,7 +32,7 @@
     <!-- Left: Image Gallery -->
     <div class="product-gallery">
       <div class="main-image">
-        <img src="{{ $product->image ? asset('storage/' . $product->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $product->name }}" id="mainProductImage">
+        <img src="{{ $product->image_url }}" alt="{{ $product->name }}" id="mainProductImage">
       </div>
     </div>
 
@@ -182,7 +182,7 @@
     <div class="related-grid">
       @foreach($relatedProducts as $related)
       <a href="{{ route('products.show', $related->slug) }}" class="related-card">
-        <img src="{{ $related->image ? asset('storage/' . $related->image) : 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=800' }}" alt="{{ $related->name }}">
+        <img src="{{ $related->image_url }}" alt="{{ $related->name }}">
         <div class="related-info">
           <div class="related-title">{{ $related->name }}</div>
           <div class="related-price">Rp {{ number_format($related->price, 0, ',', '.') }}</div>

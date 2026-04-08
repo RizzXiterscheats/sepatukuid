@@ -2890,3 +2890,97 @@ footer::before {
       .related-grid { grid-template-columns: 1fr; }
       .tab-nav { overflow-x: auto; white-space: nowrap; gap: 15px; }
     }
+
+/* PAGINATION MODERN */
+.pagination {
+    margin: 60px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.pagination nav {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    width: auto !important;
+}
+
+.pagination svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: inline-block !important;
+    vertical-align: middle !important;
+}
+
+.pagination p {
+    display: none !important;
+}
+
+.pagination .hidden.sm\:flex-1 {
+    display: none !important; /* Hide the redundant 'Showing ...' at the top if double */
+}
+
+.pagination .relative.z-0.inline-flex {
+    display: flex !important;
+    gap: 8px !important;
+    align-items: center !important;
+    box-shadow: none !important;
+    border-radius: 0 !important;
+}
+
+.pagination a, .pagination span {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: 40px !important;
+    height: 40px !important;
+    padding: 0 12px !important;
+    background: #fff !important;
+    border: 1px solid #eee !important;
+    border-radius: 10px !important;
+    font-weight: 700 !important;
+    color: var(--dark) !important;
+    transition: var(--transition) !important;
+    font-size: 0.9rem !important;
+}
+
+.pagination a:hover {
+    background: var(--light) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+    transform: translateY(-3px) !important;
+}
+
+.pagination span[aria-current="page"] {
+    background: var(--primary) !important;
+    color: white !important;
+    border-color: var(--primary) !important;
+    box-shadow: 0 10px 20px rgba(229, 57, 53, 0.2) !important;
+}
+
+.pagination span[aria-disabled="true"] {
+    opacity: 0.5 !important;
+    cursor: not-allowed !important;
+    background: #f9f9f9 !important;
+}
+
+/* Fix giant SVG icons inside nav buttons */
+.pagination nav div:first-child {
+    display: flex !important;
+    gap: 15px !important;
+    align-items: center !important;
+}
+
+.pagination nav div:last-child {
+    margin-top: 15px !important;
+}
+
+@media (max-width: 576px) {
+    .pagination a, .pagination span {
+        min-width: 40px !important;
+        height: 40px !important;
+        font-size: 0.85rem !important;
+    }
+}

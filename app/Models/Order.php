@@ -20,7 +20,9 @@ class Order extends Model
         'shipping_method',
         'payment_proof',
         'notes',
-        'cancel_reason'
+        'cancel_reason',
+        'voucher_code',
+        'discount_amount'
     ];
 
     protected $casts = [

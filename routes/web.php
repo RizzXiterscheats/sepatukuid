@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
     // Checkout
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout');
     Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::post('/vouchers/apply', [CheckoutController::class, 'applyVoucher'])->name('vouchers.apply');
     Route::get('/checkout/payment/{id}', [CheckoutController::class, 'paymentForm'])->name('checkout.payment');
     Route::post('/checkout/payment/{id}/upload', [CheckoutController::class, 'uploadPayment'])->name('checkout.payment.upload');
     
@@ -139,6 +140,10 @@ Route::middleware(['auth', 'role:admin,petugas'])->group(function () {
         Route::get('returns', [\App\Http\Controllers\Admin\OrderReturnController::class, 'index'])->name('returns.index');
         Route::get('returns/{orderReturn}', [\App\Http\Controllers\Admin\OrderReturnController::class, 'show'])->name('returns.show');
         Route::patch('returns/{orderReturn}/status', [\App\Http\Controllers\Admin\OrderReturnController::class, 'updateStatus'])->name('returns.update-status');
+
+        // Voucher Management
+        Route::resource('vouchers', \App\Http\Controllers\Admin\VoucherController::class);
+        Route::patch('vouchers/{voucher}/toggle', [\App\Http\Controllers\Admin\VoucherController::class, 'toggleStatus'])->name('vouchers.toggle');
     });
 
     // Petugas Prefix (Redirect to Admin Dashboard)
